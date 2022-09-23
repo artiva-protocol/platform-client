@@ -1,0 +1,7 @@
+.logo_view:hover > button {
+    display: flex;
+}
+
+.logo_view > button {
+    display: none;
+}

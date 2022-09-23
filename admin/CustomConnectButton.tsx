@@ -1,0 +1,71 @@
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import * as _ from "lodash";
+
+export type CustomConnectButtonProps = {
+  className: string;
+};
+
+const CustomConnectButton = ({ className }: CustomConnectButtonProps) => {
+  return (
+    <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        mounted,
+      }) => {
+        return (
+          <div
+            {...(!mounted && {
+              "aria-hidden": true,
+              style: {
+                opacity: 0,
+                pointerEvents: "none",
+                userSelect: "none",
+              },
+            })}
+          >
+            {(() => {
+              if (!mounted || !account || !chain) {
+                return (
+                  <button
+                    className={className}
+                    onClick={openConnectModal}
+                    type="button"
+                  >
+                    Connect Wallet
+                  </button>
+                );
+              }
+
+              if (chain.unsupported) {
+                return (
+                  <button
+                    className={className}
+                    onClick={openChainModal}
+                    type="button"
+                  >
+                    Wrong network
+                  </button>
+                );
+              }
+              return (
+                <button
+                  className={className}
+                  onClick={openAccountModal}
+                  type="button"
+                >
+                  {account.displayName}
+                </button>
+              );
+            })()}
+          </div>
+        );
+      }}
+    </ConnectButton.Custom>
+  );
+};
+
+export default CustomConnectButton;

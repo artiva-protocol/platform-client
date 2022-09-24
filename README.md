@@ -1,16 +1,16 @@
-## Artiva Platform Client
+# Artiva Platform Client
 
-### Step 1. Creating your platform
+## Step 1. Creating your platform
 
 First create your platform via [etherscan](https://goerli.etherscan.io/address/0xf347cf551615e9933cf967c8ac4eded7dda6f1d2#writeContract#F3) and copy the contract address once your platform has been deployed.
 
-### Step 2. Clone and deploy with Vercel
+## Step 2. Clone and deploy with Vercel
 
 Click the '▲ Deploy' button below to clone your own version of the platform client.
 
 You will be prompted to fill a few variables as part of the deployment process.
 
-#### Required Variables
+### Required Variables
 
 `NEXT_PUBLIC_ALCHEMY_KEY` can be found by creating a new project in [Alchemy](https://dashboard.alchemyapi.io/) and then grabbing the API KEY from the project dashboard page and clicking the 'Get Key' button.
 
@@ -26,7 +26,7 @@ You will be prompted to fill a few variables as part of the deployment process.
 
 `ARTIVA_COOKIE_PASSWORD` will be a password to keep login cookies secure for your users. Should be at least 32 characters long.
 
-#### Optional Variables
+### Optional Variables
 
 `BUNDLR_PRIVATE_KEY` the private key to an Ethereum wallet that will fund and publish content to [Arweave](https://www.arweave.org/) using [Bundlr](https://bundlr.network/) for platform users. If left blank falls back to the set IPFS adater for content storage.
 
@@ -36,7 +36,7 @@ You will be prompted to fill a few variables as part of the deployment process.
 
 `NEXT_PUBLIC_ZORA_API_KEY` Zora API key used to increase rate limits for any Zora API calls.
 
-#### Deploy
+### Deploy
 
 Deploy your platform client using the deploy link below
 

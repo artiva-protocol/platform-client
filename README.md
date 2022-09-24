@@ -1,34 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Artiva Platform Client
 
-## Getting Started
+### Step 1. Creating your platform
 
-First, run the development server:
+First create your platform via [etherscan](https://goerli.etherscan.io/address/0xf347cf551615e9933cf967c8ac4eded7dda6f1d2#writeContract#F3) and copy the contract address once your platform has been deployed.
 
-```bash
-npm run dev
-# or
-yarn dev
+### Step 2. Clone and deploy with Vercel
+
+Click the '▲ Deploy' button below to clone your own version of the platform client.
+
+You will be prompted to fill a few variables as part of the deployment process.
+
+#### Required Variables
+
+`NEXT_PUBLIC_ALCHEMY_KEY` can be found by creating a new project in [Alchemy](https://dashboard.alchemyapi.io/) and then grabbing the API KEY from the project dashboard page and clicking the 'Get Key' button.
+
+`NEXT_PUBLIC_PLATFORM_NETWORK` will be the chain your platform exists on.
+
+```
+1 = Ethereum mainnet
+5 = Goerli
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`NEXT_PUBLIC_PLATFORM_ADDRESS` will be your contract address
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+`ARTIVA_COOKIE_PASSWORD` will be a password to keep login cookies secure for your users. Should be at least 32 characters long.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+#### Optional Variables
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+`BUNDLR_PRIVATE_KEY` the private key to an Ethereum wallet that will fund and publish content to [Arweave](https://www.arweave.org/) using [Bundlr](https://bundlr.network/) for platform users. If left blank falls back to the set IPFS adater for content storage.
 
-## Learn More
+`ESTUARY_API_KEY` required if estuary is being used as the IPFS adapter in `artiva-client-config.ts`
 
-To learn more about Next.js, take a look at the following resources:
+`PINATA_API_KEY` required if pinata is being used as the IPFS adapter in `artiva-client-config.ts`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`NEXT_PUBLIC_ZORA_API_KEY` Zora API key used to increase rate limits for any Zora API calls.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Deploy
 
-## Deploy on Vercel
+Deploy your platform client using the deploy link below
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fartiva-xyz%2Fplatform-client&env=NEXT_PUBLIC_PLATFORM_ADDRESS,NEXT_PUBLIC_PLATFORM_NETWORK,NEXT_PUBLIC_ALCHEMY_KEY,ARTIVA_COOKIE_PASSWORD)

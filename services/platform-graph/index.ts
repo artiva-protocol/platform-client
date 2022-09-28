@@ -1,21 +1,17 @@
+import { Platform } from "@artiva/shared";
+import { defaultPlatform } from "constants/default-platform";
 import client from "./client";
 import {
-  CONTENT_BY_PLATFORM_AND_OWNER,
-  CONTENT_BY_PLATFORM,
+  POSTS_BY_PLATFORM_AND_OWNER,
+  POSTS_BY_PLATFORM,
   USER_ROLES_BY_PLATFORM_AND_USER,
+  PLATFORM_METADATA_BY_PLATFORM,
 } from "./queries";
 
-export type GetContentByPlatformResponse = {
-  uri: string;
-  owner: {
-    id: string;
-  };
-  setAtTimestamp: string;
-};
-
-export type GetContentByPlatformAndOwnerResponse = {
-  uri: string;
-  contentId: string;
+export type GetPostsResponse = {
+  id: string;
+  contentJSON: string;
+  type: string;
   owner: {
     id: string;
   };
@@ -28,26 +24,26 @@ export type GetRolesByPlatformAndOwnerResponse = {
   contentPublisher: boolean;
 };
 
-export const getContentByPlatform = async (
+export const getPostsByPlatform = async (
   platformAddress: string
-): Promise<GetContentByPlatformResponse[]> => {
+): Promise<GetPostsResponse[]> => {
   const res = await client.request(
-    CONTENT_BY_PLATFORM(platformAddress.toLowerCase())
+    POSTS_BY_PLATFORM(platformAddress.toLowerCase())
   );
-  return res.contents;
+  return res.posts;
 };
 
-export const getContentByPlatformAndOwner = async (
+export const getPostsByPlatformAndOwner = async (
   platformAddress: string,
   ownerAddress: string
-): Promise<GetContentByPlatformAndOwnerResponse[]> => {
+): Promise<GetPostsResponse[]> => {
   const res = await client.request(
-    CONTENT_BY_PLATFORM_AND_OWNER(
+    POSTS_BY_PLATFORM_AND_OWNER(
       platformAddress.toLowerCase(),
       ownerAddress.toLowerCase()
     )
   );
-  return res.contents;
+  return res.posts;
 };
 
 export const getUserRolesByPlatformAndUser = async (
@@ -61,4 +57,15 @@ export const getUserRolesByPlatformAndUser = async (
     )
   );
   return res.platformUsers[0];
+};
+
+export const getPlatformMetadataByPlatform = async (
+  platformAddress: string
+): Promise<Platform> => {
+  const res = await client.request(
+    PLATFORM_METADATA_BY_PLATFORM(platformAddress)
+  );
+  return res.platform?.metadataJSON
+    ? JSON.parse(res.platform.metadataJSON)
+    : defaultPlatform;
 };

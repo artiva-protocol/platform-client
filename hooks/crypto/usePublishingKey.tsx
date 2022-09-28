@@ -17,7 +17,6 @@ const usePublishingKey = () => {
 
   const _generateAndStoreKey = useCallback(async () => {
     const instance = Wallet.createRandom();
-    console.log("instance", instance);
     await set(dbKey, instance.privateKey);
     return instance;
   }, [dbKey]);

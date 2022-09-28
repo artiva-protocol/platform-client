@@ -4,12 +4,14 @@ import { useRouter } from "next/router";
 import { Fragment, useMemo } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { getMetadata } from "@/services/artiva-protocol";
 import { InferGetServerSidePropsType } from "next";
 import useInitTheme from "@/hooks/theme/useInitTheme";
+import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 
 export const getServerSideProps = async () => {
-  const platform = await getMetadata();
+  const platform = await getPlatformMetadataByPlatform(
+    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
+  );
 
   return {
     props: {

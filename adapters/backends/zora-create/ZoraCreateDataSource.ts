@@ -31,13 +31,11 @@ export default class ZoraCreateDataSource {
   fetchEditions = async (
     addresses: readonly string[]
   ): Promise<(PrimarySaleModule | Error)[]> => {
-    console.log("edition addresses", addresses);
     const res = await this.client
       .request(
         ZORA_EDITIONS_BY_ADDRESSES(addresses.map((x) => x.toLowerCase()))
       )
       .then((x) => {
-        console.log("Loading secondary done fetching");
         return x.erc721Drops.map((x: EditionContractLike) => {
           x.source = PRIMARY_SALE_SOURCES.zoraERC721Drop;
           x.contractInfo = JSON.parse(decode(x.contractURI.split(",")[1]));

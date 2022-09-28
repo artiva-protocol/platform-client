@@ -1,19 +1,26 @@
-import { getContentByPlatformAndOwner } from "@/services/platform-graph";
+import { getPostsByPlatformAndOwner } from "@/services/platform-graph";
 import { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
+import { Post } from "@artiva/shared";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userAddress } = req.query;
   const platformAddress = process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!;
-  const content = await getContentByPlatformAndOwner(
+  const rawPosts = await getPostsByPlatformAndOwner(
     platformAddress,
     userAddress as string
   );
-  const posts = await Promise.all(
-    content.map((x) => axios.get(x.uri).then((x) => x.data))
-  );
 
-  res.send({ posts: posts.flatMap((x) => x.content) });
+  if (rawPosts.length === 0) return res.send({ posts: [] });
+
+  const formattedPosts = rawPosts.map((x) => {
+    return {
+      id: x.id,
+      content: JSON.parse(x.contentJSON),
+      type: x.type,
+    } as Post;
+  });
+
+  res.send({ posts: formattedPosts });
 };
 
 export default handler;

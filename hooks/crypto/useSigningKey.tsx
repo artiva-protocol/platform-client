@@ -30,17 +30,10 @@ const useSigningKey = () => {
     },
   });
 
-  console.log("Sig data", {
-    domain,
-    types,
-    value,
-  });
-
   const [signature, setSignature] = useState<string | undefined>();
   const dbKey = `signing-key-signature-${address}`;
 
   const clearSignature = async () => {
-    console.log("123sig Clearing");
     await del(dbKey);
     setSignature(undefined);
   };

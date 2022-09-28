@@ -26,6 +26,11 @@
   resolved "https://registry.yarnpkg.com/@artiva/v2/-/v2-0.3.1.tgz#cde6adb1bda9fa01d5e83995db6ff66331d0d6d6"
   integrity sha512-wm27nA+8rHlaBnFg1Y/vDWbM6OEQb/wfk973CxxNXdCEKVh/YDSlzVxk0NXBtZNriFAaXX7DD8RDMM4JZBtzxg==
 
+"@artiva/v2@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@artiva/v2/-/v2-0.4.0.tgz#90481362d626109c272ae9d076ad5d9194874a31"
+  integrity sha512-hPer1K18i7PwLDaKVgM7ajpqOC5CFYZ4+ISlFezQShmMOrX3+QWwbP0wCun/ykEdxoAWonatJ6krJ9AFgdW2dw==
+
 "@babel/compat-data@^7.17.7", "@babel/compat-data@^7.19.0":
   version "7.19.0"
   resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.19.0.tgz#2a592fd89bacb1fcde68de31bee4f2f2dacb0e86"

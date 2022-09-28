@@ -7,8 +7,7 @@ import Image from "next/future/image";
 import { Fragment } from "react";
 
 export type ProtocolSaveToastProps = {
-  loadingUpload: boolean;
-  loadingWrite: boolean;
+  loading: boolean;
   error: Error | undefined | null;
   success: boolean;
 };
@@ -16,8 +15,7 @@ export type ProtocolSaveToastProps = {
 const ProtocolSaveToast = ({
   error,
   success,
-  loadingWrite,
-  loadingUpload,
+  loading,
 }: ProtocolSaveToastProps) => {
   const baseStyle =
     " w-72 text-center h-48 flex items-center justify-around rounded-md shadow-xl bg-black text";
@@ -36,7 +34,7 @@ const ProtocolSaveToast = ({
       );
     }
 
-    if (loadingWrite || loadingUpload) {
+    if (loading) {
       return (
         <div className={`${baseStyle}`}>
           <div className="w-full flex flex-col items-center">
@@ -47,7 +45,7 @@ const ProtocolSaveToast = ({
               height={40}
             />
             <div className="text-gray-300 mt-8 font-extralight">
-              {loadingWrite ? "Publishing to Artiva" : "Uploading to Arweave"}
+              Publishing to Artiva
             </div>
           </div>
         </div>
@@ -72,7 +70,7 @@ const ProtocolSaveToast = ({
 
   return (
     <Transition
-      show={success || !!error || loadingWrite || loadingUpload}
+      show={success || !!error || loading}
       enter="transition-opacity duration-75"
       enterFrom="opacity-0"
       enterTo="opacity-100"

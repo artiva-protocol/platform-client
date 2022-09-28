@@ -29,8 +29,6 @@ export class ReservoirStrategy extends NFTStrategy {
         throw nft;
       }
       const asset = this.reservoirBackend.transformNFT(nft);
-
-      console.log("nft", nft);
       return asset;
     } catch (err) {
       console.log("Error fetching", err);

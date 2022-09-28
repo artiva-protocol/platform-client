@@ -22,14 +22,12 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
   hasSecondaryData = (_: ContractFetchInfo) => true;
 
   fetchNFTContract = async (address: string): Promise<NFTContractObject> => {
-    console.log("Loading primary");
     const collectionQuery = this.zdk.collection({ address });
     const statQuery = this.zdk.collectionStatsAggregate({
       collectionAddress: address,
       network: { network: "ETHEREUM" as Network },
     });
     const res = await Promise.all([collectionQuery, statQuery]);
-    console.log("Loading primary finished");
     return {
       collection: res[0],
       aggregateStat: res[1].aggregateStat,
@@ -56,9 +54,7 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
       };
 
     try {
-      console.log("Loading secondary");
       const market = await this.zoraCreate.loadEdition(address);
-      console.log("Loading secondary finished");
       return {
         ...current,
         markets: [market],

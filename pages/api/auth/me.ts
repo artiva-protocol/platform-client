@@ -2,7 +2,6 @@ import { withIronSessionApiRoute } from "iron-session/next";
 
 export default withIronSessionApiRoute(
   async function handler(req, res) {
-    console.log("session", req.session.user);
     res.send({ user: req.session.user || null });
   },
   {

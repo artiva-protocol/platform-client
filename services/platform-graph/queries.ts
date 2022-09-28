@@ -1,33 +1,36 @@
 import { gql } from "graphql-request";
 
-export const CONTENT_BY_PLATFORM = (platformAddress: string) => {
+export const POSTS_BY_PLATFORM = (platformAddress: string) => {
   return gql`
     {
-        contents(where: { platform: "${platformAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
-            uri
-            owner {
-                id
-            }
-            setAtTimestamp
+      posts(where: { platform: "${platformAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
+        id
+        contentJSON
+        type
+        owner {
+            id
         }
+        setAtTimestamp
+      }
     }
     `;
 };
 
-export const CONTENT_BY_PLATFORM_AND_OWNER = (
+export const POSTS_BY_PLATFORM_AND_OWNER = (
   platformAddress: string,
   ownerAddress: string
 ) => {
   return gql`
       {
-          contents(where: { platform: "${platformAddress}", owner: "${platformAddress}:${ownerAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
-            uri
-            contentId
-            owner {
-                id
-            }   
-            setAtTimestamp
-          }
+        posts(where: { platform: "${platformAddress}", owner: "${platformAddress}:${ownerAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
+          id
+          contentJSON
+          type
+          owner {
+              id
+          }   
+          setAtTimestamp
+        }
       }
       `;
 };
@@ -42,6 +45,16 @@ export const USER_ROLES_BY_PLATFORM_AND_USER = (
         admin,
         contentPublisher,
         metadataManager,
+      }
+    }
+  `;
+};
+
+export const PLATFORM_METADATA_BY_PLATFORM = (platformAddress: string) => {
+  return gql`
+    {
+      platform(id: "${platformAddress}") {
+        metadataJSON
       }
     }
   `;

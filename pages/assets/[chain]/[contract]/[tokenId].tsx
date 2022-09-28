@@ -1,10 +1,5 @@
 import { useRouter } from "next/router";
-import {
-  ChainIdentifier,
-  useNFT,
-  ArtivaContext,
-  Platform,
-} from "@artiva/shared";
+import { ChainIdentifier, useNFT, ArtivaContext } from "@artiva/shared";
 import { NFTProps } from "@artiva/shared";
 import { NFTObject } from "@zoralabs/nft-hooks";
 import { Fragment } from "react";
@@ -12,10 +7,12 @@ import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 import useInitTheme from "@/hooks/theme/useInitTheme";
 import { InferGetServerSidePropsType } from "next";
-import { getMetadata } from "@/services/artiva-protocol";
+import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 
 export const getServerSideProps = async () => {
-  const platform: Platform = await getMetadata();
+  const platform = await getPlatformMetadataByPlatform(
+    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
+  );
 
   return {
     props: {

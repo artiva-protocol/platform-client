@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getContentByPlatform } from "@/services/platform-graph";
-import axios from "axios";
+import { getPostsByPlatform } from "@/services/platform-graph";
+import { Post } from "@artiva/shared";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "GET") return res.status(405).end();
@@ -8,24 +8,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const address = process.env.NEXT_PUBLIC_PLATFORM_ADDRESS;
   if (!address) return res.send({ posts: [] });
 
-  const graphRes = await getContentByPlatform(address);
-  if (graphRes.length === 0) return res.send({ posts: [] });
+  const rawPosts = await getPostsByPlatform(address);
+  if (rawPosts.length === 0) return res.send({ posts: [] });
 
-  const uris = graphRes.map((x) => x.uri);
+  const formattedPosts = rawPosts.map((x) => {
+    return {
+      id: x.id,
+      content: JSON.parse(x.contentJSON),
+      type: x.type,
+    } as Post;
+  });
 
-  const content = await Promise.all(
-    uris.map((uri) =>
-      axios.get(uri, { timeout: 1000 }).catch((x) => {
-        return new Error(`Error getting content: ${x?.message}`);
-      })
-    )
-  ).then((x) =>
-    x
-      ?.filter((y) => !(y instanceof Error))
-      .flatMap((y) => ("data" in y ? y.data.content : undefined))
-  );
-
-  return res.send({ posts: content });
+  res.send({ posts: formattedPosts });
 };
 
 export default handler;

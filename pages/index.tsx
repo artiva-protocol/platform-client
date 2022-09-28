@@ -1,18 +1,20 @@
 import { Fragment } from "react";
 import Layout from "@/components/Layout";
-import { ArtivaContext, Platform, HomeProps } from "@artiva/shared";
+import { ArtivaContext, HomeProps } from "@artiva/shared";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 import { InferGetServerSidePropsType } from "next";
-import { getMetadata } from "@/services/artiva-protocol";
 import useInitTheme from "@/hooks/theme/useInitTheme";
+import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 
 export const getServerSideProps = async () => {
-  const platform: Platform = await getMetadata();
+  const platform = await getPlatformMetadataByPlatform(
+    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
+  );
 
   return {
     props: {
-      platform: platform,
+      platform,
     },
   };
 };

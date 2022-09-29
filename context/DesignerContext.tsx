@@ -29,10 +29,11 @@ export type UseDesignerType = {
   customProperties: CustomPropertyDesigner[] | undefined;
   mobile: boolean;
   setMobile: Dispatch<SetStateAction<boolean>>;
+  loading: boolean;
 };
 
 const useDesigner = (): UseDesignerType => {
-  const { data: initalData } = useMetadata();
+  const { data: initalData, error } = useMetadata();
   const [data, setData] = useState<Platform | undefined>();
   const [dirty, setDirty] = useState(false);
   const [mobile, setMobile] = useState(false);
@@ -80,7 +81,16 @@ const useDesigner = (): UseDesignerType => {
     setData(loadCustomCallback(initalData));
   }, [initalData, data, loadCustomCallback]);
 
-  return { data, mutate, merge, save, mobile, setMobile, customProperties };
+  return {
+    data,
+    mutate,
+    merge,
+    save,
+    mobile,
+    setMobile,
+    customProperties,
+    loading: !data && !error,
+  };
 };
 
 export default createContainer<UseDesignerType, Platform>(useDesigner);

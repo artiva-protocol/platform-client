@@ -1,6 +1,7 @@
 import { ThemeConfig } from "@artiva/shared";
 //@ts-ignore
-import { injectScript } from "@module-federation/nextjs-mf/lib/utils";
+import { injectScript } from "@module-federation/nextjs-mf/utils/index";
+import { sha256 } from "js-sha256";
 import { useCallback, useEffect, useState } from "react";
 
 export type ThemeConfigProps = {
@@ -14,6 +15,7 @@ const useThemeConfig = ({ themeURL }: ThemeConfigProps) => {
     return injectScript({
       global: "theme",
       url: themeURL,
+      uniqueKey: themeURL ? sha256(themeURL) : "theme",
     })
       .then((remoteContainer: any) => remoteContainer.get("./artiva.config"))
       .then((factory: any) => factory());

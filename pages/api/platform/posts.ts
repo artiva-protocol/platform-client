@@ -11,12 +11,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const rawPosts = await getPostsByPlatform(address);
   if (rawPosts.length === 0) return res.send({ posts: [] });
 
-  const formattedPosts = rawPosts.map((x) => {
-    return {
-      id: x.id,
-      content: JSON.parse(x.contentJSON),
-      type: x.type,
-    } as Post;
+  const formattedPosts = rawPosts.flatMap((x) => {
+    try {
+      return {
+        id: x.id,
+        content: JSON.parse(x.contentJSON),
+        type: x.type,
+      } as Post;
+    } catch (err) {
+      console.log("Error parsing post", x.contentJSON, err);
+      return [];
+    }
   });
 
   res.send({ posts: formattedPosts });

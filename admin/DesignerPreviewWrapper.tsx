@@ -15,7 +15,7 @@ export const DesignerPreviewWrapper = ({
 }: {
   children: ReactNode;
 }) => {
-  const { data: designerData } = DesignerContext.useContainer();
+  const { data: designerData, loading } = DesignerContext.useContainer();
   const [mountNode, setMountNode] = useState<HTMLElement | undefined>();
   const iframeMutableRef = useRef<HTMLIFrameElement>();
 
@@ -24,31 +24,36 @@ export const DesignerPreviewWrapper = ({
     iframeMutableRef.current = iframeRef;
   }, []);
 
-  useEffect(() => {
-    const iframeRef = iframeMutableRef.current;
-    if (!iframeRef) return;
+  const onLoad = useCallback(() => {
+    const iframeRef = iframeMutableRef.current!;
 
-    //Clear the theme cache before reloading designer
-    //@ts-ignore
-    window.theme = undefined;
+    //Inject built styles into the iframe
+    const head = iframeRef.contentWindow?.document?.head!;
+    if (head.firstChild) head.removeChild(head.firstChild);
 
-    iframeRef.contentWindow?.location.reload();
+    const link = document.createElement("link");
+    link.href = `${
+      designerData?.themeURL || process.env.NEXT_PUBLIC_BASE_THEME_URL
+    }/index.css`;
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.id = "theme-styles";
 
-    iframeRef.addEventListener("load", () => {
-      //Inject built styles into the iframe
-      const head = iframeRef.contentWindow?.document?.head!;
-      const link = document.createElement("link");
-      link.href = `${
-        designerData?.themeURL || process.env.NEXT_PUBLIC_BASE_THEME_URL
-      }/index.css`;
-      link.rel = "stylesheet";
-      link.type = "text/css";
-      head.appendChild(link);
+    head.appendChild(link);
 
-      //Set iframe node to be used with portal
-      setMountNode(iframeRef.contentWindow?.document?.body);
-    });
+    //Set iframe node to be used with portal
+    setMountNode(iframeRef.contentWindow?.document?.body);
   }, [designerData?.themeURL]);
+
+  useEffect(() => {
+    setMountNode(undefined);
+  }, [designerData?.themeURL]);
+
+  useEffect(() => {
+    if (mountNode || loading) return;
+    iframeMutableRef.current!.contentWindow?.location.reload();
+    iframeMutableRef.current!.addEventListener("load", onLoad);
+  }, [mountNode, onLoad, loading]);
 
   const portal = useMemo(() => {
     if (!mountNode) return <Fragment />;

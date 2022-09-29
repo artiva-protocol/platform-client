@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 //@ts-ignore
-import { injectScript } from "@module-federation/nextjs-mf/lib/utils";
-import { useCallback, useMemo } from "react";
+import { injectScript } from "@module-federation/nextjs-mf/utils/index";
 
 export type ThemeComponentProps = {
   component: string;
@@ -12,21 +11,22 @@ const useThemeComponent = <T,>({
   component,
   themeURL,
 }: ThemeComponentProps) => {
-  const loadComponent = useCallback(() => {
-    return injectScript({
-      global: "theme",
-      url: themeURL,
-    })
-      .then((remoteContainer: any) => remoteContainer.get(component))
-      .then((factory: any) => factory());
-  }, [component, themeURL]);
-
-  return useMemo(() => {
-    return dynamic<T>(() => loadComponent(), {
+  return dynamic<T>(
+    () => {
+      (window as any).theme = undefined;
+      return injectScript({
+        global: "theme",
+        url: themeURL,
+        uniqueKey: themeURL,
+      })
+        .then((remoteContainer: any) => remoteContainer.get(component))
+        .then((factory: any) => factory());
+    },
+    {
       ssr: false,
       suspense: false,
-    });
-  }, [loadComponent]);
+    }
+  );
 };
 
 export default useThemeComponent;

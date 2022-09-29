@@ -63,8 +63,9 @@ export const getPlatformMetadataByPlatform = async (
   platformAddress: string
 ): Promise<Platform> => {
   const res = await client.request(
-    PLATFORM_METADATA_BY_PLATFORM(platformAddress)
+    PLATFORM_METADATA_BY_PLATFORM(platformAddress.toLowerCase())
   );
+
   return res.platform?.metadataJSON
     ? JSON.parse(res.platform.metadataJSON)
     : defaultPlatform;

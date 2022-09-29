@@ -1,5 +1,5 @@
 import { NetworkIDs } from "@zoralabs/nft-hooks";
-import { Network } from "@zoralabs/zdk/dist/queries/queries-sdk";
+import { Network, Chain } from "@zoralabs/zdk/dist/queries/queries-sdk";
 import { ZDK } from "@zoralabs/zdk";
 import { NFTContractObject } from "@artiva/shared";
 import { ContractFetchInfo, NFTContractStrategy } from "../NFTContractStrategy";
@@ -25,7 +25,7 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
     const collectionQuery = this.zdk.collection({ address });
     const statQuery = this.zdk.collectionStatsAggregate({
       collectionAddress: address,
-      network: { network: "ETHEREUM" as Network },
+      network: { network: Network.Ethereum, chain: Chain.Mainnet },
     });
     const res = await Promise.all([collectionQuery, statQuery]);
     return {

@@ -1,8 +1,13 @@
-import { ChevronLeftIcon, CreditCardIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronLeftIcon,
+  CreditCardIcon,
+  DocumentIcon,
+} from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import CurateNavElement from "../shared/CurateNavElement";
 import CurateWallet from "./NFTWallet";
+import CurateAsset from "./NFTAsset";
 
 const NFTNavigation = () => {
   const router = useRouter();
@@ -30,6 +35,15 @@ const NFTNavigation = () => {
           setSelected={setSelected}
         />
         {selected === "wallet" && <CurateWallet />}
+
+        <CurateNavElement
+          navId="asset"
+          title="Asset"
+          icon={<DocumentIcon className="w-4 text-gray-600" />}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        {selected === "asset" && <CurateAsset />}
       </div>
     </div>
   );

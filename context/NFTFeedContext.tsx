@@ -10,6 +10,7 @@ export enum NFTFeedSearchType {
   OWNED = "owned",
   TEXT_SEARCH = "text_search",
   COLLECTION = "collection",
+  SINGLE = "single",
 }
 
 export type NFTFeedFilterType = {
@@ -19,6 +20,7 @@ export type NFTFeedFilterType = {
   attributeFilters?: AttributeFilter[];
   text?: string;
   addresses?: string[];
+  tokenIds?: string[];
   after?: string;
 };
 

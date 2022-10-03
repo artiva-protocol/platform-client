@@ -31,15 +31,30 @@ const useZDKRouter = (filter: NFTFeedFilterType, limit: number = 25) => {
 
   const response = tokens?.tokens || mints?.mints;
 
-  const parsedResponse: Post[] | undefined = response?.map((x) => ({
-    id: `${"ETHEREUM"}:${x.token?.collectionAddress?.toLowerCase()}:${x.token?.tokenId?.toLowerCase()}`,
-    content: {
-      chain: "ETHEREUM",
-      tokenId: x.token?.tokenId!,
-      contractAddress: x.token?.collectionAddress!,
-    },
-    type: PostTypeEnum.NFT,
-  }));
+  const parsedResponse: Post[] | undefined =
+    filter.searchType === NFTFeedSearchType.SINGLE
+      ? [
+          {
+            id: `${"ETHEREUM"}:${filter.addresses?.[0]}:${
+              filter.tokenIds?.[0]
+            }`,
+            content: {
+              chain: "ETHEREUM",
+              tokenId: filter.tokenIds?.[0],
+              contractAddress: filter.addresses?.[0],
+            },
+            type: PostTypeEnum.NFT,
+          },
+        ]
+      : response?.map((x) => ({
+          id: `${"ETHEREUM"}:${x.token?.collectionAddress?.toLowerCase()}:${x.token?.tokenId?.toLowerCase()}`,
+          content: {
+            chain: "ETHEREUM",
+            tokenId: x.token?.tokenId!,
+            contractAddress: x.token?.collectionAddress!,
+          },
+          type: PostTypeEnum.NFT,
+        }));
 
   return {
     nfts: parsedResponse,

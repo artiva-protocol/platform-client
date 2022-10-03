@@ -30,7 +30,7 @@ const Collection = () => {
                 <DocumentDuplicateIcon className="w-5 text-white" />
               </div>
               <div className="ml-4 mt-1 text-left">
-                <h3 className="font-semibold text-gray-700">NFTs</h3>
+                <h3 className="font-semibold text-gray-700">Add NFTs</h3>
                 <p className="text-sm text-gray-400">Curate Indiviudal NFTs</p>
               </div>
             </button>
@@ -45,7 +45,7 @@ const Collection = () => {
                 <RectangleStackIcon className="w-5 text-white" />
               </div>
               <div className="ml-4 mt-1 text-left">
-                <h3 className="font-semibold text-gray-700">Contracts</h3>
+                <h3 className="font-semibold text-gray-700">Add Contracts</h3>
                 <p className="text-sm text-gray-400">Curate NFT contracts</p>
               </div>
             </button>

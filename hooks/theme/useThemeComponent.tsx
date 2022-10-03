@@ -4,20 +4,23 @@ import { injectScript } from "@module-federation/nextjs-mf/utils/index";
 
 export type ThemeComponentProps = {
   component: string;
-  themeURL?: string;
+  themeIdentifier: string;
 };
 
 const useThemeComponent = <T,>({
   component,
-  themeURL,
+  themeIdentifier,
 }: ThemeComponentProps) => {
+  const global = themeIdentifier.split("@")[0];
+  const url = themeIdentifier.split("@")[1];
+
   return dynamic<T>(
     () => {
-      (window as any).theme = undefined;
+      console.log("global", (window as any)[global]);
       return injectScript({
-        global: "theme",
-        url: themeURL,
-        uniqueKey: themeURL,
+        global,
+        url,
+        uniqueKey: themeIdentifier,
       })
         .then((remoteContainer: any) => remoteContainer.get(component))
         .then((factory: any) => factory());

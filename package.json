@@ -29,6 +29,7 @@
     "deepmerge": "^4.2.2",
     "elliptic": "^6.5.4",
     "ethers": "^5.7.0",
+    "http-proxy": "^1.18.1",
     "i": "^0.3.7",
     "idb-keyval": "^6.2.0",
     "iron-session": "^6.2.0",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@types/elliptic": "^6.4.14",
+    "@types/http-proxy": "^1.17.9",
     "@types/lodash": "^4.14.182",
     "@types/nconf": "^0.10.2",
     "@types/node": "18.0.3",

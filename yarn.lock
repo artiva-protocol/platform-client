@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@artiva/shared@^0.1.16":
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/@artiva/shared/-/shared-0.1.16.tgz#928355cfc6e1e2430f33e1b7a1f54694c3bbb3b7"
-  integrity sha512-hdh2dPPpv/8UBb8Ah/V9bZcOFhu5tUB9XlyhA4dCBfGTePftpIJlrDaf/LyqESOVLSe6ZRMixkR8VtahEf63HQ==
+"@artiva/shared@^0.1.18":
+  version "0.1.18"
+  resolved "https://registry.yarnpkg.com/@artiva/shared/-/shared-0.1.18.tgz#2aaeeffcae195ce0bd6a0ba015e8fc4777163989"
+  integrity sha512-EazpLvNbX8C0GGw0uj8o25EM8H5PMEt97wcuqfIMJoNimhc383SIEmrgrRGB3UzQeONyrzT0pEimHN7xziI3OQ==
   dependencies:
     "@artiva/v2" "^0.3.1"
     "@zoralabs/auction-house" "^1.1.3"

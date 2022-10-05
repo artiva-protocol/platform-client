@@ -21,22 +21,7 @@ declare module "iron-session" {
 
 export default withIronSessionApiRoute(
   async function loginRoute(req, res) {
-    const { address, publicKey, signature } = req.body;
-
-    if (
-      !verifyTypedData(
-        domain,
-        types,
-        {
-          message: "I authorize publishing on artiva from this device",
-          publishingKey: publicKey,
-          nonce: "0",
-        },
-        signature
-      )
-    )
-      return res.status(401).end();
-
+    const { address } = req.body;
     const platform = process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!;
     const roles = await getUserRolesByPlatformAndUser(platform, address);
 

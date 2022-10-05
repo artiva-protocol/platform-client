@@ -1,21 +1,30 @@
 import CuratorContext from "@/context/CuratorContext";
 import NFTFeedContext from "@/context/NFTFeedContext";
+import { PostRequest } from "@/hooks/post/useAddContents";
 import PostPreview from "./PostPreview";
 
 export const NFTFeed = () => {
   const { addContent, collection } = CuratorContext.useContainer();
   const { feed } = NFTFeedContext.useContainer();
 
+  const isCurated = (post: PostRequest) => {
+    return !!collection.find(
+      (x) =>
+        x.type === post.type &&
+        JSON.stringify(x.content) === JSON.stringify(post.content)
+    );
+  };
+
   return (
     <div className="grid grid-cols-5">
-      {feed?.map((x) => (
+      {feed?.map((x, i) => (
         <PostPreview
-          key={x.id}
+          key={i}
           post={x}
           onClick={() => {
             addContent(x);
           }}
-          selected={!!collection.find((y) => y.id === x.id)}
+          selected={isCurated(x)}
         />
       ))}
     </div>

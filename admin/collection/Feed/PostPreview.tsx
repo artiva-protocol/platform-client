@@ -2,13 +2,14 @@ import React, { Fragment } from "react";
 import { Post, PostTypeEnum, usePostContent } from "@artiva/shared";
 import NFTPreview from "./NFTPreview";
 import NFTContractPreview from "./NFTContractPreview";
+import { PostRequest } from "@/hooks/post/useAddContents";
 
 const PostPreview = ({
   post,
   selected,
   onClick,
 }: {
-  post: Post;
+  post: Post | PostRequest;
   selected: boolean;
   onClick?: () => void;
 }) => {

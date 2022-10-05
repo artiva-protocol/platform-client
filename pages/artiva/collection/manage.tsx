@@ -5,26 +5,25 @@ import PostPlacard from "@/admin/collection/manage/PostPlacard";
 import { Post } from "@artiva/shared";
 import CuratorContext from "@/context/CuratorContext";
 import ProtocolSaveToast from "@/components/ProtocolSaveToast";
-import usePublishPost from "@/hooks/post/usePublishPost";
+import ManageContext from "@/context/ManageContext";
 
 const Manage = () => {
   return (
     <AdminLayout>
-      <CuratorContext.Provider>
+      <ManageContext.Provider>
         <div className="w-full mt-4">
           <div className="flex justify-between items-baseline p-6 relative">
             <Header />
           </div>
           <Feed />
         </div>
-      </CuratorContext.Provider>
+      </ManageContext.Provider>
     </AdminLayout>
   );
 };
 
 const Header = () => {
-  const { collection } = CuratorContext.useContainer();
-  const publish = usePublishPost(collection, false);
+  const { set } = ManageContext.useContainer();
 
   return (
     <div className="pb-4 flex justify-between items-baseline relative w-full">
@@ -37,21 +36,21 @@ const Header = () => {
       </div>
       <div className="flex">
         <button
-          onClick={publish.save}
+          onClick={set.save}
           className="bg-black text-white h-8 w-24 rounded-md"
         >
           Save
         </button>
       </div>
       <div className="absolute top-14 right-0 z-10">
-        <ProtocolSaveToast {...publish} />
+        <ProtocolSaveToast {...set} />
       </div>
     </div>
   );
 };
 
 const Feed = () => {
-  const { collection } = CuratorContext.useContainer();
+  const { collection } = ManageContext.useContainer();
   return (
     <div className="grid grid-cols-2 h-[84vh] overflow-auto">
       {collection?.map((x: Post, i: number) => {

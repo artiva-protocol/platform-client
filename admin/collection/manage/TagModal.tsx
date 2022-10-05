@@ -1,5 +1,5 @@
 import ModalWrapper from "@/components/ModalWrapper";
-import CuratorContext from "@/context/CuratorContext";
+import ManageContext from "@/context/ManageContext";
 import { Post } from "@artiva/shared";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
@@ -13,7 +13,7 @@ const TagModal = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   post: Post;
 }) => {
-  const { setContent } = CuratorContext.useContainer();
+  const { setContent } = ManageContext.useContainer();
   const [newTag, setNewTag] = useState("");
 
   const tags = post.tags || [];

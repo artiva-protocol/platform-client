@@ -6,7 +6,6 @@ import {
   POSTS_BY_PLATFORM,
   USER_ROLES_BY_PLATFORM_AND_USER,
   PLATFORM_METADATA_BY_PLATFORM,
-  BUNDLES_BY_PLATFORM_AND_OWNER,
   POSTS_BY_PLATFORM_AND_TAG,
   POSTS_BY_PLATFORM_AND_FEATURED,
 } from "./queries";
@@ -92,18 +91,4 @@ export const getPlatformMetadataByPlatform = async (
   return res.platform?.metadataJSON
     ? JSON.parse(res.platform.metadataJSON)
     : defaultPlatform;
-};
-
-export const getBundlesByOwnerAndPlatform = async (
-  platformAddress: string,
-  userAddress: string
-) => {
-  return await client
-    .request(
-      BUNDLES_BY_PLATFORM_AND_OWNER(
-        platformAddress.toLowerCase(),
-        userAddress.toLowerCase()
-      )
-    )
-    .then((x) => x.bundles);
 };

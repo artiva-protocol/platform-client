@@ -16,10 +16,16 @@ import axios from "axios";
 import Image from "next/future/image";
 import { ArtivaClientConfig } from "configs/artiva-client-config";
 import ThemeContext, { ThemeCSSWrapper } from "./ThemeContext";
+import { useRouter } from "next/router";
 
 const GlobalProvider = ({ children }: { children: React.ReactChild }) => {
+  const { pathname } = useRouter();
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-  const { wagmiClient, chains } = getWalletClient(WalletAppContext.PLATFORM);
+  const { wagmiClient, chains } = getWalletClient(
+    pathname.includes("artiva")
+      ? WalletAppContext.ADMIN
+      : WalletAppContext.PLATFORM
+  );
 
   return (
     <ThemeContext.Provider>

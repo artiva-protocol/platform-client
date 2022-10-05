@@ -4,7 +4,7 @@ export const POSTS_BY_PLATFORM = (platformAddress: string) => {
   return gql`
     {
       posts(where: { platform: "${platformAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
-        id
+        id: contentId
         contentJSON
         type
         tags {
@@ -23,7 +23,7 @@ export const POSTS_BY_PLATFORM_AND_FEATURED = (platformAddress: string) => {
   return gql`
   {
     featured: posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:Featured"] }, orderBy: setAtTimestamp, orderDirection: desc) {
-      id
+      id: contentId
       contentJSON
       type
       tags {
@@ -35,7 +35,7 @@ export const POSTS_BY_PLATFORM_AND_FEATURED = (platformAddress: string) => {
       setAtTimestamp
     }
     posts(where: { platform: "${platformAddress}", tags_not_contains: ["${platformAddress}:Featured"] }, orderBy: setAtTimestamp, orderDirection: desc) {
-      id
+      id: contentId
       contentJSON
       type
       tags {
@@ -57,7 +57,7 @@ export const POSTS_BY_PLATFORM_AND_TAG = (
   return gql`
   {
     posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:${tag}"] }, orderBy: setAtTimestamp, orderDirection: desc) {
-      id
+      id: contentId
       contentJSON
       type
       tags {
@@ -79,7 +79,7 @@ export const POSTS_BY_PLATFORM_AND_OWNER = (
   return gql`
       {
         posts(where: { platform: "${platformAddress}", owner: "${platformAddress}:${ownerAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
-          id
+          id: contentId
           contentJSON
           type
           tags {
@@ -89,20 +89,6 @@ export const POSTS_BY_PLATFORM_AND_OWNER = (
               id
           }   
           setAtTimestamp
-        }
-      }
-      `;
-};
-
-export const BUNDLES_BY_PLATFORM_AND_OWNER = (
-  platformAddress: string,
-  ownerAddress: string
-) => {
-  return gql`
-      {
-        bundles(where: { platform: "${platformAddress}", owner: "${platformAddress}:${ownerAddress}" }, orderBy: createdAtTimestamp, orderDirection: desc) {
-          bundleId
-          bundleJSON
         }
       }
       `;

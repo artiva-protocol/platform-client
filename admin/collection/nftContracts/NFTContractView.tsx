@@ -15,6 +15,7 @@ import { CheckIcon } from "@heroicons/react/24/solid";
 const NFTContractView = ({ contract }: { contract: NFTContractObject }) => {
   const { addContent, collection: curateCollection } =
     CuratorContext.useContainer();
+
   const { data: nfts } = useNFTTokens({
     collectionAddresses: contract?.collection?.address
       ? [contract?.collection?.address]
@@ -25,7 +26,12 @@ const NFTContractView = ({ contract }: { contract: NFTContractObject }) => {
   const selected = useMemo(() => {
     if (!curateCollection || !contract?.collection?.address) return false;
     return !!curateCollection.find(
-      (x) => x.id === `ETHEREUM:${contract?.collection?.address}`
+      (x) =>
+        JSON.stringify(x.content) ===
+        JSON.stringify({
+          chain: "ETHEREUM",
+          contractAddress: contract?.collection?.address,
+        })
     );
   }, [curateCollection, contract?.collection?.address]);
 
@@ -48,7 +54,6 @@ const NFTContractView = ({ contract }: { contract: NFTContractObject }) => {
 
   const onClick = () => {
     addContent({
-      id: `ETHEREUM:${collection.address}`,
       content: {
         chain: "ETHEREUM",
         contractAddress: collection.address,

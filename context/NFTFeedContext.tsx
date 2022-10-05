@@ -4,6 +4,7 @@ import { AttributeFilter } from "@zoralabs/zdk/dist/queries/queries-sdk";
 import useZDKRouter from "hooks/curator/useZDKRouter";
 import { Post } from "@artiva/shared";
 import { useAccount } from "wagmi";
+import { PostRequest } from "@/hooks/post/useAddContents";
 
 export enum NFTFeedSearchType {
   MINTED = "minted",
@@ -25,7 +26,7 @@ export type NFTFeedFilterType = {
 };
 
 export type UseNFTFeedType = {
-  feed: Post[] | undefined;
+  feed: PostRequest[] | undefined;
   page?: {
     __typename?: "PageInfo" | undefined;
     endCursor?: string | null | undefined;

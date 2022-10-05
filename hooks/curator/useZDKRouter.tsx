@@ -1,5 +1,6 @@
 import { NFTFeedSearchType, NFTFeedFilterType } from "@/context/NFTFeedContext";
 import { useNFTMints, useNFTTokens, Post, PostTypeEnum } from "@artiva/shared";
+import { PostRequest } from "../post/useAddContents";
 
 export type CollectionFragment = {
   tokenId: string;
@@ -31,13 +32,10 @@ const useZDKRouter = (filter: NFTFeedFilterType, limit: number = 25) => {
 
   const response = tokens?.tokens || mints?.mints;
 
-  const parsedResponse: Post[] | undefined =
+  const parsedResponse: PostRequest[] | undefined =
     filter.searchType === NFTFeedSearchType.SINGLE
       ? [
           {
-            id: `${"ETHEREUM"}:${filter.addresses?.[0]}:${
-              filter.tokenIds?.[0]
-            }`,
             content: {
               chain: "ETHEREUM",
               tokenId: filter.tokenIds?.[0]!,
@@ -47,7 +45,6 @@ const useZDKRouter = (filter: NFTFeedFilterType, limit: number = 25) => {
           },
         ]
       : response?.map((x) => ({
-          id: `${"ETHEREUM"}:${x.token?.collectionAddress?.toLowerCase()}:${x.token?.tokenId?.toLowerCase()}`,
           content: {
             chain: "ETHEREUM",
             tokenId: x.token?.tokenId!,

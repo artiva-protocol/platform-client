@@ -1,7 +1,5 @@
 import { Platform } from "@artiva/shared";
 import usePlatformWrite from "../artiva-protocol/contract-writes/usePlatformWrite";
-import { useAccount } from "wagmi";
-import useSigningKey from "../crypto/useSigningKey";
 
 export type UseSaveMetadataType = {
   save: () => void;
@@ -15,22 +13,13 @@ const useSaveMetadata = ({
 }: {
   data: Platform | undefined;
 }): UseSaveMetadataType => {
-  const { address } = useAccount();
-  const { signature } = useSigningKey();
-
-  const write = usePlatformWrite("setPlatformMetadataWithSig", [
-    JSON.stringify(data),
-    address,
-    signature,
-  ]);
+  const write = usePlatformWrite("setPlatformMetadata", [JSON.stringify(data)]);
 
   return {
     save: () => {
       write.write?.();
     },
-    loading: write.loading,
-    success: write.success,
-    error: write.error,
+    ...write,
   };
 };
 

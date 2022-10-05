@@ -40,8 +40,8 @@ const useZDKRouter = (filter: NFTFeedFilterType, limit: number = 25) => {
             }`,
             content: {
               chain: "ETHEREUM",
-              tokenId: filter.tokenIds?.[0],
-              contractAddress: filter.addresses?.[0],
+              tokenId: filter.tokenIds?.[0]!,
+              contractAddress: filter.addresses?.[0]!,
             },
             type: PostTypeEnum.NFT,
           },

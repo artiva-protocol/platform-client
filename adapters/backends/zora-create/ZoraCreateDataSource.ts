@@ -36,10 +36,16 @@ export default class ZoraCreateDataSource {
         ZORA_EDITIONS_BY_ADDRESSES(addresses.map((x) => x.toLowerCase()))
       )
       .then((x) => {
-        return x.erc721Drops.map((x: EditionContractLike) => {
-          x.source = PRIMARY_SALE_SOURCES.zoraERC721Drop;
-          x.contractInfo = JSON.parse(decode(x.contractURI.split(",")[1]));
-          return x;
+        return x.erc721Drops.map((x: any) => {
+          const res: EditionContractLike = { ...x };
+          res.source = PRIMARY_SALE_SOURCES.zoraERC721Drop;
+          res.contractInfo = JSON.parse(
+            decode(x.contractURI.split(",")[1])
+          ) && {
+            imageURI: x.editionMetadata.imageURI,
+            animationURI: x.editionMetadata.animationURI,
+          };
+          return res;
         });
       });
 

@@ -16,7 +16,7 @@ import { useAccount, useSigner } from "wagmi";
 import ConnectWallet from "@/components/market/ConnectWallet";
 import BackButton from "@/components/market/BackButton";
 import { useState } from "react";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import CustomConnectButton from "@/components/CustomConnectButton";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 
@@ -54,16 +54,18 @@ const Mint = () => {
   if (!PostDynamic || !nftContract || !edition) return <Fragment />;
 
   const onBuyNow = async () => {
+    console.log("edition props", { address, signer, edition, adapter });
+    if (!signer || !edition || !adapter || !post?.content) return;
+
     setLoading(true);
     setError("");
-    if (!signer || !edition || !adapter || !post?.content) return;
 
     adapter.connect(signer, post?.content?.contractAddress!);
 
     try {
       const tx = await adapter.purchase(
         amount,
-        ethers.utils.parseEther(edition.salesConfig.publicSalePrice).mul(amount)
+        BigNumber.from(edition.salesConfig.publicSalePrice).mul(amount)
       );
       await tx.wait();
       setSuccess(true);
@@ -110,7 +112,7 @@ const Mint = () => {
         </div>
         <div className="flex items-center mt-4 ">
           <div className="bg-gray-100 w-full rounded-l-md h-12 px-4 text-xl font-light focus:outline-none flex items-center">
-            {edition.salesConfig.publicSalePrice}
+            {ethers.utils.formatEther(edition.salesConfig.publicSalePrice)}
           </div>
           <div className="px-5 font-semibold bg-gray-200 h-12 flex items-center rounded-r-md">
             ETH
@@ -138,7 +140,8 @@ const Mint = () => {
           <NFTRenderer
             nft={{
               metadata: {
-                imageUri: edition.contractInfo?.image,
+                imageUri: edition.contractInfo?.imageURI,
+                contentUri: edition.contractInfo?.animationURI,
               },
               rawData: {},
             }}

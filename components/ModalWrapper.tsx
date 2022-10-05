@@ -8,7 +8,7 @@ export default function ModalWrapper({
   setOpen,
   className = "w-full max-w-lg",
 }: {
-  children: React.ReactChild;
+  children: React.ReactNode;
   open: boolean;
   setOpen: (open: boolean) => void;
   className?: string;

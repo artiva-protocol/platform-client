@@ -9,6 +9,10 @@ export const ZORA_EDITIONS_BY_ADDRESSES = (addresses: readonly string[]) => {
             contractURI
             owner
             totalMinted
+            editionMetadata {
+              imageURI
+              animationURI
+            }
             salesConfig {
                 presaleStart
                 presaleEnd

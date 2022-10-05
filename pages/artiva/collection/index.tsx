@@ -2,6 +2,7 @@ import AdminLayout from "@/admin/AdminLayout";
 import {
   RectangleStackIcon,
   DocumentDuplicateIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 
@@ -23,10 +24,29 @@ const Collection = () => {
             <button
               className="flex"
               onClick={() => {
+                push("manage");
+              }}
+            >
+              <div className="flex-none bg-yellow-400 w-10 h-10 rounded-full flex items-center justify-around">
+                <Cog6ToothIcon className="w-5 text-white" />
+              </div>
+              <div className="ml-4 mt-1 text-left">
+                <h3 className="font-semibold text-gray-700">
+                  Manage Collection
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Edit or delete collection items
+                </p>
+              </div>
+            </button>
+
+            <button
+              className="flex"
+              onClick={() => {
                 push("nfts");
               }}
             >
-              <div className="flex-none bg-orange-500 w-10 h-10 rounded-full flex items-center justify-around">
+              <div className="flex-none bg-blue-500 w-10 h-10 rounded-full flex items-center justify-around">
                 <DocumentDuplicateIcon className="w-5 text-white" />
               </div>
               <div className="ml-4 mt-1 text-left">
@@ -41,7 +61,7 @@ const Collection = () => {
                 push("contracts");
               }}
             >
-              <div className="flex-none bg-purple-500 w-10 h-10 rounded-full flex items-center justify-around">
+              <div className="flex-none bg-green-500 w-10 h-10 rounded-full flex items-center justify-around">
                 <RectangleStackIcon className="w-5 text-white" />
               </div>
               <div className="ml-4 mt-1 text-left">

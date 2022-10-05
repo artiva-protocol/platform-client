@@ -17,6 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       id: x.id,
       content: JSON.parse(x.contentJSON),
       type: x.type,
+      tags: x.tags.map((x) => x.name),
     } as Post;
   });
 

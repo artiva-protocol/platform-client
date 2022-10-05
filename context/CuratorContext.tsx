@@ -8,6 +8,7 @@ import { useAccount } from "wagmi";
 export type UseCuratorType = {
   collection: Post[];
   addContent: (data: Post) => void;
+  setContent: (data: Post) => void;
   publish: UsePublishPostType;
 };
 
@@ -17,9 +18,7 @@ const useCurator = (): UseCuratorType => {
   const { data } = useSWR(
     address
       ? `${process.env.NEXT_PUBLIC_SERVER_BASEURL}/platform/user/${address}/posts`
-      : undefined,
-    null,
-    { refreshInterval: 2000000, errorRetryInterval: 2000000 }
+      : undefined
   );
 
   const [fullCollection, setFullCollection] = useState<Post[]>([]);
@@ -32,6 +31,14 @@ const useCurator = (): UseCuratorType => {
     setFullCollection((x) => [...x, data]);
   };
 
+  const setContent = (data: Post) => {
+    setFullCollection((x) => {
+      const idx = x.findIndex((y) => y.id == data.id);
+      if (idx >= 0) x[idx] = data;
+      return [...x];
+    });
+  };
+
   useEffect(() => {
     if (!data?.posts || fullCollection?.length > 0) return;
     setFullCollection(data?.posts);
@@ -40,6 +47,7 @@ const useCurator = (): UseCuratorType => {
   return {
     collection: fullCollection,
     addContent,
+    setContent,
     publish,
   };
 };

@@ -20,7 +20,9 @@ const Navigation = () => {
   const { data } = useMetadata();
 
   const [navigation, setNavigation] = useState<Navigation[]>([]);
-  const save = useSaveMetadata({ data: { ...data, navigation } });
+  const save = useSaveMetadata({
+    data: data ? { ...data, navigation } : undefined,
+  });
 
   useEffect(() => {
     if (navigation.length === 0 && data?.navigation)

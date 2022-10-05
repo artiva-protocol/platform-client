@@ -11,7 +11,7 @@
     "export-runtime": "next build && next export -o ../content/public/frontend"
   },
   "dependencies": {
-    "@artiva/shared": "^0.1.14",
+    "@artiva/shared": "^0.1.18",
     "@artiva/v2": "^0.4.0",
     "@bundlr-network/client": "^0.8.3",
     "@ethersproject/providers": "^5.6.8",

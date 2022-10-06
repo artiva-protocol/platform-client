@@ -1,9 +1,5 @@
-import { verifyEthSig } from "@/services/crypto";
 import { getUserRolesByPlatformAndUser } from "@/services/platform-graph";
-import { ArtivaProtocolTypedDataConfig } from "configs/artiva-protocol-config";
-import { verifyTypedData } from "ethers/lib/utils";
 import { withIronSessionApiRoute } from "iron-session/next";
-const { domain, types } = ArtivaProtocolTypedDataConfig;
 
 declare module "iron-session" {
   interface IronSessionData {

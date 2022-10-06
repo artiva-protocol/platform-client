@@ -5,8 +5,8 @@ import { useAccount, useNetwork } from "wagmi";
 import useAuth from "./useAuth";
 import useSignOut from "./useSignOut";
 
-const useAuthModal = (redirect: string = "/artiva/auth") => {
-  const { address } = useAccount({
+const useAuthModal = () => {
+  const { address, isReconnecting } = useAccount({
     onDisconnect: () => {
       signOut();
     },
@@ -19,10 +19,7 @@ const useAuthModal = (redirect: string = "/artiva/auth") => {
 
   useEffect(() => {
     try {
-      console.log("Auth data", {
-        address,
-        chain: chain?.unsupported,
-      });
+      if ((!data && !error) || isReconnecting) return;
 
       if (!address || chain?.unsupported) throw new Error("Wallet error");
       if (error || !data?.user) throw new Error("Error validating user");
@@ -40,7 +37,7 @@ const useAuthModal = (redirect: string = "/artiva/auth") => {
       console.log("Error signing in", err);
       setOpen(true);
     }
-  }, [data, error, address, chain]);
+  }, [data, error, address, chain, isReconnecting]);
 
   const content = (
     <ModalWrapper setOpen={() => {}} open={open} className="w-full max-w-lg">

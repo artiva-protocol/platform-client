@@ -6,6 +6,7 @@ import {
   useState,
   forwardRef,
   useMemo,
+  Fragment,
 } from "react";
 import { useSyncRef } from "../../utils/useSyncRef";
 import { MediaLoader, useMediaObjectProps } from "./MediaLoader";
@@ -79,7 +80,7 @@ const FakeWaveformCanvas = ({
     [audioRef.current, width]
   );
 
-  const height = 25;
+  const height = 30;
   const updateCanvasLines = useCallback(() => {
     if (canvasRef.current && width && audioRef.current) {
       const context = canvasRef.current.getContext("2d");
@@ -111,7 +112,13 @@ const FakeWaveformCanvas = ({
   }, [canvasRef.current, audioRef.current, width]);
 
   return (
-    <canvas ref={canvasRef} height={height} width={width} onClick={seekAudio} />
+    <canvas
+      ref={canvasRef}
+      className="cursor-pointer w-[86%]"
+      height={height}
+      width={width}
+      onClick={seekAudio}
+    />
   );
 };
 
@@ -180,52 +187,31 @@ export const AudioImageRenderer = forwardRef<
 
   return (
     <MediaLoader loading={loading} error={error}>
-      <div>
+      <Fragment>
         {!loading && (
-          <div>
-            <img
-              {...imageProps.props}
-              style={{ objectFit: "contain", maxWidth: "400px" }}
-            />
-            <div
-              style={{
-                marginTop: "20px",
-                maxWidth: "3000px",
-              }}
-            >
-              <div
-                style={{
-                  flexDirection: "row",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "around",
-                }}
+          <div className="w-full max-w-xs sm:max-w-md flex flex-col items-center justify-around relative">
+            <img {...imageProps.props} className="object-contain" />
+            <div className="mt-4 flex flex-row items-center justify-around w-full">
+              <button
+                aria-live="polite"
+                aria-pressed={playing ? true : false}
+                onClick={togglePlay as any}
+                title={playingText}
               >
-                <button
-                  className="mr-4"
-                  aria-live="polite"
-                  aria-pressed={playing ? true : false}
-                  onClick={togglePlay as any}
-                  title={playingText}
-                >
-                  {playing ? (
-                    <PauseIcon className="w-8 text-gray-600 bg-gray-200 rounded-full p-2" />
-                  ) : (
-                    <PlayIcon className="w-8 text-gray-600 bg-gray-200 rounded-full p-2" />
-                  )}
-                </button>
-
-                <div className="w-full cursor-pointer">
-                  <FakeWaveformCanvas
-                    uri={uri || ""}
-                    audioRef={audioRef}
-                    audioColors={{
-                      progressColor: "#333",
-                      waveformColor: "#999",
-                    }}
-                  />
-                </div>
-              </div>
+                {playing ? (
+                  <PauseIcon className="w-8 text-gray-600 bg-gray-200 rounded-full p-2" />
+                ) : (
+                  <PlayIcon className="w-8 text-gray-600 bg-gray-200 rounded-full p-2" />
+                )}
+              </button>
+              <FakeWaveformCanvas
+                uri={uri || ""}
+                audioRef={audioRef}
+                audioColors={{
+                  progressColor: "#333",
+                  waveformColor: "#999",
+                }}
+              />
             </div>
           </div>
         )}
@@ -239,7 +225,7 @@ export const AudioImageRenderer = forwardRef<
           onLoadedData={props.onLoad}
           onCanPlayThrough={props.onLoad}
         />
-      </div>
+      </Fragment>
     </MediaLoader>
   );
 });

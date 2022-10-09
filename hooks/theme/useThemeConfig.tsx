@@ -1,6 +1,5 @@
 import { ThemeConfig } from "@artiva/shared";
-//@ts-ignore
-import { injectScript } from "@module-federation/nextjs-mf/lib/utils";
+import { injectScript } from "@module-federation/nextjs-mf/utils";
 import { useCallback, useEffect, useState } from "react";
 
 export type ThemeConfigProps = {

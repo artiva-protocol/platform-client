@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
-//@ts-ignore
-import { injectScript } from "@module-federation/nextjs-mf/lib/utils";
+import { injectScript } from "@module-federation/nextjs-mf/utils";
 import { useCallback, useMemo } from "react";
 
 export type ThemeComponentProps = {

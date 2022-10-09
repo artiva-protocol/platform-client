@@ -33,6 +33,7 @@ const nextConfig = {
       config.plugins.push(
         new NextFederationPlugin({
           name: "host",
+          filename: "static/chunks/remoteEntry.js",
           remotes: {},
           shared: {
             lodash: {

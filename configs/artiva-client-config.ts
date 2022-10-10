@@ -14,6 +14,7 @@ import {
   DefaultPrimarySaleAdapters,
   IPrimarySaleAdapter,
 } from "adapters/primary-sales";
+import PinataAdapter from "adapters/ipfs/pinata/PinataAdapter";
 
 export type ArtivaClientConfigType = {
   IPFSAdapter: IIPFSAdapter;
@@ -30,7 +31,7 @@ export type ArtivaClientConfigType = {
 
 export const ArtivaClientConfig: ArtivaClientConfigType = {
   serverURL: "/api",
-  IPFSAdapter: new EstuaryAdapter(),
+  IPFSAdapter: new PinataAdapter(),
   preferredIPFSGateway: process.env.NEXT_PUBLIC_IPFS_GATEWAY,
   zoraAPIKey: process.env.NEXT_PUBLIC_ZORA_API_KEY,
   platformAddress: process.env.NEXT_PUBLIC_PLATFORM_ADDRESS,

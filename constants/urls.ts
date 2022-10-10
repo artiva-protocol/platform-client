@@ -4,6 +4,7 @@ export const ARWEAVE_GATEWAY_URL = "https://arweave.net";
 export const ARWEAVE_GRAPHQL_URL = "https://arweave.net/graphql";
 export const ESTUARY_UPLOADER_BASEURL = "https://upload.estuary.tech";
 export const ESTUARY_API_BASEURL = "https://api.estuary.tech";
+export const PINATA_API_BASEURL = "https://api.pinata.cloud";
 
 export const RARIBLE_API_BY_NETWORK = {
   [Networks.MAINNET]: "https://api.rarible.org/v0.1",

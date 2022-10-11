@@ -28,11 +28,7 @@ You will be prompted to fill a few variables as part of the deployment process.
 
 ### Optional Variables
 
-`BUNDLR_PRIVATE_KEY` the private key to an Ethereum wallet that will fund and publish content to [Arweave](https://www.arweave.org/) using [Bundlr](https://bundlr.network/) for platform users. If left blank falls back to the set IPFS adater for content storage.
-
-`ESTUARY_API_KEY` required if estuary is being used as the IPFS adapter in `artiva-client-config.ts`
-
-`PINATA_API_KEY` required if pinata is being used as the IPFS adapter in `artiva-client-config.ts`
+`PINATA_API_JWT` required if pinata is being used as the IPFS adapter in `artiva-client-config.ts`. This is the JWT value for a [Pinata](https://www.pinata.cloud/) admin key.
 
 `NEXT_PUBLIC_ZORA_API_KEY` Zora API key used to increase rate limits for any Zora API calls.
 

@@ -21,12 +21,7 @@ const PostPreview = ({
       case PostTypeEnum.NFT:
         return <NFTPreview nft={nft} onClick={onClick} selected={selected} />;
       case PostTypeEnum.NFT_CONTRACT:
-        return (
-          <NFTContractPreview
-            collection={nftContract?.collection}
-            aggregateStat={nftContract?.aggregateStat}
-          />
-        );
+        return <NFTContractPreview nftContract={nftContract} />;
       default:
         return <Fragment />;
     }

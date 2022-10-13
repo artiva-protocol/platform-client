@@ -150,8 +150,14 @@ const Bid = () => {
   return (
     <Layout>
       <div className="flex relative">
-        <div className="w-1/2 border-r flex items-center justify-around h-[100vh]">
-          <NFTRenderer nft={nft} className="object-cover h-[70vh] shadow-2xl" />
+        <div className="w-1/2 border-r flex items-center justify-around h-[100vh] px-6">
+          <div>
+            <NFTRenderer
+              nft={nft}
+              renderingContext={"FULL"}
+              className="object-cover h-[70vh] shadow-2xl"
+            />
+          </div>
         </div>
         <div className="w-1/2 flex items-center justify-around h-[100vh]">
           {success ? (

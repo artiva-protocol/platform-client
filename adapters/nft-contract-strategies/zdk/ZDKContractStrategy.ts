@@ -1,14 +1,16 @@
 import { NetworkIDs } from "@zoralabs/nft-hooks";
 import { Network, Chain } from "@zoralabs/zdk/dist/queries/queries-sdk";
 import { ZDK } from "@zoralabs/zdk";
-import { NFTContractObject } from "@artiva/shared";
+import { NFTContractObject, PrimarySaleModule } from "@artiva/shared";
 import { ContractFetchInfo, NFTContractStrategy } from "../NFTContractStrategy";
 import ZoraCreateDataSource from "adapters/backends/zora-create/ZoraCreateDataSource";
+import { SoundXYZDataSource } from "adapters/backends/sound-xyz/SoundXYZDataSource";
 
 export default class ZDKContractStrategy extends NFTContractStrategy {
   networkId: NetworkIDs;
   zdk: ZDK;
   zoraCreate: ZoraCreateDataSource;
+  soundXYZ: SoundXYZDataSource;
 
   constructor(networkId: NetworkIDs) {
     super(networkId);
@@ -17,11 +19,13 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
       apiKey: process.env.NEXT_PUBLIC_ZORA_API_KEY,
     });
     this.zoraCreate = new ZoraCreateDataSource(networkId);
+    this.soundXYZ = new SoundXYZDataSource(networkId);
   }
 
   hasSecondaryData = (_: ContractFetchInfo) => true;
 
   fetchNFTContract = async (address: string): Promise<NFTContractObject> => {
+    console.log("Fetching contract");
     const collectionQuery = this.zdk.collection({ address });
     const statQuery = this.zdk.collectionStatsAggregate({
       collectionAddress: address,
@@ -29,8 +33,16 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
     });
     const res = await Promise.all([collectionQuery, statQuery]);
     return {
-      collection: res[0],
-      aggregateStat: res[1].aggregateStat,
+      collection: {
+        ...res[0],
+        name: res[0].name || undefined,
+        symbol: res[0].symbol || undefined,
+        totalSupply: res[0].totalSupply || undefined,
+      },
+      aggregateStat: {
+        ...res[1].aggregateStat,
+        floorPrice: res[1].aggregateStat.floorPrice || undefined,
+      },
       markets: [],
       rawData: {
         ZDK: {
@@ -54,10 +66,21 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
       };
 
     try {
-      const market = await this.zoraCreate.loadEdition(address);
+      let markets = await Promise.allSettled([
+        this.soundXYZ.loadEdition(address),
+        this.zoraCreate.loadEdition(address),
+      ]).then((x) => x.flat());
+
+      const formatted = markets
+        .filter((x) => x.status == "fulfilled")
+        .map((x) => (x as any).value)
+        .flat();
+
+      if (formatted.length < 1) return current;
+
       return {
         ...current,
-        markets: [market],
+        markets: formatted,
       };
     } catch (err) {
       console.log("Error fetching edition data", err);

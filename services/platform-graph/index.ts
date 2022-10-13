@@ -1,4 +1,4 @@
-import { Platform } from "@artiva/shared";
+import { Platform, Post } from "@artiva/shared";
 import { defaultPlatform } from "constants/default-platform";
 import client from "./client";
 import {
@@ -8,6 +8,7 @@ import {
   PLATFORM_METADATA_BY_PLATFORM,
   POSTS_BY_PLATFORM_AND_TAG,
   POSTS_BY_PLATFORM_AND_FEATURED,
+  POST_BY_PLATFORM_AND_ID,
 } from "./queries";
 
 export type GetPostsResponse = {
@@ -34,6 +35,25 @@ export const getPostsByPlatform = async (
     POSTS_BY_PLATFORM(platformAddress.toLowerCase())
   );
   return res.posts;
+};
+
+export const getPostByPlatformAndId = async (
+  platformAddress: string,
+  postId: string
+): Promise<Post> => {
+  const res = await client.request(
+    POST_BY_PLATFORM_AND_ID(platformAddress.toLowerCase(), postId)
+  );
+
+  const rawPost = res.post;
+  const formattedPost = {
+    id: rawPost.id,
+    content: JSON.parse(rawPost.contentJSON),
+    type: rawPost.type,
+    tags: rawPost.tags.map((tag: any) => tag.name),
+  } as Post;
+
+  return formattedPost;
 };
 
 export const getPostsByPlatformAndFeatured = async (

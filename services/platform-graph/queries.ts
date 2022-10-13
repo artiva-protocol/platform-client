@@ -19,6 +19,28 @@ export const POSTS_BY_PLATFORM = (platformAddress: string) => {
     `;
 };
 
+export const POST_BY_PLATFORM_AND_ID = (
+  platformAddress: string,
+  postId: string
+) => {
+  return gql`
+    {
+      post(id: "${platformAddress}:${postId}") {
+        id: contentId
+        contentJSON
+        type
+        tags {
+          name
+        }
+        owner {
+            id
+        }
+        setAtTimestamp
+      }
+    }
+    `;
+};
+
 export const POSTS_BY_PLATFORM_AND_FEATURED = (platformAddress: string) => {
   return gql`
   {

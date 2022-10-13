@@ -1,7 +1,7 @@
 import { NetworkIDs } from "@zoralabs/nft-hooks";
 import { Network, Chain } from "@zoralabs/zdk/dist/queries/queries-sdk";
 import { ZDK } from "@zoralabs/zdk";
-import { NFTContractObject, PrimarySaleModule } from "@artiva/shared";
+import { NFTContractObject } from "@artiva/shared";
 import { ContractFetchInfo, NFTContractStrategy } from "../NFTContractStrategy";
 import ZoraCreateDataSource from "adapters/backends/zora-create/ZoraCreateDataSource";
 import { SoundXYZDataSource } from "adapters/backends/sound-xyz/SoundXYZDataSource";
@@ -72,7 +72,7 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
       ]).then((x) => x.flat());
 
       const formatted = markets
-        .filter((x) => x.status == "fulfilled")
+        .filter((x) => x.status == "fulfilled" && x.value)
         .map((x) => (x as any).value)
         .flat();
 

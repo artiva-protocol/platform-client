@@ -28,7 +28,6 @@ export class OpenseaDataSource implements OpenseaInterface {
   constructor(networkId: NetworkIDs, apiKey?: string, timeout = 10) {
     this.nftsLoader = new DataLoader(this.fetchNFTsOpensea, {
       maxBatchSize: this.MAX_OPENSEA_SIZE,
-      batchScheduleFn: (cb: any) => setTimeout(cb, 1300),
     });
     this.endpoint = OPENSEA_API_URL_BY_NETWORK[networkId];
     this.timeout = timeout;

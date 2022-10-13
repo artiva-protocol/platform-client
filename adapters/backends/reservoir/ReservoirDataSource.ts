@@ -33,7 +33,6 @@ export class ReservoirDataSource implements ReservoirDataInterface {
   constructor(networkId: NetworkIDs, apiKey?: string, timeout = 10) {
     this.nftsLoader = new DataLoader(this.fetchNFTs, {
       maxBatchSize: this.MAX_SIZE,
-      batchScheduleFn: (cb: any) => setTimeout(cb, 1300),
     });
     this.endpoint = RESERVOIR_API_BY_NETWORK[networkId];
     this.timeout = timeout;

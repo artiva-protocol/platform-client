@@ -22,7 +22,6 @@ export default class ZoraCreateDataSource {
     this.client = new GraphQLClient(ZORA_EDITIONS_BY_NETWORK[networkId]);
     this.dataloader = new DataLoader(this.fetchEditions, {
       maxBatchSize: this.MAX_SIZE,
-      batchScheduleFn: (cb: any) => setTimeout(cb, 1300),
     });
   }
 

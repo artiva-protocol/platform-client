@@ -32,10 +32,7 @@ export class SoundXYZDataSource {
       soundAPI,
       provider,
     });
-    this.dataloader = new DataLoader(this.fetchEditions, {
-      maxBatchSize: this.MAX_SIZE,
-      batchScheduleFn: (cb: any) => setTimeout(cb, 1300),
-    });
+    this.dataloader = new DataLoader(this.fetchEditions);
   }
 
   loadEdition = (address: string) => {
@@ -62,14 +59,13 @@ export class SoundXYZDataSource {
     }));
   };
 
-  getFullData = async (address: string) =>
-    this.client!.activeMintSchedules({ editionAddress: address });
-
   fetchEditions = async (
     addresses: readonly string[]
   ): Promise<(PrimarySaleModule[] | Error)[]> => {
     const schedules = await Promise.all(
-      addresses.map((x) => this.getFullData(x))
+      addresses.map((x) =>
+        this.client!.activeMintSchedules({ editionAddress: x })
+      )
     );
 
     const full = schedules

@@ -1,57 +1,89 @@
 import Layout from "@/components/Layout";
-import { usePosts, PostProps, ArtivaContext } from "@artiva/shared";
-import { useRouter } from "next/router";
-import { Fragment, useMemo } from "react";
+import {
+  ArtivaContext,
+  usePostContent,
+  NFTProps,
+  NFTContractProps,
+  PostTypeEnum,
+} from "@artiva/shared";
+import { Fragment } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { InferGetServerSidePropsType } from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import useInitTheme from "@/hooks/theme/useInitTheme";
-import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
+import {
+  getPlatformMetadataByPlatform,
+  getPostByPlatformAndId,
+} from "@/services/platform-graph";
 
-export const getServerSideProps = async () => {
-  const platform = await getPlatformMetadataByPlatform(
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { postid } = context.query;
+
+  const platform = getPlatformMetadataByPlatform(
     process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
   );
 
+  const post = getPostByPlatformAndId(
+    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!,
+    postid as string
+  );
+
+  const res = await Promise.all([platform, post]);
+
   return {
     props: {
-      platform,
+      platform: res[0],
+      post: res[1],
     },
   };
 };
 
-const Post = ({
+const PostComponent = ({
   platform,
+  post,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter();
-  const { postid } = router.query;
   const ctx = useContext(ArtivaContext);
-  const { data: postData } = usePosts();
 
+  const { nft, nftContract } = usePostContent(post.type, post.content);
   const { themeURL } = useInitTheme({ platform });
 
-  const PostDynamic = useThemeComponent<PostProps>({
-    component: "./Post",
-    themeURL,
-  });
+  const NFTDynamic = useThemeComponent<NFTProps>(
+    post.type == PostTypeEnum.NFT
+      ? {
+          component: "./NFT",
+          themeURL,
+        }
+      : undefined
+  );
 
-  const post = useMemo(() => {
-    return postData?.find((x: any) => x.id === postid);
-  }, [postid, postData]);
+  const NFTContractDynamic = useThemeComponent<NFTContractProps>(
+    post.type == PostTypeEnum.NFT_CONTRACT
+      ? {
+          component: "./NFTContract",
+          themeURL,
+        }
+      : undefined
+  );
 
-  if (!PostDynamic || !post) return <Fragment />;
-
-  const props: PostProps = {
-    ctx,
-    post,
-    platform,
-  };
+  if (!NFTDynamic && !NFTContractDynamic) return <Fragment />;
 
   return (
     <Layout>
-      <PostDynamic {...props} />
+      {NFTDynamic ? (
+        <NFTDynamic platform={platform} ctx={ctx} nft={nft} />
+      ) : NFTContractDynamic ? (
+        <NFTContractDynamic
+          platform={platform}
+          ctx={ctx}
+          nftContract={nftContract}
+        />
+      ) : (
+        <Fragment />
+      )}
     </Layout>
   );
 };
 
-export default Post;
+export default PostComponent;

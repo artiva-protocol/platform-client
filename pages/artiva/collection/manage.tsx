@@ -3,7 +3,6 @@ import AdminLayout from "@/admin/AdminLayout";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import PostPlacard from "@/admin/collection/manage/PostPlacard";
 import { Post } from "@artiva/shared";
-import CuratorContext from "@/context/CuratorContext";
 import ProtocolSaveToast from "@/components/ProtocolSaveToast";
 import ManageContext from "@/context/ManageContext";
 

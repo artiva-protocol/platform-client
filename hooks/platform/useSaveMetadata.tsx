@@ -10,10 +10,16 @@ export type UseSaveMetadataType = {
 
 const useSaveMetadata = ({
   data,
+  onSettled,
 }: {
   data: Platform | undefined;
+  onSettled?: () => void;
 }): UseSaveMetadataType => {
-  const write = usePlatformWrite("setPlatformMetadata", [JSON.stringify(data)]);
+  const write = usePlatformWrite(
+    "setPlatformMetadata",
+    [JSON.stringify(data)],
+    onSettled
+  );
 
   return {
     save: () => {

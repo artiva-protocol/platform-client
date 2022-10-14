@@ -38,7 +38,7 @@ const NFTNavigation = () => {
 
         <CurateNavElement
           navId="asset"
-          title="Asset"
+          title="Contract / Token ID"
           icon={<DocumentIcon className="w-4 text-gray-600" />}
           selected={selected}
           setSelected={setSelected}

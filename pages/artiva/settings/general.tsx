@@ -1,13 +1,10 @@
 import AdminLayout from "@/admin/AdminLayout";
 import { ChevronRightIcon, TrashIcon } from "@heroicons/react/24/solid";
-import useSaveMetadata from "hooks/platform/useSaveMetadata";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Platform } from "@artiva/shared";
-import useSWR from "swr";
 import axios from "axios";
 import styles from "@/styles/Upload.module.css";
-import ProtocolSaveToast from "@/components/ProtocolSaveToast";
+import MetadataContext from "@/context/MetadataContext";
+import MetadataSaveButton from "@/admin/MetadataSaveButton";
 
 const titleStyle = "font-semibold";
 const subtitleStyle = "font-semibold text-sm text-gray-600";
@@ -18,52 +15,30 @@ const inputStyle =
   "w-3/4 py-2 px-4 text-gray-600 rounded-sm text-sm focus:outline-none";
 
 const General = () => {
-  const { data } = useSWR(
-    process.env.NEXT_PUBLIC_SERVER_BASEURL + "/platform/meta"
-  );
-
-  const [platform, setPlatform] = useState<Platform | undefined>();
-
-  const save = useSaveMetadata({ data: platform });
-
-  useEffect(() => {
-    if (!platform && data) setPlatform(data.platform);
-  }, [data]);
+  const { merge, data: platform } = MetadataContext.useContainer();
 
   const onChange = (key: string, value: any) => {
-    setPlatform((x: any) => {
-      const tmp = { ...x };
-      tmp[key] = value;
-      return tmp;
+    merge({
+      [key]: value,
     });
   };
 
   return (
     <AdminLayout>
-      <div className="w-full mt-4">
-        <div className="flex justify-between items-baseline p-6 relative">
-          <div className="flex items-baseline px-10">
+      <div className="w-full">
+        <div className="flex justify-between items-baseline relative p-6 px-10">
+          <div className="flex items-baseline">
             <Link href={"/artiva/settings"}>
               <a className="text-3xl font-bold">Settings</a>
             </Link>
             <ChevronRightIcon className="mx-2 text-gray-400 rounded-md w-6 h-6" />
             <h1 className="text-3xl font-bold">General</h1>
           </div>
-          <button
-            onClick={() => {
-              save.save();
-            }}
-            className="bg-black text-white w-24 h-8 rounded-md text-sm"
-          >
-            Save
-          </button>
-          <div className="absolute top-20 right-6">
-            <ProtocolSaveToast {...save} />
-          </div>
+          <MetadataSaveButton />
         </div>
 
-        <div className="overflow-y-auto h-[84vh] pb-4">
-          <div className="px-16 mt-12">
+        <div className="overflow-y-auto h-[84vh] mt-5">
+          <div className="px-16 mt-4">
             <div className="text-sm">Platform Info</div>
             <div className="bg-gray-100 rounded-md p-6 mt-3">
               <div className={titleStyle}>Title and Description</div>

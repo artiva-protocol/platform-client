@@ -30,7 +30,7 @@ const DesignNavigation = () => {
   }, [customProperties]);
 
   return (
-    <div className="border-r h-screen relative" style={{ width: "450px" }}>
+    <div className="border-r h-screen relative" style={{ width: "400px" }}>
       <button
         onClick={() => {
           router.push("/artiva/settings");

@@ -12,7 +12,7 @@ const PostPlacard = ({ post }: { post: Post }) => {
   return (
     <div className="flex flex-col m-4">
       <TagModal open={open} setOpen={setOpen} post={post} />
-      <div className="w-full">
+      <div className="w-full h-[60vh]">
         <PostComponent post={post} selected={false} />
       </div>
       <div className="pl-4 h-14 flex items-center w-full -mt-8 z-40">

@@ -21,7 +21,7 @@ const nextConfig = {
       "d1dues304i0c30.cloudfront.net",
     ],
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   webpack: (config, options) => {
     config.experiments.topLevelAwait = true;
 

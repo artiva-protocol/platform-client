@@ -1,4 +1,5 @@
 import AdminLayout from "@/admin/AdminLayout";
+import MetadataSaveButton from "@/admin/MetadataSaveButton";
 import {
   CogIcon,
   SparklesIcon,
@@ -15,7 +16,12 @@ const Settings = () => {
   return (
     <AdminLayout>
       <div className="p-6 px-10">
-        <h1 className="text-3xl font-bold">Settings</h1>
+        <div className="flex justify-between items-baseline relative">
+          <div className="flex items-baseline">
+            <div className="text-3xl font-bold">Settings</div>
+          </div>
+          <MetadataSaveButton />
+        </div>
         <div className="mt-10 w-full">
           <h2 className="text-xs text-gray-500 font-semibold border-b pb-1 w-full">
             WEBSITE
@@ -71,6 +77,29 @@ const Settings = () => {
                 </p>
               </div>
             </button>
+          </div>
+          <div className="mt-24 w-full">
+            <h2 className="text-xs text-gray-500 font-semibold border-b pb-1 w-full">
+              COLLECTION
+            </h2>
+            <div className="mt-6 gap-14 grid grid-cols-3">
+              <button
+                className="flex"
+                onClick={() => {
+                  push("reorder");
+                }}
+              >
+                <div className="flex-none bg-yellow-400 w-10 h-10 rounded-full flex items-center justify-around">
+                  <CogIcon className="w-5 text-white" />
+                </div>
+                <div className="ml-4 mt-1 text-left">
+                  <h3 className="font-semibold text-gray-700">Reorder</h3>
+                  <p className="text-sm text-gray-400">
+                    Change ordering for content published on your site
+                  </p>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>

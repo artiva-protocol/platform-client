@@ -12,7 +12,8 @@ export type UsePlatformWriteType = {
 
 const usePlatformWrite = (
   functionName: string,
-  args: any[]
+  args: any[],
+  onSettled?: () => void
 ): UsePlatformWriteType => {
   const [hash, setHash] = useState<string | undefined>();
   const [error, setError] = useState<Error | undefined>();
@@ -46,6 +47,7 @@ const usePlatformWrite = (
     onSettled: (_, error) => {
       setLoading(false);
       if (!error) setSuccess(true);
+      onSettled?.();
     },
   });
 

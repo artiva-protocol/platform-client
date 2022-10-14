@@ -17,6 +17,7 @@ import Image from "next/future/image";
 import { ArtivaClientConfig } from "configs/artiva-client-config";
 import ThemeContext, { ThemeCSSWrapper } from "./ThemeContext";
 import { useRouter } from "next/router";
+import MetadataContext from "./MetadataContext";
 
 const GlobalProvider = ({ children }: { children: React.ReactChild }) => {
   const { pathname } = useRouter();
@@ -51,7 +52,9 @@ const GlobalProvider = ({ children }: { children: React.ReactChild }) => {
                     hooks: DefaultHooks,
                   }}
                 >
-                  {children}
+                  <MetadataContext.Provider>
+                    {children}
+                  </MetadataContext.Provider>
                 </ArtivaContext.Provider>
               </RainbowKitProvider>
             </SWRConfig>

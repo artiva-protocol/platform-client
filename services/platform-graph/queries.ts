@@ -1,9 +1,11 @@
 import { gql } from "graphql-request";
 
+//POSTS
+
 export const POSTS_BY_PLATFORM = (platformAddress: string) => {
   return gql`
     {
-      posts(where: { platform: "${platformAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
+      posts(where: { platform: "${platformAddress}" }, orderBy: order, orderDirection: desc) {
         id: contentId
         contentJSON
         type
@@ -44,7 +46,7 @@ export const POST_BY_PLATFORM_AND_ID = (
 export const POSTS_BY_PLATFORM_AND_FEATURED = (platformAddress: string) => {
   return gql`
   {
-    featured: posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:Featured"] }, orderBy: setAtTimestamp, orderDirection: desc) {
+    featured: posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:Featured"] }, orderBy: order, orderDirection: desc) {
       id: contentId
       contentJSON
       type
@@ -56,7 +58,7 @@ export const POSTS_BY_PLATFORM_AND_FEATURED = (platformAddress: string) => {
       }   
       setAtTimestamp
     }
-    posts(where: { platform: "${platformAddress}", tags_not_contains: ["${platformAddress}:Featured"] }, orderBy: setAtTimestamp, orderDirection: desc) {
+    posts(where: { platform: "${platformAddress}", tags_not_contains: ["${platformAddress}:Featured"] }, orderBy: order, orderDirection: desc) {
       id: contentId
       contentJSON
       type
@@ -78,7 +80,7 @@ export const POSTS_BY_PLATFORM_AND_TAG = (
 ) => {
   return gql`
   {
-    posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:${tag}"] }, orderBy: setAtTimestamp, orderDirection: desc) {
+    posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:${tag}"] }, orderBy: order, orderDirection: desc) {
       id: contentId
       contentJSON
       type
@@ -100,7 +102,7 @@ export const POSTS_BY_PLATFORM_AND_OWNER = (
 ) => {
   return gql`
       {
-        posts(where: { platform: "${platformAddress}", owner: "${platformAddress}:${ownerAddress}" }, orderBy: setAtTimestamp, orderDirection: desc) {
+        posts(where: { platform: "${platformAddress}", owner: "${platformAddress}:${ownerAddress}" }, orderBy: order, orderDirection: desc) {
           id: contentId
           contentJSON
           type
@@ -116,6 +118,8 @@ export const POSTS_BY_PLATFORM_AND_OWNER = (
       `;
 };
 
+//ROLES
+
 export const USER_ROLES_BY_PLATFORM_AND_USER = (
   platformAddress: string,
   userAddress: string
@@ -130,6 +134,8 @@ export const USER_ROLES_BY_PLATFORM_AND_USER = (
     }
   `;
 };
+
+//METADATA
 
 export const PLATFORM_METADATA_BY_PLATFORM = (platformAddress: string) => {
   return gql`

@@ -4,11 +4,11 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import { Fragment, useEffect, useState } from "react";
-import { Navigation, useMetadata } from "@artiva/shared";
+import { Fragment, useState } from "react";
+import { Navigation } from "@artiva/shared";
 import Link from "next/link";
-import useSaveMetadata from "@/hooks/platform/useSaveMetadata";
-import ProtocolSaveToast from "@/components/ProtocolSaveToast";
+import MetadataContext from "@/context/MetadataContext";
+import MetadataSaveButton from "@/admin/MetadataSaveButton";
 
 const placardOuterStyle = "flex mt-4";
 const labelStyle =
@@ -17,49 +17,37 @@ const urlStyle =
   "w-full h-10 px-2 text-sm text-gray-600 mr-2 focus:outline-none rounded-sm";
 
 const Navigation = () => {
-  const { data } = useMetadata();
-
-  const [navigation, setNavigation] = useState<Navigation[]>([]);
-  const save = useSaveMetadata({
-    data: data ? { ...data, navigation } : undefined,
-  });
-
-  useEffect(() => {
-    if (navigation.length === 0 && data?.navigation)
-      setNavigation(data.navigation);
-  }, [data?.navigation, navigation.length]);
+  const { data, mutate } = MetadataContext.useContainer();
 
   const onChange = (idx: number, key: string, value: string) => {
-    setNavigation((x) => {
-      const tmp = [...x] as any[];
-      tmp[idx][key] = value;
-      return tmp;
-    });
+    if (!data || !data.navigation) return;
+    const clone = { ...data };
+    (clone.navigation![idx] as any)[key] = value;
+    mutate(clone);
   };
 
   const onAdd = (label: string, url: string, secondary: boolean) => {
-    setNavigation((x) => {
-      const tmp = [...x];
-      tmp.push({
-        label,
-        url,
-        secondary,
-      });
-      return tmp;
+    if (!data) return;
+    const clone = { ...data };
+    if (!clone.navigation) clone.navigation = [];
+    clone.navigation.push({
+      label,
+      url,
+      secondary,
     });
+    mutate(clone);
   };
 
   const onRemove = (idx: number) => {
-    setNavigation((x) => {
-      const tmp = [...x];
-      tmp.splice(idx, 1);
-      return tmp;
-    });
+    if (!data || !data.navigation) return;
+    const clone = { ...data };
+    clone.navigation!.splice(idx, 1);
+    mutate(clone);
   };
 
   return (
     <AdminLayout>
-      <div className="w-full mt-4 p-6 px-10 relative">
+      <div className="w-full p-6 px-10 relative">
         <div className="flex justify-between items-baseline">
           <div className="flex items-baseline">
             <Link href={"/artiva/settings"}>
@@ -68,22 +56,12 @@ const Navigation = () => {
             <ChevronRightIcon className="mx-2 text-gray-400 w-6 h-6" />
             <h1 className="text-3xl font-bold">Navigation</h1>
           </div>
-          <button
-            onClick={() => {
-              save.save();
-            }}
-            className="bg-black text-white w-24 h-8 rounded-md text-sm"
-          >
-            Save
-          </button>
-        </div>
-        <div className="absolute top-20 right-10">
-          <ProtocolSaveToast {...save} />
+          <MetadataSaveButton />
         </div>
 
         <div className="text-sm mt-12">Primary navigation</div>
         <div className="bg-gray-100 p-6 mt-3">
-          {navigation.map((x, i) => {
+          {data?.navigation?.map((x, i) => {
             if (x.secondary) return <Fragment />;
             return (
               <EditPlacard
@@ -104,7 +82,7 @@ const Navigation = () => {
 
         <div className="text-sm mt-12">Secondary navigation</div>
         <div className="bg-gray-100 p-6 mt-3">
-          {navigation.map((x, i) => {
+          {data?.navigation?.map((x, i) => {
             if (!x.secondary) return <Fragment />;
             return (
               <EditPlacard

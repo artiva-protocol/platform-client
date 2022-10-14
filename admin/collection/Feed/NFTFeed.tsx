@@ -18,14 +18,15 @@ export const NFTFeed = () => {
   return (
     <div className="grid grid-cols-5">
       {feed?.map((x, i) => (
-        <PostPreview
-          key={i}
-          post={x}
-          onClick={() => {
-            addContent(x);
-          }}
-          selected={isCurated(x)}
-        />
+        <div key={i} className="h-[40vh]">
+          <PostPreview
+            post={x}
+            onClick={() => {
+              addContent(x);
+            }}
+            selected={isCurated(x)}
+          />
+        </div>
       ))}
     </div>
   );

@@ -1,19 +1,9 @@
-import { useMetadata, Platform, CustomProperty } from "@artiva/shared";
-import useSaveMetadata, {
-  UseSaveMetadataType,
-} from "hooks/platform/useSaveMetadata";
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Platform, CustomProperty } from "@artiva/shared";
+import { UseSaveMetadataType } from "hooks/platform/useSaveMetadata";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { createContainer } from "unstated-next";
-import deepmerge from "deepmerge";
 import useThemeConfig from "@/hooks/theme/useThemeConfig";
-import loadCustomDefaults from "utils/loadCustomDefaults";
+import MetadataContext from "./MetadataContext";
 
 export type CustomPropertyDesigner = {
   key: string;
@@ -23,8 +13,8 @@ export type CustomPropertyDesigner = {
 export type UseDesignerProps = { init?: Platform };
 export type UseDesignerType = {
   data: Platform | undefined;
-  mutate: (platform: Platform) => Platform;
-  merge: (platform: Partial<Platform>) => Platform | undefined;
+  mutate: (platform: Platform) => void;
+  merge: (platform: Partial<Platform>) => void;
   save: UseSaveMetadataType;
   customProperties: CustomPropertyDesigner[] | undefined;
   mobile: boolean;
@@ -32,33 +22,13 @@ export type UseDesignerType = {
 };
 
 const useDesigner = (): UseDesignerType => {
-  const { data: initalData } = useMetadata();
-  const [data, setData] = useState<Platform | undefined>();
-  const [dirty, setDirty] = useState(false);
+  const { data, save, mutate, merge } = MetadataContext.useContainer();
   const [mobile, setMobile] = useState(false);
-  const save = useSaveMetadata({ data });
   const config = useThemeConfig({
     themeURL: `${
       data?.themeURL || process.env.NEXT_PUBLIC_BASE_THEME_URL
     }/remoteEntry.js`,
   });
-
-  const loadCustomCallback = useCallback(
-    (platform: Platform) => loadCustomDefaults(config, platform),
-    [config]
-  );
-
-  const merge = (platform: Partial<Platform>) => {
-    if (!data) return;
-    const mergeData = deepmerge(platform, data);
-    return mutate(mergeData);
-  };
-
-  const mutate = (platform: Platform) => {
-    if (!dirty) setDirty(true);
-    setData(platform);
-    return platform;
-  };
 
   const customProperties = useMemo(() => {
     if (!config) return;
@@ -74,11 +44,6 @@ const useDesigner = (): UseDesignerType => {
 
     return properties;
   }, [config]);
-
-  useEffect(() => {
-    if (!initalData || data) return;
-    setData(loadCustomCallback(initalData));
-  }, [initalData, data, loadCustomCallback]);
 
   return { data, mutate, merge, save, mobile, setMobile, customProperties };
 };

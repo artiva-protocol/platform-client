@@ -3,11 +3,11 @@ import Layout from "@/components/Layout";
 import { ArtivaContext, HomeProps } from "@artiva/shared";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetStaticPropsType } from "next";
 import useInitTheme from "@/hooks/theme/useInitTheme";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const platform = await getPlatformMetadataByPlatform(
     process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
   );
@@ -16,12 +16,11 @@ export const getServerSideProps = async () => {
     props: {
       platform,
     },
+    revalidate: 60,
   };
 };
 
-const Home = ({
-  platform,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = ({ platform }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const ctx = useContext(ArtivaContext);
 
   const { themeURL } = useInitTheme({ platform });

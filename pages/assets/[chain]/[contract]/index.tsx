@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { useNFTContract, ArtivaContext } from "@artiva/shared";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
 import useInitTheme from "@/hooks/theme/useInitTheme";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 
@@ -17,6 +17,7 @@ export const getServerSideProps = async () => {
     props: {
       platform,
     },
+    revalidate: 60,
   };
 };
 

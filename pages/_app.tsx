@@ -3,7 +3,6 @@ import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 import GlobalProvider from "context/GlobalProvider";
 import { Fragment } from "react";
-import "@module-federation/nextjs-mf/src/include-defaults";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

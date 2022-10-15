@@ -5,6 +5,8 @@ import {
   usePostContent,
   IMarketAdapter,
   useMarket,
+  PostTypeEnum,
+  ChainIdentifier,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
 import { Fragment, useMemo } from "react";
@@ -22,8 +24,7 @@ import CustomConnectButton from "@/components/CustomConnectButton";
 
 const Bid = () => {
   const router = useRouter();
-  const { postid } = router.query;
-  const { data: postData } = usePosts();
+  const { chain, contract, tokenid } = router.query;
   const { address } = useAccount();
   const { data: signer } = useSigner();
 
@@ -32,10 +33,12 @@ const Bid = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const post = useMemo(() => {
-    return postData?.find((x) => x.id === postid);
-  }, [postid, postData]);
-  const { nft } = usePostContent(post?.type, post?.content);
+  const { nft } = usePostContent(PostTypeEnum.NFT, {
+    chain: chain as ChainIdentifier,
+    contractAddress: contract as string,
+    tokenId: tokenid as string,
+  });
+
   const market = useMarket(nft) as IMarketAdapter | undefined;
 
   const auction = useMemo(
@@ -72,7 +75,7 @@ const Bid = () => {
       auction.amount?.amount.decimals
     );
 
-    market.connect(signer, post?.content?.chain!);
+    market.connect(signer, chain as ChainIdentifier);
 
     try {
       const tx = await market.placeBid(nft, parsedAmount);

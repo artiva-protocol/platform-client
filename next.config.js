@@ -1,6 +1,9 @@
 // @ts-check
 
 const NextFederationPlugin = require("@module-federation/nextjs-mf");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: false,
+});
 
 /**
  * @type {import('next').NextConfig}
@@ -35,38 +38,6 @@ const nextConfig = {
           name: "host",
           filename: "static/chunks/remoteEntry.js",
           remotes: {},
-          shared: {
-            lodash: {
-              eager: true,
-              requiredVersion: false,
-              singleton: true,
-            },
-            "@artiva/shared": {
-              eager: true,
-              requiredVersion: false,
-              singleton: true,
-            },
-            wagmi: {
-              eager: true,
-              requiredVersion: false,
-              singleton: true,
-            },
-            "@headlessui/react": {
-              eager: true,
-              requiredVersion: false,
-              singleton: true,
-            },
-            "@rainbow-me/rainbowkit": {
-              eager: true,
-              requiredVersion: false,
-              singleton: true,
-            },
-            "next/future/image": {
-              eager: true,
-              requiredVersion: false,
-              singleton: true,
-            },
-          },
         })
       );
     }
@@ -83,4 +54,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

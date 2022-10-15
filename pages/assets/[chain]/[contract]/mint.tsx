@@ -1,6 +1,5 @@
 import {
   Layout,
-  usePosts,
   NFTRenderer,
   usePostContent,
   usePrimarySale,
@@ -8,10 +7,12 @@ import {
   PrimarySaleModule,
   PRIMARY_SALE_SOURCES,
   IPrimarySaleAdapter,
+  PostTypeEnum,
+  ChainIdentifier,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import { useAccount, useSigner } from "wagmi";
+import { useSigner } from "wagmi";
 import BackButton from "@/components/market/BackButton";
 import { useState } from "react";
 import { BigNumber, ethers } from "ethers";
@@ -20,19 +21,17 @@ import { PRIMARY_SALE_TYPES } from "@artiva/shared/dist/types/nft/NFTContractObj
 
 const Mint = () => {
   const router = useRouter();
-  const { postid } = router.query;
-  const { data: postData } = usePosts();
-  const { address } = useAccount();
+  const { chain, contract } = router.query;
   const { data: signer } = useSigner();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const post = useMemo(() => {
-    return postData?.find((x: any) => x.id === postid);
-  }, [postid, postData]);
-  const { nftContract } = usePostContent(post?.type, post?.content);
+  const { nftContract } = usePostContent(PostTypeEnum.NFT_CONTRACT, {
+    chain: chain as ChainIdentifier,
+    contractAddress: contract as string,
+  });
   const adapter = usePrimarySale(PRIMARY_SALE_SOURCES.zoraERC721Drop) as
     | IPrimarySaleAdapter
     | undefined;
@@ -47,12 +46,12 @@ const Mint = () => {
   ) as EditionContractLike | undefined;
 
   const onBuyNow = async () => {
-    if (!signer || !edition || !adapter || !post?.content) return;
+    if (!signer || !edition || !adapter || !contract) return;
 
     setLoading(true);
     setError("");
 
-    adapter.connect(signer, post?.content?.contractAddress!);
+    adapter.connect(signer, contract as string);
 
     try {
       const tx = await adapter.purchase(

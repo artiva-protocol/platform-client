@@ -18,6 +18,7 @@ import { ArtivaClientConfig } from "configs/artiva-client-config";
 import ThemeContext, { ThemeCSSWrapper } from "./ThemeContext";
 import { useRouter } from "next/router";
 import MetadataContext from "./MetadataContext";
+import Link from "next/link";
 
 const GlobalProvider = ({ children }: { children: React.ReactChild }) => {
   const { pathname } = useRouter();
@@ -48,6 +49,7 @@ const GlobalProvider = ({ children }: { children: React.ReactChild }) => {
                       ...DefaultComponents,
                       ConnectButton: ConnectButton.Custom,
                       Image: Image,
+                      Link: Link,
                     },
                     hooks: DefaultHooks,
                   }}

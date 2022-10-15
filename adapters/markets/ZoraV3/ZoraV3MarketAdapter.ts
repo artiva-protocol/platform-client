@@ -3,7 +3,8 @@ import { NFTObject } from "@zoralabs/nft-hooks";
 import { Signer, ContractTransaction, BigNumberish } from "ethers";
 import { ChainIdentifier } from "@artiva/shared";
 import IMarketAdapter from "../IMarketAdapter";
-import { AsksV11__factory } from "@zoralabs/v3/dist/typechain/factories/AsksV11__factory";
+import AsksABI from "@zoralabs/v3/dist/artifacts/AsksOmnibus.sol/AsksOmnibus.json";
+import { ethers } from "ethers";
 import {
   FIXED_PRICE_MARKET_SOURCES,
   MARKET_INFO_STATUSES,
@@ -26,18 +27,20 @@ export class ZoraV3MarketAdapter implements IMarketAdapter {
     if (!ask || !ask?.raw.marketAddress || !ask.amount)
       throw new Error("Ask not found");
 
-    const module = AsksV11__factory.connect(
+    const module = new ethers.Contract(
       ask?.raw.marketAddress,
+      AsksABI.abi,
       this.signerOrProvider
     );
+
     const { nft: nftData } = nft;
     if (!nftData) throw new Error("NFT data not found");
 
     return module.fillAsk(
       nftData.contract.address,
       nftData?.tokenId,
-      ask.amount?.address,
       ask.amount?.amount.raw,
+      ask.amount?.address,
       finder as string,
       { value: ask.amount?.amount.raw }
     );

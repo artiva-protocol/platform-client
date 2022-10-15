@@ -9,6 +9,7 @@ import { Navigation } from "@artiva/shared";
 import Link from "next/link";
 import MetadataContext from "@/context/MetadataContext";
 import MetadataSaveButton from "@/admin/MetadataSaveButton";
+import { cloneDeep } from "lodash";
 
 const placardOuterStyle = "flex mt-4";
 const labelStyle =
@@ -21,14 +22,14 @@ const Navigation = () => {
 
   const onChange = (idx: number, key: string, value: string) => {
     if (!data || !data.navigation) return;
-    const clone = { ...data };
+    const clone = cloneDeep(data);
     (clone.navigation![idx] as any)[key] = value;
     mutate(clone);
   };
 
   const onAdd = (label: string, url: string, secondary: boolean) => {
     if (!data) return;
-    const clone = { ...data };
+    const clone = cloneDeep(data);
     if (!clone.navigation) clone.navigation = [];
     clone.navigation.push({
       label,
@@ -40,7 +41,7 @@ const Navigation = () => {
 
   const onRemove = (idx: number) => {
     if (!data || !data.navigation) return;
-    const clone = { ...data };
+    const clone = cloneDeep(data);
     clone.navigation!.splice(idx, 1);
     mutate(clone);
   };

@@ -142,6 +142,8 @@ const General = () => {
   );
 };
 
+const Content = () => {};
+
 export type ImageElementProps = {
   id: string;
   title: string;

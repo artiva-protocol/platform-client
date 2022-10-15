@@ -6,6 +6,8 @@ import {
   useMarket,
   IMarketAdapter,
   PostProps,
+  PostTypeEnum,
+  ChainIdentifier,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
 import { Fragment, useMemo } from "react";
@@ -24,8 +26,7 @@ import useThemeComponent from "@/hooks/theme/useThemeComponent";
 
 const Buy = () => {
   const router = useRouter();
-  const { postid } = router.query;
-  const { data: postData } = usePosts();
+  const { chain, contract, tokenid } = router.query;
   const { address } = useAccount();
   const { data: signer } = useSigner();
 
@@ -33,10 +34,11 @@ const Buy = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const post = useMemo(() => {
-    return postData?.find((x: any) => x.id === postid);
-  }, [postid, postData]);
-  const { nft } = usePostContent(post?.type, post?.content);
+  const { nft } = usePostContent(PostTypeEnum.NFT, {
+    chain: chain as ChainIdentifier,
+    contractAddress: contract as string,
+    tokenId: tokenid as string,
+  });
   const market = useMarket(nft) as IMarketAdapter | undefined;
 
   const PostDynamic = useThemeComponent<PostProps>({ component: "./Post" });
@@ -58,7 +60,7 @@ const Buy = () => {
     setError("");
     if (!signer || !market || !nft) return;
 
-    market.connect(signer, post?.content?.chain!);
+    market.connect(signer, chain as ChainIdentifier);
 
     try {
       const tx = await market.fillAsk(nft, ethers.constants.AddressZero);

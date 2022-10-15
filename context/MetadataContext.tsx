@@ -5,6 +5,7 @@ import { Platform, useMetadata } from "@artiva/shared";
 import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 import { createContainer } from "unstated-next";
+import { isEqual } from "lodash";
 
 export type UseMetadataContextType = {
   merge: (platform: Partial<Platform>) => void;
@@ -40,7 +41,6 @@ const useMetadataContext = (): UseMetadataContextType => {
 
   const mutate = (platform: Platform) => {
     setData(platform);
-    console.log("Merged", platform);
     return platform;
   };
 
@@ -52,11 +52,8 @@ const useMetadataContext = (): UseMetadataContextType => {
     if (!data || !initalData) return;
     let count = 0;
     Object.keys(data).map((x) => {
-      if (
-        JSON.stringify((data as any)[x]) ===
-        JSON.stringify((initalData as any)[x])
-      )
-        return;
+      console.log("Comparing", (data as any)[x], (initalData as any)[x]);
+      if (isEqual((data as any)[x], (initalData as any)[x])) return;
       count++;
     });
     setChangeCount(count);

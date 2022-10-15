@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (_: NextApiRequest, res: NextApiResponse) => {
   const ipfs = ArtivaClientConfig.IPFSAdapter;
-  const token = await ipfs.generateUserKey();
+  const token = await (await ipfs).generateUserKey();
   res.send({ token });
 };
 

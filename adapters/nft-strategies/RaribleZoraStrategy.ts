@@ -27,17 +27,23 @@ export class RaribleZoraStrategy extends NFTStrategy {
   }
 
   fetchNFT = async (contract: string, id: string) => {
+    console.log("Fetching nft 1");
     return await this.rarible.fetchNFT(contract, id);
   };
 
-  fetchSeconaryData = async (
+  fetchSecondaryData = async (
     contract: string,
-    tokenId: string,
+    id: string,
     current: NFTObject
   ) => {
-    const res: NFTObject = await this.zdk.fetchNFT(contract, tokenId);
-    const tmp = { ...current };
-    tmp.markets = res.markets;
-    return tmp;
+    try {
+      const res: NFTObject = await this.zdk.fetchNFT(contract, id);
+      const clone = { ...current };
+      clone.markets = res.markets;
+      return clone;
+    } catch (err) {
+      console.log("Error fetching markets", err);
+      throw err;
+    }
   };
 }

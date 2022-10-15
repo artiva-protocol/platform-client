@@ -14,11 +14,9 @@ const useIPFSUpload = (props?: {
     try {
       if (!token || (!file && !props?.file)) return;
       const ipfs = ArtivaClientConfig.IPFSAdapter;
-      const res = await ipfs.uploadFile(
-        file || props?.file!,
-        token.token,
-        props?.onFileProgress
-      );
+      const res = await (
+        await ipfs
+      ).uploadFile(file || props?.file!, token.token, props?.onFileProgress);
       setData(res);
       props?.onUploadComplete?.(res);
       return res;

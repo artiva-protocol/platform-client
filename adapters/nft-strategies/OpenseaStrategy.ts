@@ -16,10 +16,7 @@ export class OpenseaStrategy extends NFTStrategy {
     this.zdkBackend = new Strategies.ZDKFetchStrategy(networkId, {
       apiKey: process.env.NEXT_PUBLIC_ZORA_API_KEY,
     });
-    this.openseaBackend = new OpenseaDataSource(
-      networkId,
-      process.env.NEXT_PUBLIC_OPENSEA_API_KEY
-    );
+    this.openseaBackend = new OpenseaDataSource(networkId);
   }
 
   fetchNFT = async (contract: string, id: string) => {

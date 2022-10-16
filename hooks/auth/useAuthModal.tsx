@@ -31,7 +31,6 @@ const useAuthModal = () => {
       if (!admin && !contentPublisher && !metadataManager)
         throw new Error("User not authorized");
 
-      console.log("Sign in success");
       setOpen(false);
     } catch (err) {
       console.log("Error signing in", err);

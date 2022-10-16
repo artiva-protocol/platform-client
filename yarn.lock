@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@artiva/shared@^0.1.40":
-  version "0.1.40"
-  resolved "https://registry.yarnpkg.com/@artiva/shared/-/shared-0.1.40.tgz#fc766e4c3df9f05418792d5cdfe891059c19ffdf"
-  integrity sha512-5sR9FfKIoP15pRYviSl5nhA37Vn7ovb5FsN1mVkXVoY9x8DH+EWqX6QOYTEWNbSU4Mg+3pidinA5FHsLprbMsA==
+"@artiva/shared@^0.1.41":
+  version "0.1.41"
+  resolved "https://registry.yarnpkg.com/@artiva/shared/-/shared-0.1.41.tgz#df93b001cf12bcf2bc3cf54354f00a7ef99216b0"
+  integrity sha512-FEHYdfkNPourCZtrJ3z6iUJHHAlopT+fEliOSWOtGvuIQOUsGytijHFIPn4dONuzSSMAR1OoNwYkJDsEJC+qVQ==
   dependencies:
     "@zoralabs/nft-hooks" "^1.1.8"
     "@zoralabs/zdk" "^2.1.3"

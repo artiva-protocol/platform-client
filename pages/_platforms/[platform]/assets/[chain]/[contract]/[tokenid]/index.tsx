@@ -6,13 +6,16 @@ import { Fragment } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 import useInitTheme from "@/hooks/theme/useInitTheme";
-import { InferGetServerSidePropsType } from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 
-export const getServerSideProps = async () => {
-  const platform = await getPlatformMetadataByPlatform(
-    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
-  );
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { platform: platformContract } = context.query;
+  const platform = (await getPlatformMetadataByPlatform(
+    platformContract as string
+  ))!;
 
   return {
     props: {
@@ -25,7 +28,7 @@ const NFT = ({
   platform,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-  const { chain, contract, tokenId } = router.query;
+  const { chain, contract, tokenid } = router.query;
   const ctx = useContext(ArtivaContext);
 
   const { themeURL } = useInitTheme({ platform });
@@ -38,8 +41,9 @@ const NFT = ({
   const { data: nft } = useNFT({
     chain: chain as ChainIdentifier,
     contractAddress: contract as string,
-    tokenId: tokenId as string,
+    tokenId: tokenid as string,
   });
+
   const props: NFTProps = { nft: nft as NFTObject, ctx, platform };
 
   if (!NFTComponentDynamic) return <Fragment />;

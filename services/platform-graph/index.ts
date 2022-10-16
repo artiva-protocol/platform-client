@@ -103,12 +103,12 @@ export const getUserRolesByPlatformAndUser = async (
 
 export const getPlatformMetadataByPlatform = async (
   platformAddress: string
-): Promise<Platform> => {
+): Promise<Platform | undefined> => {
   const res = await client.request(
     PLATFORM_METADATA_BY_PLATFORM(platformAddress.toLowerCase())
   );
 
   return res.platform?.metadataJSON
     ? JSON.parse(res.platform.metadataJSON)
-    : defaultPlatform;
+    : undefined;
 };

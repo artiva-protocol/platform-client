@@ -25,7 +25,6 @@ export default class ZDKContractStrategy extends NFTContractStrategy {
   hasSecondaryData = (_: ContractFetchInfo) => true;
 
   fetchNFTContract = async (address: string): Promise<NFTContractObject> => {
-    console.log("Fetching contract");
     const collectionQuery = this.zdk.collection({ address });
     const statQuery = this.zdk.collectionStatsAggregate({
       collectionAddress: address,

@@ -1,5 +1,17 @@
 import { gql } from "graphql-request";
 
+//PLATFORMS
+
+export const PLATFORMS_ORDERED_BY_DEPLOYMENT = () => {
+  return gql`
+    {
+      platforms(orderBy: deployedAtTimestamp, orderDirection: desc) {
+        id
+      }
+    }
+  `;
+};
+
 //POSTS
 
 export const POSTS_BY_PLATFORM = (platformAddress: string) => {

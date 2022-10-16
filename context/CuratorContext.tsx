@@ -2,6 +2,7 @@ import useAddContents, {
   PostRequest,
   UseAddContentsType,
 } from "@/hooks/post/useAddContents";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr";
 import { createContainer } from "unstated-next";
@@ -14,11 +15,12 @@ export type UseCuratorType = {
 };
 
 const useCurator = (): UseCuratorType => {
+  const {
+    query: { platform },
+  } = useRouter();
   const { address } = useAccount();
   const { data } = useSWR(
-    address
-      ? `${process.env.NEXT_PUBLIC_SERVER_BASEURL}/platform/user/${address}/posts`
-      : undefined
+    address ? `/api/platform/${platform}/user/${address}/posts` : undefined
   );
   const [collection, setCollection] = useState<PostRequest[]>([]);
 

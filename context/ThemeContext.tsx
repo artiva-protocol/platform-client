@@ -1,10 +1,16 @@
 import Head from "next/head";
-import React, { Fragment, useMemo } from "react";
+import { useRouter } from "next/router";
+import React, { Fragment } from "react";
 import useSWR from "swr";
 import { createContainer } from "unstated-next";
 
 const useThemeContext = () => {
-  const { data: platform, mutate } = useSWR("/api/platform/meta");
+  const {
+    query: { platform: platformContract },
+  } = useRouter();
+  const { data: platform, mutate } = useSWR(
+    `/api/platform/${platformContract}/meta`
+  );
   const themeURL = platform?.themeURL || process.env.NEXT_PUBLIC_BASE_THEME_URL;
 
   return { mutate, themeURL };

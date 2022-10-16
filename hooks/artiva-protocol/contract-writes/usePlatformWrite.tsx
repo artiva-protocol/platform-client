@@ -36,7 +36,6 @@ const usePlatformWrite = (
       const res = await platform[functionName](...args);
       setHash(res.hash);
     } catch (err: any) {
-      console.log("Error writing to platform", err);
       setError(err);
       setLoading(false);
     }

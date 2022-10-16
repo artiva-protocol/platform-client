@@ -32,7 +32,6 @@ export const ArtivaClientConfig: ArtivaClientConfigType = {
   serverURL: "/api",
   preferredIPFSGateway: process.env.NEXT_PUBLIC_IPFS_GATEWAY,
   zoraAPIKey: process.env.NEXT_PUBLIC_ZORA_API_KEY,
-  platformAddress: process.env.NEXT_PUBLIC_PLATFORM_ADDRESS,
   IPFSAdapter: ipfsAdapter,
   getNFTStrategy: async (chainId: ChainIdentifier) => {
     return new (await nftStrategy)(

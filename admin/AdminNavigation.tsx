@@ -20,7 +20,7 @@ const AdminNavigation = () => {
   };
 
   const push = (key: string) => {
-    router.push("/artiva/" + key, undefined, { shallow: true });
+    router.push("/artiva/" + key, undefined);
   };
 
   return (

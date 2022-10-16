@@ -7,8 +7,6 @@ import TagModal from "./TagModal";
 const PostPlacard = ({ post }: { post: Post }) => {
   const [open, setOpen] = useState(false);
 
-  console.log("collection post", post);
-
   return (
     <div className="flex flex-col m-4">
       <TagModal open={open} setOpen={setOpen} post={post} />

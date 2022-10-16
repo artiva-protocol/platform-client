@@ -27,8 +27,6 @@ const useAddContents = (content: PostRequest[]): UseAddContentsType => {
     );
   }, [content]);
 
-  console.log("Formatted content", formattedContent);
-
   const write = usePlatformWrite("addContents", [formattedContent, address]);
 
   return {

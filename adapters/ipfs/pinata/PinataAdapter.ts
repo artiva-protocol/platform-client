@@ -63,8 +63,6 @@ export default class PinataAdapter implements IIPFSAdapter {
       config
     );
 
-    console.log("res", res.data);
-
     return `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
   };
 }

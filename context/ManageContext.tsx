@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import useSetContents, {
   UseSetContentsType,
 } from "@/hooks/post/useSetContents";
+import { useRouter } from "next/router";
 
 export type UseCuratorType = {
   collection: Post[];
@@ -16,12 +17,13 @@ export type UseCuratorType = {
 export type ManagePost = Post & { dirty?: boolean };
 
 const useManageContext = (): UseCuratorType => {
+  const {
+    query: { platform },
+  } = useRouter();
   const { address } = useAccount();
 
   const { data } = useSWR(
-    address
-      ? `${process.env.NEXT_PUBLIC_SERVER_BASEURL}/platform/user/${address}/posts`
-      : undefined
+    address ? `/api/platform/${platform}/user/${address}/posts` : undefined
   );
 
   const [collection, setCollection] = useState<ManagePost[]>([]);

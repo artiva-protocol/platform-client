@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 import { createContainer } from "unstated-next";
 import { isEqual } from "lodash";
+import { useRouter } from "next/router";
 
 export type UseMetadataContextType = {
   merge: (platform: Partial<Platform>) => void;
@@ -17,6 +18,9 @@ export type UseMetadataContextType = {
 
 const useMetadataContext = (): UseMetadataContextType => {
   const { data: initalData } = useMetadata();
+  const {
+    query: { platform },
+  } = useRouter();
   const [data, setData] = useState<Platform>();
   const [changeCount, setChangeCount] = useState(0);
   const swr = useSWRConfig();
@@ -24,7 +28,7 @@ const useMetadataContext = (): UseMetadataContextType => {
     data,
     onSettled: () => {
       setChangeCount(0);
-      swr.mutate("/api/platform/meta", undefined, {
+      swr.mutate(`/api/platform/${platform}/meta`, undefined, {
         optimisticData: data,
         revalidate: false,
       });

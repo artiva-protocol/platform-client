@@ -27,7 +27,6 @@ export class RaribleZoraStrategy extends NFTStrategy {
   }
 
   fetchNFT = async (contract: string, id: string) => {
-    console.log("Fetching nft 1");
     return await this.rarible.fetchNFT(contract, id);
   };
 

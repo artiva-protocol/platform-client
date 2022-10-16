@@ -5,48 +5,46 @@ import {
   NFTProps,
   NFTContractProps,
   PostTypeEnum,
+  Platform,
+  Post,
 } from "@artiva/shared";
 import { Fragment } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import {
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  InferGetStaticPropsType,
+} from "next";
 import useInitTheme from "@/hooks/theme/useInitTheme";
 import {
   getPlatformMetadataByPlatform,
   getPostByPlatformAndId,
-  getPostsByPlatform,
 } from "@/services/platform-graph";
 
 export async function getStaticPaths() {
-  const posts = await getPostsByPlatform(
-    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
-  );
-
-  const paths = posts.map((post) => ({
-    params: { postid: post.id },
-  }));
-
-  return { paths, fallback: "blocking" };
+  return { paths: [], fallback: "blocking" };
 }
 
 export const getStaticProps = async ({
   params,
-}: GetStaticPropsContext<{ postid: string }>) => {
-  const platform = getPlatformMetadataByPlatform(
-    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
-  );
+}: GetStaticPropsContext<{ postid: string; platform: string }>): Promise<
+  GetStaticPropsResult<{ platform: Platform; post: Post }>
+> => {
+  const [platformData, post] = await Promise.all([
+    getPlatformMetadataByPlatform(params!.platform),
+    getPostByPlatformAndId(params!.platform, params!.postid),
+  ]);
 
-  const post = getPostByPlatformAndId(
-    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!,
-    params!.postid
-  );
-
-  const res = await Promise.all([platform, post]);
+  if (!platformData || !post)
+    return {
+      notFound: true,
+    };
 
   return {
     props: {
-      platform: res[0],
-      post: res[1],
+      platform: platformData,
+      post,
     },
     revalidate: 60,
   };

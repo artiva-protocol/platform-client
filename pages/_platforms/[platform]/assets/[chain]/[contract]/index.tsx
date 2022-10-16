@@ -4,20 +4,22 @@ import { Fragment } from "react";
 import { useNFTContract, ArtivaContext } from "@artiva/shared";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import { InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import useInitTheme from "@/hooks/theme/useInitTheme";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 
-export const getServerSideProps = async () => {
-  const platform = await getPlatformMetadataByPlatform(
-    process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!
-  );
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const { platform: platformContract } = context.query;
+  const platform = (await getPlatformMetadataByPlatform(
+    platformContract as string
+  ))!;
 
   return {
     props: {
       platform,
     },
-    revalidate: 60,
   };
 };
 
@@ -42,8 +44,8 @@ const NFTContract = ({
 
   const props: NFTContractProps = {
     ctx,
-    nftContract,
     platform,
+    nftContract,
   };
 
   if (!NFTComponentDynamic) return <Fragment />;

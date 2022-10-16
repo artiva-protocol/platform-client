@@ -1,14 +1,20 @@
-import { getPostsByPlatformAndOwner } from "@/services/platform-graph";
 import { NextApiRequest, NextApiResponse } from "next";
+import {
+  getPostsByPlatform,
+  getPostsByPlatformAndFeatured,
+  getPostsByPlatformAndTag,
+} from "@/services/platform-graph";
 import { Post } from "@artiva/shared";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userAddress } = req.query;
-  const platformAddress = process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!;
-  const rawPosts = await getPostsByPlatformAndOwner(
-    platformAddress,
-    userAddress as string
-  );
+  if (req.method !== "GET") return res.status(405).end();
+  const { tag, featured, platform } = req.query;
+
+  const rawPosts = await (featured
+    ? getPostsByPlatformAndFeatured(platform as string)
+    : tag
+    ? getPostsByPlatformAndTag(platform as string, tag as string)
+    : getPostsByPlatform(platform as string));
 
   if (rawPosts.length === 0) return res.send({ posts: [] });
 

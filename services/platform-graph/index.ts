@@ -1,5 +1,4 @@
 import { Platform, Post } from "@artiva/shared";
-import { defaultPlatform } from "constants/default-platform";
 import client from "./client";
 import {
   POSTS_BY_PLATFORM_AND_OWNER,
@@ -9,6 +8,7 @@ import {
   POSTS_BY_PLATFORM_AND_TAG,
   POSTS_BY_PLATFORM_AND_FEATURED,
   POST_BY_PLATFORM_AND_ID,
+  PLATFORMS_BY_USER,
 } from "./queries";
 
 export type GetPostsResponse = {
@@ -27,6 +27,24 @@ export type GetRolesByPlatformAndOwnerResponse = {
   metadataManager: boolean;
   contentPublisher: boolean;
 };
+
+export type GetPlatformsResponse = Platform & { contract: string };
+
+//PLATFORMS
+
+export const getPlatformsByUser = async (
+  userAddress: string
+): Promise<GetPlatformsResponse[]> => {
+  const res = await client.request(
+    PLATFORMS_BY_USER(userAddress.toLowerCase())
+  );
+  return res.platforms.map((x: { id: string; metadataJSON: string }) => ({
+    ...JSON.parse(x.metadataJSON || "{}"),
+    contract: x.id,
+  }));
+};
+
+//POSTS
 
 export const getPostsByPlatform = async (
   platformAddress: string
@@ -88,6 +106,8 @@ export const getPostsByPlatformAndOwner = async (
   return res.posts;
 };
 
+//USERS
+
 export const getUserRolesByPlatformAndUser = async (
   platformAddress: string,
   userAddress: string
@@ -100,6 +120,8 @@ export const getUserRolesByPlatformAndUser = async (
   );
   return res.platformUsers[0];
 };
+
+//METADATA
 
 export const getPlatformMetadataByPlatform = async (
   platformAddress: string

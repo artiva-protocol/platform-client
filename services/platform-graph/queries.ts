@@ -12,6 +12,17 @@ export const PLATFORMS_ORDERED_BY_DEPLOYMENT = () => {
   `;
 };
 
+export const PLATFORMS_BY_USER = (user: string) => {
+  return gql`
+    {
+      platforms(where: { users_: { user: "${user}" }} orderBy: deployedAtTimestamp, orderDirection: desc) {
+        id
+        metadataJSON
+      }
+    }
+  `;
+};
+
 //POSTS
 
 export const POSTS_BY_PLATFORM = (platformAddress: string) => {

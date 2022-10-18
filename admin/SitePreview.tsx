@@ -3,15 +3,21 @@ import { useState } from "react";
 
 export const SitePreview = ({
   passedRef,
+  url,
 }: {
   passedRef?: RefObject<HTMLIFrameElement>;
+  url?: string;
 }) => {
   const [baseurl, setBaseurl] = useState<string | undefined>();
   useEffect(() => {
     setBaseurl(
-      typeof window !== "undefined" ? `${window.location.origin}` : undefined
+      url
+        ? url
+        : typeof window !== "undefined"
+        ? `${window.location.origin}`
+        : undefined
     );
-  }, []);
+  }, [url]);
 
   if (!baseurl) return <Fragment />;
 

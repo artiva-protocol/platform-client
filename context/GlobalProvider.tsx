@@ -24,7 +24,7 @@ const GlobalProvider = ({ children }: { children: React.ReactChild }) => {
   const { pathname } = useRouter();
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);
   const { wagmiClient, chains } = getWalletClient(
-    pathname.includes("artiva")
+    pathname.includes("artiva") || pathname.includes("app")
       ? WalletAppContext.ADMIN
       : WalletAppContext.PLATFORM
   );

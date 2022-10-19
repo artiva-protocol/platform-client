@@ -5,7 +5,7 @@ import { NetworkIDs } from "@zoralabs/nft-hooks";
 import { SharedConfigType } from "@artiva/shared";
 
 //Code splitting these external libraries so _app.tsx does not load with them
-const ipfsAdapter = import("adapters/ipfs/pinata/PinataAdapter").then(
+const ipfsAdapter = import("adapters/ipfs/estuary/EstuaryAdapter").then(
   (x) => new x.default()
 );
 const nftStrategy = import("adapters/nft-strategies/RaribleZoraStrategy").then(

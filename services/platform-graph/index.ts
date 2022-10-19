@@ -9,6 +9,7 @@ import {
   POSTS_BY_PLATFORM_AND_FEATURED,
   POST_BY_PLATFORM_AND_ID,
   PLATFORMS_BY_USER,
+  PLATFORMS_BY_USER_AFTER_TIMESTAMP,
 } from "./queries";
 
 export type GetPostsResponse = {
@@ -31,6 +32,16 @@ export type GetRolesByPlatformAndOwnerResponse = {
 export type GetPlatformsResponse = Platform & { contract: string };
 
 //PLATFORMS
+
+export const getPlatformsByUserAfterTimeStamp = async (
+  userAddress: string,
+  timestamp: string
+): Promise<string | undefined> => {
+  const res = await client.request(
+    PLATFORMS_BY_USER_AFTER_TIMESTAMP(userAddress.toLowerCase(), timestamp)
+  );
+  return res.platforms.length > 0 ? res.platforms[0].id : undefined;
+};
 
 export const getPlatformsByUser = async (
   userAddress: string

@@ -2,6 +2,24 @@ import { gql } from "graphql-request";
 
 //PLATFORMS
 
+export const PLATFORMS_BY_USER_AFTER_TIMESTAMP = (
+  user: string,
+  timestamp: string
+) => {
+  return gql`
+    {
+      platforms(
+        where: {
+          deployedAtTimestamp_gt: "${timestamp}"
+          users_: { user: "${user}" }
+        }
+      ) {
+        id
+      }
+    }
+  `;
+};
+
 export const PLATFORMS_ORDERED_BY_DEPLOYMENT = () => {
   return gql`
     {

@@ -19,7 +19,7 @@ const AppIndex = () => {
   );
 
   return (
-    <div className=" bg-gray-100 min-h-screen">
+    <div className=" bg-gray-100 min-h-screen pb-10">
       <AppHeader />
       <div className="grid grid-cols-3 gap-6 px-20 pt-6">
         {data?.map((x) => (

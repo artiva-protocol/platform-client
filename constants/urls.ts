@@ -1,4 +1,5 @@
 import { Networks } from "@zoralabs/nft-hooks";
+export const ArtivaNetworks = { ...Networks, GOERLI: 5 };
 
 export const ARWEAVE_GATEWAY_URL = "https://arweave.net";
 export const ARWEAVE_GRAPHQL_URL = "https://arweave.net/graphql";
@@ -21,4 +22,8 @@ export const RESERVOIR_API_BY_NETWORK = {
 export const ZORA_EDITIONS_BY_NETWORK = {
   [Networks.MAINNET]:
     "https://api.thegraph.com/subgraphs/name/iainnash/zora-editions-mainnet",
+};
+
+export const BLOCK_EXPLORER_BY_NETWORK = {
+  [ArtivaNetworks.GOERLI]: "https://goerli.etherscan.io",
 };

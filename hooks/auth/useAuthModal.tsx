@@ -1,5 +1,6 @@
 import AuthModal from "@/admin/AuthModal";
 import ModalWrapper from "@/components/ModalWrapper";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import useAuth from "./useAuth";
@@ -14,6 +15,7 @@ const useAuthModal = () => {
   const { chain } = useNetwork();
   const { data, error } = useAuth();
   const [open, setOpen] = useState(false);
+  const { pathname } = useRouter();
 
   const { signOut } = useSignOut();
 
@@ -28,7 +30,12 @@ const useAuthModal = () => {
         roles: { admin, contentPublisher, metadataManager },
       } = data.user;
 
-      if (!admin && !contentPublisher && !metadataManager)
+      if (
+        !pathname.includes("app") &&
+        !admin &&
+        !contentPublisher &&
+        !metadataManager
+      )
         throw new Error("User not authorized");
 
       setOpen(false);

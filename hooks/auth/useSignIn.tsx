@@ -2,8 +2,7 @@ import useAxios, { UseAxiosType } from "hooks/axios/useAxios";
 
 export type UserType = {
   address: string;
-  publicKey: string;
-  signature: string;
+  platform?: string;
 };
 
 const useSignIn = ({

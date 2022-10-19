@@ -17,9 +17,10 @@ declare module "iron-session" {
 
 export default withIronSessionApiRoute(
   async function loginRoute(req, res) {
-    const { address } = req.body;
-    const platform = process.env.NEXT_PUBLIC_PLATFORM_ADDRESS!;
-    const roles = await getUserRolesByPlatformAndUser(platform, address);
+    const { address, platform } = req.body;
+    let roles = {};
+    if (platform)
+      roles = await getUserRolesByPlatformAndUser(platform, address);
 
     req.session.user = {
       address,

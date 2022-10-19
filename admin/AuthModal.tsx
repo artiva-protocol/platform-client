@@ -4,6 +4,7 @@ import { CustomConnectButton } from "@artiva/shared";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import useSignOut from "hooks/auth/useSignOut";
 import Image from "next/future/image";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSWRConfig } from "swr";
 import { useAccount, useNetwork } from "wagmi";
@@ -18,11 +19,15 @@ const AuthModal = () => {
   const { address } = useAccount();
   const { signOut } = useSignOut();
   const [signIn, setSignIn] = useState(false);
+  const {
+    query: { platform },
+  } = useRouter();
 
   const { mutate } = useSWRConfig();
   const { send } = useSignIn({
     data: {
       address,
+      platform: platform as string | undefined,
     },
     onSettled: () => {
       mutate(`${process.env.NEXT_PUBLIC_SERVER_BASEURL}/auth/me`);

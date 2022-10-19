@@ -34,7 +34,7 @@ const PlatformHeader = () => {
             </a>
           </Link>
           <a
-            href={`http://${platform}.localhost:3000/artiva`}
+            href={`http://${platform}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}/artiva`}
             className="mr-6 text-gray-600 flex items-center"
             target="_blank"
             rel="noopener noreferrer"
@@ -44,7 +44,7 @@ const PlatformHeader = () => {
           </a>
           <a
             className="text-gray-600 flex items-center"
-            href={`http://${platform}.localhost:3000`}
+            href={`http://${platform}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`}
             target="_blank"
             rel="noopener noreferrer"
           >

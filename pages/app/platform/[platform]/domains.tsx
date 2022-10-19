@@ -89,7 +89,7 @@ const PlatformDomains = ({
         </div>
         <div className="flex items-center justify-around w-1/2">
           <a
-            href={`http://${platformContract}.localhost:3000`}
+            href={`http://${platformContract}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`}
             className="w-[45vw] h-[60vh] shadow-xl"
           >
             <PlatformPlacard

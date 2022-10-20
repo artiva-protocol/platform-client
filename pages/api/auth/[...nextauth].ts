@@ -54,15 +54,26 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             return null;
           }
 
+          console.log("auth", {
+            nonce1: siwe.nonce,
+            nonce2: await getCsrfToken({ req }),
+          });
+
           if (siwe.nonce !== (await getCsrfToken({ req }))) {
             return null;
           }
+
+          console.log(
+            "validate",
+            await siwe.validate(credentials?.signature || "")
+          );
 
           await siwe.validate(credentials?.signature || "");
           return {
             id: siwe.address,
           };
         } catch (e) {
+          console.log("auth error", e);
           return null;
         }
       },

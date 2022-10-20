@@ -1,6 +1,5 @@
-import { CustomConnectButton } from "@artiva/shared";
+import ArtivaConnectButton from "@/components/ArtivaConnectButton";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/future/image";
 import Link from "next/link";
 import { Fragment } from "react";
@@ -28,14 +27,7 @@ const AppHeader = () => {
               Create
             </a>
           </Link>
-          <ConnectButton.Custom>
-            {(props) => (
-              <CustomConnectButton
-                {...props}
-                className="flex item-center justify-around border border-gray-400 text-gray-500 w-40 rounded-md text-center"
-              />
-            )}
-          </ConnectButton.Custom>
+          <ArtivaConnectButton className="flex item-center justify-around border border-gray-400 text-gray-500 w-40 rounded-md text-center" />
         </div>
       </div>
     </Fragment>

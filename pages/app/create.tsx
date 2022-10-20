@@ -11,6 +11,7 @@ import useSWR from "swr";
 import { useAccount } from "wagmi";
 import { getPlatformsByUserAfterTimeStamp } from "@/services/platform-graph";
 import ModalWrapper from "@/components/ModalWrapper";
+import AuthWrapper from "@/components/AuthWrapper";
 
 type CreatePlatformDataType = Pick<
   Platform,
@@ -109,14 +110,16 @@ const CreatePlatform = () => {
             />
           </div>
 
-          <button
-            onClick={() => {
-              save();
-            }}
-            className="w-full h-10 bg-black text-white mt-8 rounded-md"
-          >
-            {loading ? "Creating Platform..." : "Create Platform"}
-          </button>
+          <AuthWrapper className="w-full h-10 bg-black text-white mt-8 rounded-md">
+            <button
+              onClick={() => {
+                save();
+              }}
+              className="w-full h-10 bg-black text-white mt-8 rounded-md"
+            >
+              {loading ? "Creating Platform..." : "Create Platform"}
+            </button>
+          </AuthWrapper>
         </div>
       </div>
       <div className="w-1/2 h-full">

@@ -1,10 +1,8 @@
 import {
   CogIcon,
   RectangleStackIcon,
-  LockClosedIcon,
   HomeIcon,
 } from "@heroicons/react/24/solid";
-import useSignOut from "hooks/auth/useSignOut";
 import { useRouter } from "next/router";
 import { CustomConnectButton } from "@artiva/shared";
 import { ConnectButton } from "@rainbow-me/rainbowkit";

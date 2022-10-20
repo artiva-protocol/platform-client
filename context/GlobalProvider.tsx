@@ -1,4 +1,4 @@
-import { getWalletClient, WalletAppContext } from "../configs/wallet-config";
+import { getWalletClient } from "../configs/wallet-config";
 import { WagmiConfig } from "wagmi";
 import {
   ConnectButton,
@@ -16,7 +16,6 @@ import axios from "axios";
 import Image from "next/future/image";
 import { ArtivaClientConfig } from "configs/artiva-client-config";
 import ThemeContext, { ThemeCSSWrapper } from "./ThemeContext";
-import { useRouter } from "next/router";
 import MetadataContext from "./MetadataContext";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
@@ -25,6 +24,8 @@ import {
   RainbowKitSiweNextAuthProvider,
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
 
+const { wagmiClient, chains, admin } = getWalletClient();
+
 const GlobalProvider = ({
   children,
   pageProps,
@@ -32,13 +33,7 @@ const GlobalProvider = ({
   children: React.ReactChild;
   pageProps: any;
 }) => {
-  const { pathname } = useRouter();
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-  const { wagmiClient, chains } = getWalletClient(
-    pathname.includes("artiva") || pathname.includes("app")
-      ? WalletAppContext.ADMIN
-      : WalletAppContext.PLATFORM
-  );
 
   const getSiweMessageOptions: GetSiweMessageOptions = () => ({
     statement: "Sign in to Artiva",
@@ -52,6 +47,7 @@ const GlobalProvider = ({
         <WagmiConfig client={wagmiClient}>
           <SessionProvider session={pageProps.session} refetchInterval={0}>
             <RainbowKitSiweNextAuthProvider
+              enabled={admin}
               getSiweMessageOptions={getSiweMessageOptions}
             >
               <SharedConfigContext.Provider value={{ ...ArtivaClientConfig }}>

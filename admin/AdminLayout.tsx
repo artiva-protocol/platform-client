@@ -1,3 +1,4 @@
+import useAuthModal from "@/hooks/auth/useAuthModal";
 import { useRouter } from "next/router";
 import React from "react";
 import AdminNavigation from "./AdminNavigation";
@@ -7,9 +8,11 @@ import DesignNavigation from "./design/DesignNavigation";
 
 const AdminLayout = ({ children }: { children: React.ReactChild }) => {
   const router = useRouter();
+  const authModal = useAuthModal();
 
   return (
     <div className="flex">
+      {authModal}
       {router.pathname.includes("design") ? (
         <DesignNavigation />
       ) : router.pathname.includes("nfts") ? (

@@ -1,57 +1,26 @@
 import AuthModal from "@/admin/AuthModal";
 import ModalWrapper from "@/components/ModalWrapper";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useAccount, useNetwork } from "wagmi";
-import useAuth from "./useAuth";
-import useSignOut from "./useSignOut";
+import { useNetwork } from "wagmi";
+import useUser from "./useUser";
 
 const useAuthModal = () => {
-  const { address, isReconnecting } = useAccount({
-    onDisconnect: () => {
-      signOut();
-    },
-  });
+  const {
+    user: { address },
+    status,
+  } = useUser();
   const { chain } = useNetwork();
-  const { data, error } = useAuth();
   const [open, setOpen] = useState(false);
-  const { pathname } = useRouter();
-
-  const { signOut } = useSignOut();
 
   useEffect(() => {
-    try {
-      if (!data && !error) return;
+    setOpen((status !== "loading" && !address) || chain?.unsupported || false);
+  }, [status, address, chain]);
 
-      if (!address || chain?.unsupported) throw new Error("Wallet error");
-      if (error || !data?.user) throw new Error("Error validating user");
-
-      const {
-        roles: { admin, contentPublisher, metadataManager },
-      } = data.user;
-
-      if (
-        !pathname.includes("app") &&
-        !admin &&
-        !contentPublisher &&
-        !metadataManager
-      )
-        throw new Error("User not authorized");
-
-      setOpen(false);
-    } catch (err) {
-      console.log("Error signing in", err);
-      setOpen(true);
-    }
-  }, [data, error, address, chain, pathname]);
-
-  const content = (
-    <ModalWrapper setOpen={() => {}} open={open} className="w-full max-w-lg">
+  return (
+    <ModalWrapper setOpen={() => {}} open={open}>
       <AuthModal />
     </ModalWrapper>
   );
-
-  return { content };
 };
 
 export default useAuthModal;

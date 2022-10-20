@@ -3,26 +3,23 @@ import { configureChains, chain, createClient } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
-export enum WalletAppContext {
-  PLATFORM,
-  ADMIN,
-}
-
-export const ChainsByAppContext = {
-  [WalletAppContext.PLATFORM]: [
-    chain.mainnet,
-    chain.polygon,
-    chain.arbitrum,
-    chain.optimism,
-  ],
-  [WalletAppContext.ADMIN]: [chain.goerli],
+const isAdmin = () => {
+  if (typeof window !== "object") return false;
+  return (
+    window.location.pathname.startsWith("/artiva") ||
+    window.location.hostname.startsWith("app")
+  );
 };
 
-export const getWalletClient = (ctx: WalletAppContext) => {
-  const { chains, provider } = configureChains(ChainsByAppContext[ctx], [
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY }),
-    publicProvider(),
-  ]);
+export const getWalletClient = () => {
+  const admin = isAdmin();
+  const { chains, provider, webSocketProvider } = configureChains(
+    admin ? [chain.goerli] : [chain.mainnet],
+    [
+      alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY }),
+      publicProvider(),
+    ]
+  );
 
   const { connectors } = getDefaultWallets({
     appName: "Artiva",
@@ -33,7 +30,8 @@ export const getWalletClient = (ctx: WalletAppContext) => {
     autoConnect: true,
     connectors,
     provider,
+    webSocketProvider,
   });
 
-  return { wagmiClient, chains };
+  return { wagmiClient, chains, admin };
 };

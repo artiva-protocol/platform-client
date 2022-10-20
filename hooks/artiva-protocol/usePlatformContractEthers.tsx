@@ -8,13 +8,17 @@ const usePlatformContractEthers = (signer: ethers.Signer | undefined) => {
     query: { platform },
   } = useRouter();
   return useMemo(() => {
-    return platform
-      ? new ethers.Contract(
-          platform as string,
-          new ethers.utils.Interface(Platform.abi),
-          signer
-        )
-      : undefined;
+    if (
+      !platform ||
+      !(platform as string).startsWith("0x") ||
+      platform.length !== 42
+    )
+      return;
+    return new ethers.Contract(
+      platform as string,
+      new ethers.utils.Interface(Platform.abi),
+      signer
+    );
   }, [signer, platform]);
 };
 

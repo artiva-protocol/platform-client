@@ -6,7 +6,7 @@ import { Fragment } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <GlobalProvider>
+    <GlobalProvider pageProps={pageProps}>
       <Fragment>
         <Component {...pageProps} />
       </Fragment>

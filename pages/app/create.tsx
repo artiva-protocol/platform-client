@@ -140,7 +140,7 @@ const SuccessModal = ({ platformAddress }: { platformAddress: string }) => {
         <div className="text-5xl">🥳</div>
         <div className="text-2xl mt-5">Created Successfully</div>
         <div className="text-gray-500 mt-2">
-          Your paltform has successfully been created onchain.
+          Your platform has successfully been created onchain.
         </div>
         <Link href={`/platform/${platformAddress}`}>
           <a className="bg-black h-8 w-full rounded-md text-white mt-8 flex items-center justify-around">

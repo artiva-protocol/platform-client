@@ -16,17 +16,17 @@ const buttonInactive =
 
 const AuthModal = () => {
   const { chain } = useNetwork();
-  const [address, setAddress] = useState<string | undefined>();
-  useAccount({
-    onConnect: ({ address }) => {
-      setAddress(address);
+  const {
+    query: { platform },
+    reload,
+  } = useRouter();
+  const { address } = useAccount({
+    onConnect: ({ isReconnected }) => {
+      //if (!isReconnected) reload();
     },
   });
   const { signOut } = useSignOut();
   const [signIn, setSignIn] = useState(false);
-  const {
-    query: { platform },
-  } = useRouter();
 
   const { mutate } = useSWRConfig();
   const { send } = useSignIn({

@@ -21,7 +21,7 @@ const useAuthModal = () => {
 
   useEffect(() => {
     try {
-      if ((!data && !error) || isReconnecting) return;
+      if (!data && !error) return;
 
       if (!address || chain?.unsupported) throw new Error("Wallet error");
       if (error || !data?.user) throw new Error("Error validating user");
@@ -43,7 +43,7 @@ const useAuthModal = () => {
       console.log("Error signing in", err);
       setOpen(true);
     }
-  }, [data, error, address, chain, pathname, isReconnecting]);
+  }, [data, error, address, chain, pathname]);
 
   const content = (
     <ModalWrapper setOpen={() => {}} open={open} className="w-full max-w-lg">

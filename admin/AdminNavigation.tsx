@@ -13,7 +13,6 @@ import Image from "next/future/image";
 
 const AdminNavigation = () => {
   const router = useRouter();
-  const { signOut } = useSignOut();
 
   const getStyle = (key: string) => {
     return router.pathname.includes(key)
@@ -60,13 +59,6 @@ const AdminNavigation = () => {
             </div>
           </a>
         </Link>
-
-        <button onClick={signOut} className="flex items-center mt-8">
-          <LockClosedIcon className="mr-4 w-5 text-gray-400 " />
-          <div className={`text-sm text-gray-600 font-light text-gray-400`}>
-            Log Out
-          </div>
-        </button>
       </div>
       <div className="absolute bottom-4 left-6">
         <ConnectButton.Custom>

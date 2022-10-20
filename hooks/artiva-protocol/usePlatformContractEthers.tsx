@@ -7,6 +7,7 @@ const usePlatformContractEthers = (signer: ethers.Signer | undefined) => {
   const {
     query: { platform },
   } = useRouter();
+
   return useMemo(() => {
     if (
       !platform ||

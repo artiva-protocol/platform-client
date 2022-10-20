@@ -1,4 +1,3 @@
-import useAuthModal from "@/hooks/auth/useAuthModal";
 import { CustomConnectButton } from "@artiva/shared";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -7,11 +6,8 @@ import Link from "next/link";
 import { Fragment } from "react";
 
 const AppHeader = () => {
-  const authModal = useAuthModal();
-
   return (
     <Fragment>
-      {authModal.content}
       <div className="flex justify-between items-center p-6 px-10 bg-white">
         <Link href="/">
           <a className="flex items-center">

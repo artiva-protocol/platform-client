@@ -3,8 +3,15 @@ import { Fragment } from "react";
 import AppHeader from "./Header";
 import Link from "next/link";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { PlatformSelectionType } from "pages/app/platform/[platform]";
 
-const PlatformHeader = () => {
+const PlatformHeader = ({
+  selected,
+  setSelected,
+}: {
+  selected: PlatformSelectionType;
+  setSelected: (selected: PlatformSelectionType) => void;
+}) => {
   const {
     query: { platform },
     pathname,
@@ -15,24 +22,22 @@ const PlatformHeader = () => {
       <AppHeader />
       <div className="p-2 px-10 bg-white flex items-center justify-start w-full border-b">
         <div className="flex">
-          <Link href={`/platform/${platform}`}>
-            <a
-              className={`mr-6 ${
-                !pathname.includes("domains") ? "text-black font-bold" : ""
-              }`}
-            >
-              Platform
-            </a>
-          </Link>
-          <Link href={`/platform/${platform}/domains`}>
-            <a
-              className={`mr-6 ${
-                pathname.includes("domains") ? "text-black font-bold" : ""
-              } `}
-            >
-              Domains
-            </a>
-          </Link>
+          <button
+            onClick={() => setSelected("platform")}
+            className={`mr-6 ${
+              selected === "platform" ? "text-black font-bold" : ""
+            }`}
+          >
+            Platform
+          </button>
+          <button
+            onClick={() => setSelected("domain")}
+            className={`mr-6 ${
+              selected === "domain" ? "text-black font-bold" : ""
+            } `}
+          >
+            Domains
+          </button>
           <a
             href={`http://${platform}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}/artiva`}
             className="mr-6 text-gray-600 flex items-center"

@@ -1,3 +1,4 @@
+import useAxios from "@/hooks/axios/useAxios";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 import { Platform } from "@artiva/shared";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
@@ -11,6 +12,7 @@ import {
   InferGetStaticPropsType,
 } from "next";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 export async function getStaticPaths() {
@@ -33,9 +35,26 @@ export const getStaticProps = async (
   };
 };
 
+export type PlatformSelectionType = "platform" | "domain";
+
 const PlatformIndex = ({
   platform,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const [selected, setSelected] = useState<PlatformSelectionType>("platform");
+
+  return (
+    <div className="bg-gray-100 min-h-screen">
+      <PlatformHeader selected={selected} setSelected={setSelected} />
+      {selected === "domain" ? (
+        <PlatformDomains platform={platform} />
+      ) : (
+        <PlatformData platform={platform} />
+      )}
+    </div>
+  );
+};
+
+const PlatformData = ({ platform }: { platform: Platform }) => {
   const router = useRouter();
   const { platform: platformContract } = router.query;
   const { data: deployments } = useSWR<Site>(
@@ -43,83 +62,144 @@ const PlatformIndex = ({
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <PlatformHeader />
-      <div className="flex h-[83vh]">
-        <div className="flex items-center justify-around w-1/2 text-left">
-          <div className="w-[35vw]">
-            <div className="text-3xl font-bold">Platform Deployments</div>
-            <div className="mt-1 text-gray-500">
-              Onchain and offchain deployments for your platform
-            </div>
+    <div className="flex h-[83vh]">
+      <div className="flex items-center justify-around w-1/2 text-left">
+        <div className="w-[35vw]">
+          <div className="text-3xl font-bold">Platform Deployments</div>
+          <div className="mt-1 text-gray-500">
+            Onchain and offchain deployments for your platform
+          </div>
 
-            <div className="bg-white rounded-md mt-5 text-sm">
-              <a
-                href={`${
-                  BLOCK_EXPLORER_BY_NETWORK[ArtivaNetworks.GOERLI]
-                }/address/${platformContract}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between mx-2 py-2 border-b"
-              >
-                <div className="text-gray-500">Contract</div>
-                <div className="flex items-center">
-                  <div className="w-full px-3 h-10 flex items-center justify-start text-gray-700 rounded-md">
-                    {`${platformContract?.slice(
-                      0,
-                      6
-                    )}...${platformContract?.slice(
-                      platformContract.length - 6,
-                      platformContract.length
-                    )}`}
-                  </div>
-                  <ArrowTopRightOnSquareIcon className="h-5 w-full text-gray-500" />
+          <div className="bg-white rounded-md mt-5 text-sm">
+            <a
+              href={`${
+                BLOCK_EXPLORER_BY_NETWORK[ArtivaNetworks.GOERLI]
+              }/address/${platformContract}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between mx-2 py-2 border-b"
+            >
+              <div className="text-gray-500">Contract</div>
+              <div className="flex items-center">
+                <div className="w-full px-3 h-10 flex items-center justify-start text-gray-700 rounded-md">
+                  {`${platformContract?.slice(
+                    0,
+                    6
+                  )}...${platformContract?.slice(
+                    platformContract.length - 6,
+                    platformContract.length
+                  )}`}
                 </div>
-              </a>
+                <ArrowTopRightOnSquareIcon className="h-5 w-full text-gray-500" />
+              </div>
+            </a>
 
-              <a
-                aria-disabled={!deployments?.subdomain}
-                href={`http://${deployments?.subdomain}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex items-center justify-between mx-2 py-2 border-b text-sm ${
-                  deployments?.subdomain ? "" : "pointer-events-none"
-                }`}
-              >
-                <div className="text-gray-500">Subdomain</div>
-                <div className="flex items-center">
-                  <div className="w-full px-3 h-10 flex items-center justify-start text-gray-700 rounded-md">
-                    {deployments?.subdomain
-                      ? `${deployments?.subdomain}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`
-                      : "None"}
-                  </div>
-                  <ArrowTopRightOnSquareIcon className="h-5 w-full text-gray-500" />
+            <a
+              aria-disabled={!deployments?.subdomain}
+              href={`http://${deployments?.subdomain}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex items-center justify-between mx-2 py-2 border-b text-sm ${
+                deployments?.subdomain ? "" : "pointer-events-none"
+              }`}
+            >
+              <div className="text-gray-500">Subdomain</div>
+              <div className="flex items-center">
+                <div className="w-full px-3 h-10 flex items-center justify-start text-gray-700 rounded-md">
+                  {deployments?.subdomain
+                    ? `${deployments?.subdomain}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`
+                    : "None"}
                 </div>
-              </a>
+                <ArrowTopRightOnSquareIcon className="h-5 w-full text-gray-500" />
+              </div>
+            </a>
 
-              <div className="flex items-center justify-between mx-2 py-2">
-                <div className="text-gray-500">Custom Domain</div>
-                <div className="flex items-center">
-                  <div className="w-full px-3 h-10 flex items-center justify-start text-gray-700 rounded-md">
-                    None
-                  </div>
-                  <ArrowTopRightOnSquareIcon className="h-5 w-full text-gray-500" />
+            <div className="flex items-center justify-between mx-2 py-2">
+              <div className="text-gray-500">Custom Domain</div>
+              <div className="flex items-center">
+                <div className="w-full px-3 h-10 flex items-center justify-start text-gray-700 rounded-md">
+                  None
                 </div>
+                <ArrowTopRightOnSquareIcon className="h-5 w-full text-gray-500" />
               </div>
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-around w-1/2 border-r border-gray-300">
-          <a
-            href={`http://${platformContract}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`}
-            className="w-[45vw] h-[60vh] shadow-xl"
-          >
-            <PlatformPlacard
-              preview={true}
-              platform={{ ...platform, contract: platformContract as string }}
+      </div>
+      <div className="flex items-center justify-around w-1/2 border-r border-gray-300">
+        <a
+          href={`http://${platformContract}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`}
+          className="w-[45vw] h-[60vh] shadow-xl"
+        >
+          <PlatformPlacard
+            preview={true}
+            platform={{ ...platform, contract: platformContract as string }}
+          />
+        </a>
+      </div>
+    </div>
+  );
+};
+
+const PlatformDomains = ({ platform }: { platform: Platform }) => {
+  const {
+    query: { platform: platformContract },
+  } = useRouter();
+  const [subdomain, setSubdomain] = useState<string | undefined>();
+  const { data } = useSWR<Site>(
+    `/api/platform/${platformContract}/deployments`
+  );
+
+  useEffect(() => {
+    if (!subdomain && data?.subdomain) setSubdomain(data.subdomain!);
+  }, [subdomain, data]);
+
+  const { send, loading } = useAxios({
+    url: `/api/platform/${platformContract}/deployments`,
+    data: {
+      subdomain,
+    },
+  });
+
+  return (
+    <div className="flex h-[83vh]">
+      <div className="flex items-center justify-around w-1/2 text-left">
+        <div className="w-[35vw]">
+          <div className="text-3xl font-bold">Domain Settings</div>
+          <div className="mt-1 text-gray-500">
+            Edit domains for your platform
+          </div>
+
+          <div className="mt-8 text-sm">Subdomain</div>
+          <div className="flex items-center mt-1">
+            <input
+              value={subdomain}
+              onChange={(e) => setSubdomain(e.target.value)}
+              className="w-full rounded-l-md px-3 h-8 focus:outline-none border-r"
+              placeholder="mysite"
             />
-          </a>
+            <div className="bg-white text-gray-500 rounded-r-md px-6 h-8 flex items-center">
+              .{process.env.NEXT_PUBLIC_DEPLOYMENT_URL}
+            </div>
+          </div>
+          <button
+            onClick={send}
+            className="bg-black text-white w-full mt-6 h-8 rounded-md"
+          >
+            {loading ? "Saving..." : "Save"}
+          </button>
         </div>
+      </div>
+      <div className="flex items-center justify-around w-1/2">
+        <a
+          href={`http://${platformContract}.${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`}
+          className="w-[45vw] h-[60vh] shadow-xl"
+        >
+          <PlatformPlacard
+            preview={true}
+            platform={{ ...platform, contract: platformContract as string }}
+          />
+        </a>
       </div>
     </div>
   );

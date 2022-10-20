@@ -44,9 +44,8 @@ const Reorder = () => {
 
   useEffect(() => {
     if (!posts) return;
-    if (dragContext.length < 1)
-      setDragContext(posts.map((x, i) => ({ ...x, order: i })));
-  }, [dragContext, posts]);
+    setDragContext(posts.map((x, i) => ({ ...x, order: i })));
+  }, [posts]);
 
   if (!dragContext) return <Fragment />;
 

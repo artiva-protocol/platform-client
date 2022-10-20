@@ -48,7 +48,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
           const nextAuthHost = new URL(nextAuthUrl).host;
 
-          console.log("auth", { domain: siwe.domain, nextAuthUrl });
+          console.log("auth", { domain: siwe.domain, nextAuthHost });
+
           if (siwe.domain !== nextAuthHost) {
             return null;
           }

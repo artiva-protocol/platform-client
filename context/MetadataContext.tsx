@@ -17,10 +17,10 @@ export type UseMetadataContextType = {
 };
 
 const useMetadataContext = (): UseMetadataContextType => {
-  const { data: initalData } = useMetadata();
   const {
     query: { platform },
   } = useRouter();
+  const { data: initalData } = useMetadata({ platform: platform as string });
   const [data, setData] = useState<Platform>();
   const [changeCount, setChangeCount] = useState(0);
   const swr = useSWRConfig();

@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@artiva/shared@^0.1.45":
-  version "0.1.45"
-  resolved "https://registry.yarnpkg.com/@artiva/shared/-/shared-0.1.45.tgz#3372f49b779909ee13e83d107a9b7ec0e952f4a5"
-  integrity sha512-I2BWbAjBQgeHIM1CtySd/RS9LtEXizMHjGoKzHIy8LbKIMuMbmlT1izh+D3YzS6Ot+y3fAxXNGvw58XRKrgAWg==
+"@artiva/shared@^0.1.46":
+  version "0.1.46"
+  resolved "https://registry.yarnpkg.com/@artiva/shared/-/shared-0.1.46.tgz#7751c774db98fb5b3fd53a81e407b0a32713df91"
+  integrity sha512-DIkHqgaSZkt2DrwXH6IMTtQI6WWVJJtKKPlLdhpgK3X1WjXXUklCI4QwnADg4+w+szEChRG8hJbcYKACwWUT1A==
   dependencies:
     ethereum-blockies-base64 "^1.0.2"
 

@@ -10,6 +10,7 @@ import {
 } from "next";
 import useInitTheme from "@/hooks/theme/useInitTheme";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
+import { useRouter } from "next/router";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: "blocking" };
@@ -35,6 +36,9 @@ const Home = ({ platform }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const ctx = useContext(ArtivaContext);
 
   const { themeURL } = useInitTheme({ platform });
+  const {
+    query: { platform: platformId },
+  } = useRouter();
 
   const HomeDynamic = useThemeComponent<HomeProps>({
     component: "./Home",
@@ -44,7 +48,10 @@ const Home = ({ platform }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout>
       {HomeDynamic ? (
-        <HomeDynamic ctx={ctx} platform={platform} />
+        <HomeDynamic
+          ctx={ctx}
+          platform={{ ...platform, id: platformId as string }}
+        />
       ) : (
         <Fragment />
       )}

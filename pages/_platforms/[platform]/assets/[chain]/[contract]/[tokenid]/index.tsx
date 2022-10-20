@@ -30,6 +30,9 @@ const NFT = ({
   const router = useRouter();
   const { chain, contract, tokenid } = router.query;
   const ctx = useContext(ArtivaContext);
+  const {
+    query: { platform: platformId },
+  } = useRouter();
 
   const { themeURL } = useInitTheme({ platform });
 
@@ -44,7 +47,11 @@ const NFT = ({
     tokenId: tokenid as string,
   });
 
-  const props: NFTProps = { nft: nft as NFTObject, ctx, platform };
+  const props: NFTProps = {
+    nft: nft as NFTObject,
+    ctx,
+    platform: { ...platform, id: platformId as string },
+  };
 
   if (!NFTComponentDynamic) return <Fragment />;
   return <NFTComponentDynamic {...props} />;

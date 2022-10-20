@@ -1,11 +1,9 @@
 import {
   Layout,
-  usePosts,
   NFTRenderer,
   usePostContent,
   useMarket,
   IMarketAdapter,
-  PostProps,
   PostTypeEnum,
   ChainIdentifier,
 } from "@artiva/shared";
@@ -22,7 +20,6 @@ import {
 import { useState } from "react";
 import { ethers } from "ethers";
 import CustomConnectButton from "@/components/CustomConnectButton";
-import useThemeComponent from "@/hooks/theme/useThemeComponent";
 
 const Buy = () => {
   const router = useRouter();
@@ -41,8 +38,6 @@ const Buy = () => {
   });
   const market = useMarket(nft) as IMarketAdapter | undefined;
 
-  const PostDynamic = useThemeComponent<PostProps>({ component: "./Post" });
-
   const ask = useMemo(
     () =>
       nft?.markets?.find(
@@ -53,7 +48,7 @@ const Buy = () => {
     [nft?.markets]
   ) as AuctionLike | undefined;
 
-  if (!PostDynamic || !nft || !ask) return <Fragment />;
+  if (!nft || !ask) return <Fragment />;
 
   const onBuyNow = async () => {
     setLoading(true);

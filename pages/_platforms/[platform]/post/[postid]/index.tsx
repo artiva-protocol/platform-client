@@ -21,6 +21,7 @@ import {
   getPlatformMetadataByPlatform,
   getPostByPlatformAndId,
 } from "@/services/platform-graph";
+import { useRouter } from "next/router";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: "blocking" };
@@ -58,6 +59,9 @@ const PostComponent = ({
 
   const { nft, nftContract } = usePostContent(post.type, post.content);
   const { themeURL } = useInitTheme({ platform });
+  const {
+    query: { platform: platformId },
+  } = useRouter();
 
   const NFTDynamic = useThemeComponent<NFTProps>(
     post.type == PostTypeEnum.NFT
@@ -82,10 +86,14 @@ const PostComponent = ({
   return (
     <Layout>
       {NFTDynamic ? (
-        <NFTDynamic platform={platform} ctx={ctx} nft={nft} />
+        <NFTDynamic
+          platform={{ ...platform, id: platformId as string }}
+          ctx={ctx}
+          nft={nft}
+        />
       ) : NFTContractDynamic ? (
         <NFTContractDynamic
-          platform={platform}
+          platform={{ ...platform, id: platformId as string }}
           ctx={ctx}
           nftContract={nftContract}
         />

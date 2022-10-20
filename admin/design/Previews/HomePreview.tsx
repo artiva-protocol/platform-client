@@ -20,7 +20,7 @@ const HomePreview = () => {
 
   return (
     <Layout>
-      <HomeDynamic ctx={ctx} platform={designerData} />
+      <HomeDynamic ctx={ctx} platform={{ ...designerData, id: "0x0" }} />
     </Layout>
   );
 };

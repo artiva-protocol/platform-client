@@ -29,6 +29,9 @@ const NFTContract = ({
   const router = useRouter();
   const { chain, contract } = router.query;
   const ctx = useContext(ArtivaContext);
+  const {
+    query: { platform: platformId },
+  } = useRouter();
 
   const { themeURL } = useInitTheme({ platform });
 
@@ -44,7 +47,7 @@ const NFTContract = ({
 
   const props: NFTContractProps = {
     ctx,
-    platform,
+    platform: { ...platform, id: platformId as string },
     nftContract,
   };
 

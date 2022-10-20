@@ -42,6 +42,8 @@ const CreatePlatform = () => {
       description: data.description!,
       custom: {},
     },
+    publishers: address ? [address] : undefined,
+    managers: address ? [address] : undefined,
     onSettled: () => {
       mutate();
     },

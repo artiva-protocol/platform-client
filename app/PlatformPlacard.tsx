@@ -16,7 +16,6 @@ const PlatformPlacard = ({
   platform: Partial<PlatformPlacardType>;
   preview?: boolean;
 }) => {
-  console.log("platform", platform);
   return (
     <div className="h-full w-full relative">
       <div className="flex items-center absolute text-white text-lg font-semibold m-6 z-20">

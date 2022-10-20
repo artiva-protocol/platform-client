@@ -11,14 +11,18 @@ export type UseCreatePlatformType = {
 
 const useCreatePlatform = ({
   data,
+  publishers,
+  managers,
   onSettled,
 }: {
   data: Platform | undefined;
+  publishers?: string[];
+  managers?: string[];
   onSettled?: (data: TransactionReceipt | undefined) => void;
 }): UseCreatePlatformType => {
   const write = useFactoryWrite(
     "create",
-    [JSON.stringify(data), [], []],
+    [JSON.stringify(data), publishers, managers],
     onSettled
   );
 

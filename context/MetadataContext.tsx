@@ -56,7 +56,6 @@ const useMetadataContext = (): UseMetadataContextType => {
     if (!data || !initalData) return;
     let count = 0;
     Object.keys(data).map((x) => {
-      console.log("Comparing", (data as any)[x], (initalData as any)[x]);
       if (isEqual((data as any)[x], (initalData as any)[x])) return;
       count++;
     });

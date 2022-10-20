@@ -43,7 +43,7 @@ const useAuthModal = () => {
       console.log("Error signing in", err);
       setOpen(true);
     }
-  }, [data, error, address, chain, isReconnecting]);
+  }, [data, error, address, chain, pathname, isReconnecting]);
 
   const content = (
     <ModalWrapper setOpen={() => {}} open={open} className="w-full max-w-lg">

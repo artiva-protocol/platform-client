@@ -16,7 +16,12 @@ const buttonInactive =
 
 const AuthModal = () => {
   const { chain } = useNetwork();
-  const { address } = useAccount();
+  const [address, setAddress] = useState<string | undefined>();
+  useAccount({
+    onConnect: ({ address }) => {
+      setAddress(address);
+    },
+  });
   const { signOut } = useSignOut();
   const [signIn, setSignIn] = useState(false);
   const {
@@ -39,6 +44,8 @@ const AuthModal = () => {
     setSignIn(true);
     send();
   };
+  console.log("address", address);
+  console.log("unsupported", chain?.unsupported);
 
   return (
     <div className="h-[50vh] flex items-center justify-around">

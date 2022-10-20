@@ -8,11 +8,11 @@ import DesignNavigation from "./design/DesignNavigation";
 
 const AdminLayout = ({ children }: { children: React.ReactChild }) => {
   const router = useRouter();
-  const { content } = useAuthModal();
+  const authModal = useAuthModal();
 
   return (
     <div className="flex">
-      {content}
+      {authModal.content}
       {router.pathname.includes("design") ? (
         <DesignNavigation />
       ) : router.pathname.includes("nfts") ? (

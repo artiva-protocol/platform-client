@@ -38,7 +38,6 @@ const GlobalProvider = ({
   const getSiweMessageOptions: GetSiweMessageOptions = () => ({
     statement: "Sign in to Artiva",
     domain: process.env.NEXT_PUBLIC_DEPLOYMENT_URL,
-    uri: process.env.NEXT_PUBLIC_DEPLOYMENT_URL,
   });
 
   return (

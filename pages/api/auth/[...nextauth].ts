@@ -37,11 +37,16 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             JSON.parse(credentials?.message || "{}")
           );
 
+          console.log("in auth");
+
           const nextAuthUrl = process.env.NEXT_PUBLIC_DEPLOYMENT_URL
             ? `https://${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`
             : process.env.VERCEL_URL
             ? `https://${process.env.VERCEL_URL}`
             : null;
+
+          console.log("nextAuthUrl", { nextAuthUrl });
+
           if (!nextAuthUrl) {
             return null;
           }

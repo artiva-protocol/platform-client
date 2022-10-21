@@ -40,7 +40,6 @@ export class SoundXYZDataSource {
   };
 
   transformEdition = (schedules: MintSchedule[]): EditionContractLike[] => {
-    console.log("schedules", schedules);
     return schedules.map((x) => ({
       contractAddress: x.editionAddress,
       source: PRIMARY_SALE_SOURCES.soundXYZ,

@@ -8,12 +8,12 @@ const PostPlacard = ({ post }: { post: Post }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex flex-col m-4">
+    <div className="flex flex-col m-4 relative">
       <TagModal open={open} setOpen={setOpen} post={post} />
       <div className="w-full h-[60vh]">
         <PostComponent post={post} selected={false} />
       </div>
-      <div className="pl-4 h-14 flex items-center w-full -mt-8 z-40">
+      <div className="-bottom-6 right-4 h-14 z-40 flex items-center absolute">
         <button className="bg-red-500 mr-2 h-8 w-8 flex items-center justify-around rounded-md">
           <TrashIcon className="h-5 text-white" />
         </button>

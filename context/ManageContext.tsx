@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Post } from "@artiva/shared";
+import { Post, usePosts } from "@artiva/shared";
 import { createContainer } from "unstated-next";
 import useSWR from "swr";
 import { useAccount } from "wagmi";
@@ -10,8 +10,11 @@ import { useRouter } from "next/router";
 
 export type UseCuratorType = {
   collection: Post[];
-  setContent: (data: Post) => void;
-  set: UseSetContentsType;
+  setPost: (data: Post) => void;
+  loadMore: () => void;
+  save: UseSetContentsType;
+  more: boolean;
+  loading: boolean;
 };
 
 export type ManagePost = Post & { dirty?: boolean };
@@ -22,15 +25,19 @@ const useManageContext = (): UseCuratorType => {
   } = useRouter();
   const { address } = useAccount();
 
-  const { data } = useSWR(
-    address ? `/api/platform/${platform}/user/${address}/posts` : undefined
-  );
+  const {
+    data: posts,
+    more,
+    size,
+    setSize,
+    loading,
+  } = usePosts({ platform: platform as string, owner: address });
 
   const [collection, setCollection] = useState<ManagePost[]>([]);
 
-  const set = useSetContents(collection.filter((x) => x.dirty === true));
+  const save = useSetContents(collection.filter((x) => x.dirty === true));
 
-  const setContent = (data: Post) => {
+  const setPost = (data: Post) => {
     setCollection((x) => {
       const idx = x.findIndex((y) => y.id == data.id);
       if (idx >= 0) x[idx] = { ...data, dirty: true };
@@ -38,15 +45,27 @@ const useManageContext = (): UseCuratorType => {
     });
   };
 
+  const loadMore = () => {
+    setSize(size + 1);
+  };
+
   useEffect(() => {
-    if (!data?.posts || collection?.length > 0) return;
-    setCollection(data?.posts);
-  }, [data?.posts, collection]);
+    if (!posts || collection.length > 0) return;
+    setCollection(posts.flat());
+  }, [posts]);
+
+  useEffect(() => {
+    if (!posts || size < 2 || loading) return;
+    setCollection((x) => [...x, ...posts[size - 1]]);
+  }, [size, posts, loading]);
 
   return {
     collection,
-    setContent,
-    set,
+    setPost,
+    loadMore,
+    save,
+    more,
+    loading,
   };
 };
 

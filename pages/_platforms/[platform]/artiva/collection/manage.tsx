@@ -5,6 +5,7 @@ import PostPlacard from "@/admin/collection/manage/PostPlacard";
 import { Post } from "@artiva/shared";
 import ProtocolSaveToast from "@/components/ProtocolSaveToast";
 import ManageContext from "@/context/ManageContext";
+import { Fragment } from "react";
 
 const Manage = () => {
   return (
@@ -22,7 +23,7 @@ const Manage = () => {
 };
 
 const Header = () => {
-  const { set } = ManageContext.useContainer();
+  const { save } = ManageContext.useContainer();
 
   return (
     <div className="pb-4 flex justify-between items-baseline relative w-full">
@@ -35,26 +36,38 @@ const Header = () => {
       </div>
       <div className="flex">
         <button
-          onClick={set.save}
+          onClick={save.save}
           className="bg-black text-white h-8 w-24 rounded-md"
         >
           Save
         </button>
       </div>
       <div className="absolute top-14 right-0 z-10">
-        <ProtocolSaveToast {...set} />
+        <ProtocolSaveToast {...save} />
       </div>
     </div>
   );
 };
 
 const Feed = () => {
-  const { collection } = ManageContext.useContainer();
+  const { collection, more, loading, loadMore } = ManageContext.useContainer();
   return (
-    <div className="grid grid-cols-2 h-[84vh] overflow-auto">
-      {collection?.map((x: Post, i: number) => {
-        return <PostPlacard key={i} post={x} />;
-      })}
+    <div className="h-[82vh] overflow-auto">
+      <div className="grid grid-cols-2">
+        {collection?.map((x: Post, i: number) => {
+          return <PostPlacard key={i} post={x} />;
+        })}
+      </div>
+      {more && (
+        <div className="w-full flex items-center justify-around">
+          <button
+            onClick={loadMore}
+            className="h-10 my-4 w-96 rounded-md bg-black text-white"
+          >
+            {loading ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

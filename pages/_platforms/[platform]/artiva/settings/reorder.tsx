@@ -35,13 +35,11 @@ const Reorder = () => {
 
   const {
     data: posts,
+    more,
     size,
     setSize,
+    loading,
   } = usePosts({ platform: platform as string });
-
-  const limit = 20;
-  const loading = size > (posts?.length || 0);
-  const end = (posts ? posts[posts.length]?.length : 0) < limit;
 
   const [dragContext, setDragContext] = useState<PostOrderInstace[]>([]);
 
@@ -110,7 +108,7 @@ const Reorder = () => {
                 )}
               </Droppable>
             </DragDropContext>
-            {!end && (
+            {more && (
               <div className="my-8 w-full flex items-center justify-around">
                 <button
                   onClick={() => {

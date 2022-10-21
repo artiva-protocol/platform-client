@@ -77,7 +77,7 @@ export const POSTS_BY_PLATFORM = (
     : undefined;
 
   const ownerQuery = ownerAddress
-    ? `owner: ${platformAddress}:${ownerAddress}`
+    ? `owner: "${platformAddress}:${ownerAddress}"`
     : undefined;
 
   const tagQuery = tag

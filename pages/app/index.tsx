@@ -9,6 +9,7 @@ import Link from "next/link";
 import PlatformPlacard from "app/PlatformPlacard";
 import useUser from "@/hooks/auth/useUser";
 import { Fragment } from "react";
+import ArtivaConnectButton from "@/components/ArtivaConnectButton";
 
 const AppIndex = () => {
   const {
@@ -37,6 +38,7 @@ const AppIndex = () => {
                     Create my Platform
                   </a>
                 </Link>
+                <ArtivaConnectButton className="border border-gray-500 flex items-center justify-around h-8 w-[20vw] rounded-md mt-2" />
               </div>
             </div>
           )}

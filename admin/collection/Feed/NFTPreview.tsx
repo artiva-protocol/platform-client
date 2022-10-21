@@ -8,16 +8,18 @@ export const NFTPreview = ({
   onClick,
   selected,
   renderingContext,
+  showDetails = true,
 }: {
   nft?: NFTObject;
   onClick?: () => void;
   selected?: boolean;
   renderingContext?: "FULL" | "PREVIEW" | "THUMBNAIL";
+  showDetails?: boolean;
 }) => {
   return (
     <div className="rounded-md w-full h-full max-h-lg">
       <div className="relative w-full h-full text-left">
-        {renderingContext !== "THUMBNAIL" && (
+        {showDetails && (
           <div className="opacity-0 hover:opacity-100 transition-opacity bg-black/[.6] absolute top-0 left-0 z-30 w-full h-full overflow-none">
             <div className="z-20 text-white absolute top-0 left-0 w-full p-5">
               <h2 className="text-xl font-semibold">{nft?.metadata?.name}</h2>

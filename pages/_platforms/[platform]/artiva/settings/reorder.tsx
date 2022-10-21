@@ -18,6 +18,7 @@ import MetadataSaveButton from "@/admin/MetadataSaveButton";
 import { Post, PostTypeEnum, usePostContent, usePosts } from "@artiva/shared";
 import PostPreview from "@/admin/collection/Feed/PostPreview";
 import { Fragment, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async () => {
   resetServerContext();
@@ -28,7 +29,20 @@ export type PostOrderInstace = Post & { order: number };
 
 const Reorder = () => {
   const { merge } = MetadataContext.useContainer();
-  const { data: posts } = usePosts();
+  const {
+    query: { platform },
+  } = useRouter();
+
+  const {
+    data: posts,
+    size,
+    setSize,
+  } = usePosts({ platform: platform as string });
+
+  const limit = 20;
+  const loading = size > (posts?.length || 0);
+  const end = (posts ? posts[posts.length]?.length : 0) < limit;
+
   const [dragContext, setDragContext] = useState<PostOrderInstace[]>([]);
 
   const onDragEnd = (result: DropResult) => {
@@ -42,10 +56,19 @@ const Reorder = () => {
     });
   };
 
+  const formatPosts = (rawPosts: Post[]) => {
+    return rawPosts.map((x, i) => ({ ...x, order: i }));
+  };
+
   useEffect(() => {
-    if (!posts) return;
-    setDragContext(posts.map((x, i) => ({ ...x, order: i })));
+    if (!posts || dragContext.length > 0) return;
+    setDragContext(formatPosts(posts.flat()));
   }, [posts]);
+
+  useEffect(() => {
+    if (!posts || size < 2 || loading) return;
+    setDragContext((x) => [...x, ...formatPosts(posts[size - 1])]);
+  }, [size, posts, loading]);
 
   if (!dragContext) return <Fragment />;
 
@@ -87,6 +110,18 @@ const Reorder = () => {
                 )}
               </Droppable>
             </DragDropContext>
+            {!end && (
+              <div className="my-8 w-full flex items-center justify-around">
+                <button
+                  onClick={() => {
+                    setSize(size + 1);
+                  }}
+                  className="h-8 w-72 rounded-md bg-black text-white"
+                >
+                  {loading ? "Loading..." : "Load more"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -102,7 +137,8 @@ const ReorderPlacard = ({ post }: { post: Post }) => {
         <PostPreview
           post={post}
           selected={false}
-          renderingContext={"THUMBNAIL"}
+          renderingContext={"PREVIEW"}
+          showDetails={false}
         />
       </div>
       <div className="flex items-stretch justify-between w-full">

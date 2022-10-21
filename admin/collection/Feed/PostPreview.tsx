@@ -9,11 +9,13 @@ const PostPreview = ({
   selected = false,
   onClick,
   renderingContext = "PREVIEW",
+  showDetails = true,
 }: {
   post: Post | PostRequest;
   selected?: boolean;
   onClick?: () => void;
   renderingContext?: "FULL" | "PREVIEW" | "THUMBNAIL";
+  showDetails?: boolean;
 }) => {
   const { type, content } = post;
   const { nft, nftContract } = usePostContent(type, content);
@@ -27,6 +29,7 @@ const PostPreview = ({
             onClick={onClick}
             selected={selected}
             renderingContext={renderingContext}
+            showDetails={showDetails}
           />
         );
       case PostTypeEnum.NFT_CONTRACT:
@@ -34,6 +37,7 @@ const PostPreview = ({
           <NFTContractPreview
             nftContract={nftContract}
             renderingContext={renderingContext}
+            showDetails={showDetails}
           />
         );
       default:

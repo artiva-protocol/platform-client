@@ -11,9 +11,11 @@ import { NFTObject } from "@zoralabs/nft-hooks";
 const NFTContractPreview = ({
   nftContract,
   renderingContext = "PREVIEW",
+  showDetails = true,
 }: {
   nftContract?: NFTContractObject;
   renderingContext?: "FULL" | "PREVIEW" | "THUMBNAIL";
+  showDetails?: boolean;
 }) => {
   const identifier: NFTIdentifier | undefined = nftContract
     ? {
@@ -26,7 +28,7 @@ const NFTContractPreview = ({
 
   return (
     <div className="h-full max-h-lg relative">
-      {renderingContext !== "THUMBNAIL" && (
+      {showDetails && (
         <Fragment>
           <div className="absolute bg-black/[.4] top-5 right-8 z-30 text-white px-4 py-1 text-xs">
             {nftContract?.collection?.symbol}

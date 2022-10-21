@@ -1,15 +1,12 @@
 import { Platform, Post } from "@artiva/shared";
 import client from "./client";
 import {
-  POSTS_BY_PLATFORM_AND_OWNER,
-  POSTS_BY_PLATFORM,
   USER_ROLES_BY_PLATFORM_AND_USER,
   PLATFORM_METADATA_BY_PLATFORM,
-  POSTS_BY_PLATFORM_AND_TAG,
-  POSTS_BY_PLATFORM_AND_FEATURED,
   POST_BY_PLATFORM_AND_ID,
   PLATFORMS_BY_USER,
   PLATFORMS_BY_USER_AFTER_TIMESTAMP,
+  POSTS_BY_PLATFORM,
 } from "./queries";
 
 export type GetPostsResponse = {
@@ -57,15 +54,6 @@ export const getPlatformsByUser = async (
 
 //POSTS
 
-export const getPostsByPlatform = async (
-  platformAddress: string
-): Promise<GetPostsResponse[]> => {
-  const res = await client.request(
-    POSTS_BY_PLATFORM(platformAddress.toLowerCase())
-  );
-  return res.posts;
-};
-
 export const getPostByPlatformAndId = async (
   platformAddress: string,
   postId: string
@@ -85,33 +73,20 @@ export const getPostByPlatformAndId = async (
   return formattedPost;
 };
 
-export const getPostsByPlatformAndFeatured = async (
-  platformAddress: string
-): Promise<GetPostsResponse[]> => {
-  const res = await client.request(
-    POSTS_BY_PLATFORM_AND_FEATURED(platformAddress.toLowerCase())
-  );
-  return [...res.featured, ...res.posts];
-};
-
-export const getPostsByPlatformAndTag = async (
+export const getPostsByPlatform = async (
   platformAddress: string,
-  tag: string
+  ownerAddress?: string,
+  tag?: string,
+  limit?: number,
+  page?: number
 ): Promise<GetPostsResponse[]> => {
   const res = await client.request(
-    POSTS_BY_PLATFORM_AND_TAG(platformAddress.toLowerCase(), tag)
-  );
-  return res.posts;
-};
-
-export const getPostsByPlatformAndOwner = async (
-  platformAddress: string,
-  ownerAddress: string
-): Promise<GetPostsResponse[]> => {
-  const res = await client.request(
-    POSTS_BY_PLATFORM_AND_OWNER(
+    POSTS_BY_PLATFORM(
       platformAddress.toLowerCase(),
-      ownerAddress.toLowerCase()
+      ownerAddress?.toLowerCase(),
+      tag,
+      limit,
+      page
     )
   );
   return res.posts;

@@ -43,25 +43,6 @@ export const PLATFORMS_BY_USER = (user: string) => {
 
 //POSTS
 
-export const POSTS_BY_PLATFORM = (platformAddress: string) => {
-  return gql`
-    {
-      posts(where: { platform: "${platformAddress}" }, orderBy: order, orderDirection: desc) {
-        id: contentId
-        contentJSON
-        type
-        tags {
-          name
-        }
-        owner {
-            id
-        }
-        setAtTimestamp
-      }
-    }
-    `;
-};
-
 export const POST_BY_PLATFORM_AND_ID = (
   platformAddress: string,
   postId: string
@@ -84,66 +65,32 @@ export const POST_BY_PLATFORM_AND_ID = (
     `;
 };
 
-export const POSTS_BY_PLATFORM_AND_FEATURED = (platformAddress: string) => {
-  return gql`
-  {
-    featured: posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:Featured"] }, orderBy: order, orderDirection: desc) {
-      id: contentId
-      contentJSON
-      type
-      tags {
-        name
-      }
-      owner {
-          id
-      }   
-      setAtTimestamp
-    }
-    posts(where: { platform: "${platformAddress}", tags_not_contains: ["${platformAddress}:Featured"] }, orderBy: order, orderDirection: desc) {
-      id: contentId
-      contentJSON
-      type
-      tags {
-        name
-      }
-      owner {
-          id
-      }
-      setAtTimestamp
-    }
-  }
-  `;
-};
-
-export const POSTS_BY_PLATFORM_AND_TAG = (
+export const POSTS_BY_PLATFORM = (
   platformAddress: string,
-  tag: string
+  ownerAddress?: string,
+  tag?: string,
+  limit: number = 20,
+  page: number = 0
 ) => {
-  return gql`
-  {
-    posts(where: { platform: "${platformAddress}", tags_contains: ["${platformAddress}:${tag}"] }, orderBy: order, orderDirection: desc) {
-      id: contentId
-      contentJSON
-      type
-      tags {
-        name
-      }
-      owner {
-          id
-      }   
-      setAtTimestamp
-    }
-  }
-  `;
-};
+  const platformQuery = platformAddress
+    ? `platform: "${platformAddress}"`
+    : undefined;
 
-export const POSTS_BY_PLATFORM_AND_OWNER = (
-  platformAddress: string,
-  ownerAddress: string
-) => {
+  const ownerQuery = ownerAddress
+    ? `owner: ${platformAddress}:${ownerAddress}`
+    : undefined;
+
+  const tagQuery = tag
+    ? `tags_contains: ["${platformAddress}:${tag}"]`
+    : undefined;
+
+  const whereString = [platformQuery, ownerQuery, tagQuery].join(", ");
+
   return gql`
       {
-        posts(where: { platform: "${platformAddress}", owner: "${platformAddress}:${ownerAddress}" }, orderBy: order, orderDirection: desc) {
+        posts(first: ${limit}, skip: ${
+    limit * page
+  }, where: { ${whereString} }, orderBy: order, orderDirection: desc) {
           id: contentId
           contentJSON
           type

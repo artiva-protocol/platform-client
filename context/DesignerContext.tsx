@@ -32,7 +32,13 @@ const useDesigner = (): UseDesignerType => {
   });
 
   useEffect(() => {
-    if (!config || !data || customsInitilized) return;
+    if (
+      !config ||
+      !data ||
+      Object.keys(data.custom).length > 0 ||
+      customsInitilized
+    )
+      return;
     let tmp = {};
     Object.keys(config.custom).map((x) => {
       (tmp as any)[x] = config.custom[x].default;

@@ -40,6 +40,7 @@ export class SoundXYZDataSource {
   };
 
   transformEdition = (schedules: MintSchedule[]): EditionContractLike[] => {
+    console.log("schedules", schedules);
     return schedules.map((x) => ({
       contractAddress: x.editionAddress,
       source: PRIMARY_SALE_SOURCES.soundXYZ,
@@ -54,7 +55,7 @@ export class SoundXYZDataSource {
           ? x.maxMintable
           : x.maxMintable(Date.now()),
       startTime: x.startTime.toString(),
-      endTime: x.endTime.toString(),
+      endTime: ("cutoffTime" in x ? x.cutoffTime : x.endTime).toString(),
       raw: x,
     }));
   };

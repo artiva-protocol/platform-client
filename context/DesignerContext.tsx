@@ -1,6 +1,6 @@
 import { Platform, CustomProperty } from "@artiva/shared";
 import { UseSaveMetadataType } from "hooks/platform/useSaveMetadata";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { createContainer } from "unstated-next";
 import useThemeConfig from "@/hooks/theme/useThemeConfig";
 import MetadataContext from "./MetadataContext";
@@ -23,12 +23,23 @@ export type UseDesignerType = {
 
 const useDesigner = (): UseDesignerType => {
   const { data, save, mutate, merge } = MetadataContext.useContainer();
+  const [customsInitilized, setCustomsInitilized] = useState(false);
   const [mobile, setMobile] = useState(false);
   const config = useThemeConfig({
     themeURL: `${
       data?.themeURL || process.env.NEXT_PUBLIC_BASE_THEME_URL
     }/remoteEntry.js`,
   });
+
+  useEffect(() => {
+    if (!config || !data || customsInitilized) return;
+    let tmp = {};
+    Object.keys(config.custom).map((x) => {
+      (tmp as any)[x] = config.custom[x].default;
+    });
+    merge({ custom: tmp });
+    setCustomsInitilized(true);
+  }, [data, config, merge, customsInitilized]);
 
   const customProperties = useMemo(() => {
     if (!config) return;

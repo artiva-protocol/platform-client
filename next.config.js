@@ -4,6 +4,7 @@ const NextFederationPlugin = require("@module-federation/nextjs-mf");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: false,
 });
+const path = require("path");
 
 /**
  * @type {import('next').NextConfig}
@@ -27,6 +28,21 @@ const nextConfig = {
   reactStrictMode: false,
   webpack: (config, options) => {
     config.experiments.topLevelAwait = true;
+
+    config.resolve.alias["@artiva/shared"] = path.resolve(
+      __dirname,
+      "../shared"
+    );
+    config.resolve.alias["react"] = path.join(__dirname, "node_modules/react");
+    config.resolve.alias["react-dom"] = path.join(
+      __dirname,
+      "node_modules/react-dom"
+    );
+    config.resolve.alias["wagmi"] = path.join(__dirname, "node_modules/wagmi");
+    config.resolve.alias["@zoralabs/nft-hooks"] = path.join(
+      __dirname,
+      "node_modules/@zoralabs/nft-hooks"
+    );
 
     if (!options.isServer) {
       config.resolve.fallback = {

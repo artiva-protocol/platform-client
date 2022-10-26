@@ -16,12 +16,14 @@ const NFTContractView = ({ contract }: { contract: NFTContractObject }) => {
   const { addContent, collection: curateCollection } =
     CuratorContext.useContainer();
 
-  const { data: nfts } = useNFTTokens({
+  const { data } = useNFTTokens({
     collectionAddresses: contract?.collection?.address
       ? [contract?.collection?.address]
       : undefined,
     limit: 21,
   });
+
+  const nfts = data?.flatMap((x) => x.tokens);
 
   const selected = useMemo(() => {
     if (!curateCollection || !contract?.collection?.address) return false;
@@ -40,7 +42,7 @@ const NFTContractView = ({ contract }: { contract: NFTContractObject }) => {
   const { collection, aggregateStat } = contract;
 
   const nftsComponent = () => {
-    return nfts?.tokens?.map((x: any, i: number) => (
+    return nfts?.map((x: any, i: number) => (
       <NFTPreviewWrapper
         key={i}
         identifier={{

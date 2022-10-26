@@ -13,7 +13,7 @@ const TagModal = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   post: Post;
 }) => {
-  const { setContent } = ManageContext.useContainer();
+  const { setPost } = ManageContext.useContainer();
   const [newTag, setNewTag] = useState("");
 
   const tags = post.tags || [];
@@ -24,14 +24,14 @@ const TagModal = ({
     if (!clone.tags) clone.tags = [newTag];
     else clone.tags.push(newTag);
 
-    setContent(clone);
+    setPost(clone);
     setNewTag("");
   };
 
   const onDelete = (name: string) => {
     const clone = { ...post };
     clone.tags = clone.tags?.filter((x) => x !== name);
-    setContent(clone);
+    setPost(clone);
   };
 
   return (

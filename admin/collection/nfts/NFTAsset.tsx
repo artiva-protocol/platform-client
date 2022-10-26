@@ -1,4 +1,6 @@
-import NFTFeedContext, { NFTFeedSearchType } from "@/context/NFTFeedContext";
+import NFTFeedContext, {
+  NFTFilterSearchType,
+} from "@/context/NFTFilterContext";
 import { useEffect, useState } from "react";
 
 const CurateAsset = () => {
@@ -9,9 +11,11 @@ const CurateAsset = () => {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       modifyFilter({
-        addresses: [address],
-        tokenIds: [tokenId],
-        searchType: NFTFeedSearchType.SINGLE,
+        collectionAddresses: address ? [address] : [],
+        tokenIds: tokenId ? [tokenId] : [],
+        searchType: tokenId
+          ? NFTFilterSearchType.SINGLE
+          : NFTFilterSearchType.COLLECTION,
       });
     }, 1000);
 

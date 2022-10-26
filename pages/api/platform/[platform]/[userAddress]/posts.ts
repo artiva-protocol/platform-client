@@ -1,10 +1,10 @@
-import { getPostsByPlatformAndOwner } from "@/services/platform-graph";
+import { getPostsByPlatform } from "@/services/platform-graph";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Post } from "@artiva/shared";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userAddress, platform } = req.query;
-  const rawPosts = await getPostsByPlatformAndOwner(
+  const rawPosts = await getPostsByPlatform(
     platform as string,
     userAddress as string
   );

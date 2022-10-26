@@ -10,6 +10,7 @@ import { useAccount } from "wagmi";
 
 export type UseCuratorType = {
   collection: PostRequest[];
+  contains: (data: PostRequest) => boolean;
   addContent: (data: PostRequest) => void;
   add: UseAddContentsType;
 };
@@ -30,8 +31,17 @@ const useCurator = (): UseCuratorType => {
     setCollection((x) => [...x, data]);
   };
 
+  const contains = (post: PostRequest) => {
+    return !!collection.find(
+      (x) =>
+        x.type === post.type &&
+        JSON.stringify(x.content) === JSON.stringify(post.content)
+    );
+  };
+
   return {
     collection: data?.posts ? [...data.posts, ...collection] : collection,
+    contains,
     addContent,
     add,
   };

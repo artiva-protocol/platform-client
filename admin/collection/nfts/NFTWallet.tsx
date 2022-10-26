@@ -1,11 +1,13 @@
-import NFTFeedContext, { NFTFeedSearchType } from "@/context/NFTFeedContext";
+import NFTFeedContext, {
+  NFTFilterSearchType,
+} from "@/context/NFTFilterContext";
 import { useEffect, useState } from "react";
 import { useAccount, useEnsName } from "wagmi";
 
 const CurateWallet = () => {
   const { address: walletAddress } = useAccount();
   const [address, setAddress] = useState<string>("");
-  const [searchType, setSearchType] = useState(NFTFeedSearchType.MINTED);
+  const [searchType, setSearchType] = useState(NFTFilterSearchType.MINTED);
   const { data: ensName } = useEnsName({ address, chainId: 1 });
   const { modifyFilter } = NFTFeedContext.useContainer();
 
@@ -42,11 +44,11 @@ const CurateWallet = () => {
       <select
         className="w-full rounded-md p-2 text-xs mt-1 focus:outline-none"
         onChange={(e) => {
-          setSearchType(e.target.value as NFTFeedSearchType);
+          setSearchType(e.target.value as NFTFilterSearchType);
         }}
       >
-        <option value={NFTFeedSearchType.MINTED}>Minted</option>
-        <option value={NFTFeedSearchType.OWNED}>Owns</option>
+        <option value={NFTFilterSearchType.MINTED}>Minted</option>
+        <option value={NFTFilterSearchType.OWNED}>Owns</option>
       </select>
     </div>
   );

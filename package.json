@@ -12,7 +12,7 @@
     "prisma:migrate": "prisma migrate deploy"
   },
   "dependencies": {
-    "@artiva/shared": "^0.1.59",
+    "@artiva/shared": "^0.2.1",
     "@artiva/v2": "^0.5.1",
     "@ethersproject/providers": "^5.6.8",
     "@headlessui/react": "^1.6.6",
@@ -26,6 +26,7 @@
     "@tanstack/react-query": "^4.2.3",
     "@zoralabs/auction-house": "^1.1.3",
     "@zoralabs/nft-drop-contracts": "^1.0.1",
+    "@zoralabs/nft-hooks": "^1.1.7",
     "@zoralabs/v3": "^1.0.13",
     "@zoralabs/zdk": "^2.1.9",
     "axios": "^0.27.2",
@@ -56,7 +57,6 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "17.0.11",
-    "@zoralabs/nft-hooks": "^1.1.7",
     "autoprefixer": "^10.4.7",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.0",

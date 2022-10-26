@@ -8,9 +8,9 @@ import { SharedConfigType } from "@artiva/shared";
 const ipfsAdapter = import("adapters/ipfs/estuary/EstuaryAdapter").then(
   (x) => new x.default()
 );
-const nftStrategy = import(
-  "@zoralabs/nft-hooks/dist/strategies/ZDKFetchStrategy"
-).then((x) => x.ZDKFetchStrategy);
+const nftStrategy = import("@zoralabs/nft-hooks/dist/strategies").then((x) => {
+  return x.ZDKFetchStrategy;
+});
 const nftContractStrategy = import(
   "adapters/nft-contract-strategies/zdk/ZDKContractStrategy"
 ).then((x) => x.default);

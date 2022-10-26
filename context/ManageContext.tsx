@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Post, usePosts } from "@artiva/shared";
 import { createContainer } from "unstated-next";
-import useSWR from "swr";
 import { useAccount } from "wagmi";
 import useSetContents, {
   UseSetContentsType,

@@ -2,8 +2,8 @@ import {
   EditionContractLike,
   PrimarySaleModule,
   PRIMARY_SALE_SOURCES,
+  PRIMARY_SALE_TYPES,
 } from "@artiva/shared";
-import { PRIMARY_SALE_TYPES } from "@artiva/shared/dist/types/nft/NFTContractObject";
 import { AlchemyProvider } from "@ethersproject/providers";
 import { MintSchedule, SoundClient } from "@soundxyz/sdk";
 import { SoundAPI } from "@soundxyz/sdk/api";

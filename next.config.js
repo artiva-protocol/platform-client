@@ -29,6 +29,9 @@ const nextConfig = {
   webpack: (config, options) => {
     config.experiments.topLevelAwait = true;
 
+    //Uncomment for shared package development
+
+    /*
     config.resolve.alias["@artiva/shared"] = path.resolve(
       __dirname,
       "../shared"
@@ -43,6 +46,7 @@ const nextConfig = {
       __dirname,
       "node_modules/@zoralabs/nft-hooks"
     );
+    */
 
     if (!options.isServer) {
       config.resolve.fallback = {

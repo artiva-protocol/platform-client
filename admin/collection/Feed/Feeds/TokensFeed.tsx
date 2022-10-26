@@ -5,13 +5,12 @@ import NFTFilterContext, {
 } from "@/context/NFTFilterContext";
 import { PostRequest } from "@/hooks/post/useAddContents";
 import { PostTypeEnum, useInfiniteTokens } from "@artiva/shared";
-import { UseNFTTokensProps } from "@artiva/shared/dist/hooks/nft/useNFTTokens";
 import { Fragment } from "react";
 import transformZDKNFTResponse from "utils/transformZDKNFTResponse";
 import FeedSkeleton from "../FeedSkeleton";
 import PostPreview from "../PostPreview";
 
-const parseFilter = (filter: NFTFilterType): UseNFTTokensProps => {
+const parseFilter = (filter: NFTFilterType) => {
   console.log("filter", filter);
   return {
     ownerAddresses:

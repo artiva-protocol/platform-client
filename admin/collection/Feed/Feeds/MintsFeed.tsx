@@ -5,13 +5,12 @@ import NFTFilterContext, {
 } from "@/context/NFTFilterContext";
 import { PostRequest } from "@/hooks/post/useAddContents";
 import { useInfiniteMints } from "@artiva/shared";
-import { useNFTMintsProps } from "@artiva/shared/dist/hooks/nft/useNFTMints";
 import { Fragment } from "react";
 import transformZDKNFTResponse from "utils/transformZDKNFTResponse";
 import FeedSkeleton from "../FeedSkeleton";
 import PostPreview from "../PostPreview";
 
-const parseFilter = (filter: NFTFilterType): useNFTMintsProps => {
+const parseFilter = (filter: NFTFilterType) => {
   return {
     minterAddresses:
       filter.searchType === NFTFilterSearchType.MINTED

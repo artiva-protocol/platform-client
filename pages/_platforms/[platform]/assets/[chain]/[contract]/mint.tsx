@@ -9,6 +9,7 @@ import {
   IPrimarySaleAdapter,
   PostTypeEnum,
   ChainIdentifier,
+  PRIMARY_SALE_TYPES,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -17,7 +18,6 @@ import BackButton from "@/components/market/BackButton";
 import { useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import CustomConnectButton from "@/components/CustomConnectButton";
-import { PRIMARY_SALE_TYPES } from "@artiva/shared/dist/types/nft/NFTContractObject";
 
 const Mint = () => {
   const router = useRouter();

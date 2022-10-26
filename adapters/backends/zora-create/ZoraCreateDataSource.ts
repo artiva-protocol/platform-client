@@ -2,14 +2,17 @@ import { NetworkIDs } from "@zoralabs/nft-hooks";
 import { ZORA_EDITIONS_BY_NETWORK } from "constants/urls";
 import { GraphQLClient } from "graphql-request";
 import DataLoader from "dataloader";
-import { PrimarySaleModule, PRIMARY_SALE_SOURCES } from "@artiva/shared";
+import {
+  PrimarySaleModule,
+  PRIMARY_SALE_SOURCES,
+  PRIMARY_SALE_TYPES,
+} from "@artiva/shared";
 import {
   ZoraEdition,
   ZoraEditionsResponse,
   ZORA_EDITIONS_BY_ADDRESSES,
 } from "./queries";
 import { compareAddress } from "utils/compareAddress";
-import { PRIMARY_SALE_TYPES } from "@artiva/shared/dist/types/nft/NFTContractObject";
 import { MARKET_INFO_STATUSES } from "@zoralabs/nft-hooks/dist/types";
 import { BigNumber } from "ethers";
 

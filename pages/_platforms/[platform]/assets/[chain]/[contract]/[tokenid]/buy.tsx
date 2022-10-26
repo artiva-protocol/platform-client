@@ -58,10 +58,13 @@ const Buy = () => {
     market.connect(signer, chain as ChainIdentifier);
 
     try {
-      const tx = await market.fillAsk(nft, ethers.constants.AddressZero);
-      await tx.wait();
+      const res = await market.fillAsk(nft, ethers.constants.AddressZero);
+      if ("wait" in res) {
+        await res.wait();
+      }
       setSuccess(true);
     } catch (err: any) {
+      if (err.message.includes("user rejected transaction")) return;
       if (err.message.includes("insufficient funds")) {
         setError("Error insufficent funds for purchase");
         return;
@@ -104,7 +107,7 @@ const Buy = () => {
         </div>
         <div className="flex items-center mt-4 ">
           <div className="bg-gray-100 w-full rounded-l-md h-12 px-4 text-xl font-light focus:outline-none flex items-center">
-            {ask.amount?.eth?.value}
+            {ask.amount?.amount.value}
           </div>
           <div className="px-5 font-semibold bg-gray-200 h-12 flex items-center rounded-r-md">
             {ask.amount?.symbol}

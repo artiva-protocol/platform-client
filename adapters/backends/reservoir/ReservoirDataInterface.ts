@@ -23,8 +23,34 @@ export type ReservoirAsset = {
   attributes: ReservoirAttribute[];
 };
 
-export type ReservoirResponse = {
-  token: ReservoirAsset;
+export type ReservoirMarket = {
+  floorAsk: {
+    id: string;
+    price: {
+      currency: {
+        contract: string;
+        name: string;
+        symbol: string;
+        decimals: number;
+      };
+      amount: {
+        raw: string;
+        decimal: number;
+        usd: number;
+        native: number;
+      };
+    };
+    maker: "string";
+    validFrom: number;
+    validUntil: number;
+    source: any;
+  };
 };
 
-export interface ReservoirDataInterface extends NFTInterface<ReservoirAsset> {}
+export type ReservoirResponse = {
+  token: ReservoirAsset;
+  market: ReservoirMarket;
+};
+
+export interface ReservoirDataInterface
+  extends NFTInterface<ReservoirResponse> {}

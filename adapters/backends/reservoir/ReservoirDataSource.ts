@@ -6,13 +6,16 @@ import {
 import { NetworkIDs } from "@zoralabs/nft-hooks";
 import { NFT_ID_SEPERATOR } from "@zoralabs/nft-hooks/dist/constants/shared";
 import {
+  FIXED_PRICE_MARKET_SOURCES,
+  FIXED_SIDE_TYPES,
+  MARKET_INFO_STATUSES,
+  MARKET_TYPES,
   MEDIA_SOURCES,
   NFTIdentifier,
   NFTObject,
 } from "@zoralabs/nft-hooks/dist/types/NFTInterface";
 import {
   ReservoirResponse,
-  ReservoirAsset,
   ReservoirDataInterface,
 } from "./ReservoirDataInterface";
 import { getAddress } from "@ethersproject/address";
@@ -24,7 +27,7 @@ type ReservoirDataResponse = {
 };
 
 export class ReservoirDataSource implements ReservoirDataInterface {
-  nftsLoader: DataLoader<string, ReservoirAsset | Error>;
+  nftsLoader: DataLoader<string, ReservoirResponse | Error>;
   endpoint: string;
   timeout: number;
   MAX_SIZE = 50;
@@ -38,54 +41,59 @@ export class ReservoirDataSource implements ReservoirDataInterface {
     this.timeout = timeout;
     this.apiKey = apiKey;
   }
+
   loadNFT = async ({
     contract,
     id,
-  }: NFTIdentifier): Promise<ReservoirAsset | Error> => {
+  }: NFTIdentifier): Promise<ReservoirResponse | Error> => {
     return await this.nftsLoader.load(
       `${getAddress(contract)}${NFT_ID_SEPERATOR}${id}`
     );
   };
+
   loadNFTs = async (
     nfts: readonly NFTIdentifier[]
-  ): Promise<(ReservoirAsset | Error)[]> => {
+  ): Promise<(ReservoirResponse | Error)[]> => {
     return await this.nftsLoader.loadMany(
       nfts.map(
         (nft) => `${getAddress(nft.contract)}${NFT_ID_SEPERATOR}${nft.id}`
       )
     );
   };
+
   canLoadNFT() {
     return true;
   }
-  transformNFT(asset: ReservoirAsset, object?: NFTObject) {
+
+  transformNFT(data: ReservoirResponse, object?: NFTObject) {
+    const { token, market } = data;
     if (!object) {
       object = { rawData: {} };
     }
     object.nft = {
-      tokenId: asset.tokenId.toString(),
+      tokenId: token.tokenId.toString(),
       contract: {
-        address: asset.contract,
-        name: asset.collection.name || undefined,
-        symbol: asset.collection.slug.toUpperCase() || undefined,
+        address: token.contract,
+        name: token.collection.name || undefined,
+        symbol: token.collection.slug.toUpperCase() || undefined,
         description: undefined,
-        imageUri: asset.collection.image || undefined,
+        imageUri: token.collection.image || undefined,
       },
       owner: {
-        address: asset.owner,
+        address: token.owner,
       },
       metadataURI: undefined,
-      contentURI: asset.media || asset.image || undefined,
+      contentURI: token.media || token.image || undefined,
       minted: {
         address: undefined,
       },
     };
     object.metadata = {
-      name: asset.name || undefined,
-      description: asset.description || undefined,
-      contentUri: asset.media || undefined,
-      imageUri: asset.image || undefined,
-      attributes: asset?.attributes.map((trait) => ({
+      name: token.name || undefined,
+      description: token.description || undefined,
+      contentUri: token.media || undefined,
+      imageUri: token.image || undefined,
+      attributes: token?.attributes?.map((trait) => ({
         name: trait.key,
         value: trait.value,
       })),
@@ -93,33 +101,59 @@ export class ReservoirDataSource implements ReservoirDataInterface {
     object.media = {
       thumbnail: undefined,
       image:
-        asset.image || asset.media
+        token.image || token.media
           ? {
-              uri: asset.image || asset.media!,
+              uri: token.image || token.media!,
             }
           : undefined,
       source: MEDIA_SOURCES.DERIVED,
     };
-    if (asset.media) {
+    if (token.media) {
       object.content = {
         source: MEDIA_SOURCES.DERIVED,
-        original: asset.media
+        original: token.media
           ? {
-              uri: asset.media || asset.image!,
+              uri: token.media || token.image!,
             }
           : undefined,
       };
     }
+    if (market) {
+      const ask = market.floorAsk;
+      object.markets = [
+        {
+          type: MARKET_TYPES.FIXED_PRICE,
+          source: FIXED_PRICE_MARKET_SOURCES.OPENSEA_FIXED,
+          side: FIXED_SIDE_TYPES.ASK,
+          status: MARKET_INFO_STATUSES.ACTIVE,
+          amount: ask.price
+            ? {
+                amount: {
+                  raw: ask.price.amount.raw,
+                  value: ask.price.amount.native,
+                },
+                address: ask.price.currency.contract,
+                symbol: ask.price.currency.symbol,
+              }
+            : undefined,
+          createdAt: {
+            timestamp: market.floorAsk.validFrom?.toString(),
+          },
+          expires: market.floorAsk.validUntil?.toString(),
+          raw: market,
+        },
+      ];
+    }
     if (!object.rawData) {
       object.rawData = {};
     }
-    object.rawData["Reservoir"] = asset;
+    object.rawData["Reservoir"] = data;
     return object;
   }
 
   fetchNFTs = async (
     nftAddressesAndTokens: readonly string[]
-  ): Promise<(Error | ReservoirAsset)[]> => {
+  ): Promise<(Error | ReservoirResponse)[]> => {
     const urlParams: string[] = [];
     const nftTuples = nftAddressesAndTokens.map((address) =>
       address.toLowerCase().split(NFT_ID_SEPERATOR)
@@ -130,7 +164,7 @@ export class ReservoirDataSource implements ReservoirDataInterface {
     const response = await new FetchWithTimeout(this.timeout).fetch(
       `${this.endpoint}/tokens/v5?${urlParams.join(
         "&"
-      )}&includeAttributes=true&sortBy=tokenId&limit=${this.MAX_SIZE}`,
+      )}&includeAttributes=false&sortBy=tokenId&limit=${this.MAX_SIZE}`,
       {
         headers: {
           "X-API-KEY": this.apiKey,
@@ -141,13 +175,11 @@ export class ReservoirDataSource implements ReservoirDataInterface {
 
     return nftTuples.map(
       ([address, tokenId]: any) =>
-        responseJson.tokens
-          .map((x) => x.token)
-          .find(
-            (asset) =>
-              asset.tokenId === tokenId &&
-              asset.contract.toLowerCase() === address
-          ) || new Error("No asset")
+        responseJson.tokens.find(
+          (asset) =>
+            asset.token.tokenId === tokenId &&
+            asset.token.contract.toLowerCase() === address
+        ) || new Error("No asset")
     );
   };
 

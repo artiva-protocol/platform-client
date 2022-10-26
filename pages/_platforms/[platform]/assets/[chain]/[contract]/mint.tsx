@@ -5,11 +5,11 @@ import {
   usePrimarySale,
   EditionContractLike,
   PrimarySaleModule,
-  PRIMARY_SALE_SOURCES,
   IPrimarySaleAdapter,
   PostTypeEnum,
   ChainIdentifier,
   PRIMARY_SALE_TYPES,
+  useNFT,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -32,9 +32,21 @@ const Mint = () => {
     chain: chain as ChainIdentifier,
     contractAddress: contract as string,
   });
-  const adapter = usePrimarySale(PRIMARY_SALE_SOURCES.zoraERC721Drop) as
+
+  const market = nftContract?.markets?.find(
+    (x) => x.type === PRIMARY_SALE_TYPES.PublicEdition
+  );
+
+  const { data: nftPreview } = useNFT({
+    contractAddress: contract as string,
+    chain: chain as ChainIdentifier,
+    tokenId: "1",
+  });
+
+  const adapter = usePrimarySale(market?.source) as
     | IPrimarySaleAdapter
     | undefined;
+
   const [amount, setAmount] = useState(1);
 
   const edition = useMemo(
@@ -51,7 +63,7 @@ const Mint = () => {
     setLoading(true);
     setError("");
 
-    adapter.connect(signer, contract as string);
+    await adapter.connect(signer, contract as string);
 
     try {
       const tx = await adapter.purchase(
@@ -61,6 +73,7 @@ const Mint = () => {
       await tx.wait();
       setSuccess(true);
     } catch (err: any) {
+      if (err.message.includes("user rejected transaction")) return;
       if (err.message.includes("insufficient funds")) {
         setError("Error insufficent funds for purchase");
         return;
@@ -125,17 +138,23 @@ const Mint = () => {
       <div className="flex relative">
         <div className="w-1/2 border-r flex items-center justify-around h-[100vh] px-6">
           <div>
-            <NFTRenderer
-              nft={{
-                metadata: {
-                  imageUri: edition?.media?.image?.uri,
-                  contentUri: edition?.media?.content?.uri,
-                },
-                rawData: {},
-              }}
-              renderingContext="FULL"
-              className="object-contain max-h-[70vh] w-auto shadow-2xl"
-            />
+            {(edition?.media || nftPreview) && (
+              <NFTRenderer
+                nft={
+                  edition?.media
+                    ? {
+                        metadata: {
+                          imageUri: edition?.media?.image?.uri,
+                          contentUri: edition?.media?.content?.uri,
+                        },
+                        rawData: {},
+                      }
+                    : nftPreview!
+                }
+                renderingContext="FULL"
+                className="object-contain max-h-[70vh] w-auto shadow-2xl"
+              />
+            )}
           </div>
         </div>
         <div className="w-1/2 flex items-center justify-around h-[100vh]">

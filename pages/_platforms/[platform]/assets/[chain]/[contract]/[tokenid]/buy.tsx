@@ -59,7 +59,7 @@ const Buy = () => {
 
     try {
       const res = await market.fillAsk(nft, ethers.constants.AddressZero);
-      if ("wait" in res) {
+      if (typeof res === "object" && "wait" in res) {
         await res.wait();
       }
       setSuccess(true);

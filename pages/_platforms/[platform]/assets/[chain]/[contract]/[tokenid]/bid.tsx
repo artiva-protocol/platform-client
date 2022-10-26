@@ -78,8 +78,10 @@ const Bid = () => {
     market.connect(signer, chain as ChainIdentifier);
 
     try {
-      const tx = await market.placeBid(nft, parsedAmount);
-      await tx.wait();
+      const res = await market.placeBid(nft, parsedAmount);
+      if (typeof res === "object" && "wait" in res) {
+        await res.wait();
+      }
       setSuccess(true);
     } catch (err: any) {
       if (err.message.includes("insufficient funds")) {

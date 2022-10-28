@@ -12,12 +12,12 @@ const useFactoryWrite = (
   onSettled?: (data: TransactionReceipt | undefined) => void
 ) => {
   const prep = usePrepareContractWrite({
-    addressOrName: process.env.NEXT_PUBLIC_ARTIVA_FACTORY_ADDRESS!,
-    contractInterface: Factory.abi,
+    address: process.env.NEXT_PUBLIC_ARTIVA_FACTORY_ADDRESS!,
+    abi: Factory.abi,
     functionName,
     args,
   });
-  const write = useContractWrite(prep.config);
+  const write = useContractWrite(prep.config as any);
   const tx = useWaitForTransaction({
     hash: write.data?.hash,
     onSettled,

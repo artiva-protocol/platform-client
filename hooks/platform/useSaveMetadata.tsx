@@ -1,4 +1,5 @@
 import { Platform } from "@artiva/shared";
+import { useEffect, useState } from "react";
 import usePlatformWrite from "../artiva-protocol/contract-writes/usePlatformWrite";
 
 export type UseSaveMetadataType = {
@@ -21,11 +22,25 @@ const useSaveMetadata = ({
     onSettled
   );
 
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const handler = () => {
+      setSuccess(false);
+    };
+
+    if (write.success) {
+      setSuccess(true);
+      setTimeout(handler, 3000);
+    }
+  }, [write.success]);
+
   return {
+    ...write,
     save: () => {
       write.write?.();
     },
-    ...write,
+    success,
   };
 };
 

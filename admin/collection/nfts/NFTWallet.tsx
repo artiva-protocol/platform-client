@@ -8,7 +8,7 @@ const CurateWallet = () => {
   const { address: walletAddress } = useAccount();
   const [address, setAddress] = useState<string>("");
   const [searchType, setSearchType] = useState(NFTFilterSearchType.MINTED);
-  const { data: ensName } = useEnsName({ address, chainId: 1 });
+  const { data: ensName } = useEnsName({ address: address as any, chainId: 1 });
   const { modifyFilter } = NFTFeedContext.useContainer();
 
   const onAddressChange = (e: any) => {

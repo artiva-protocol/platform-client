@@ -6,7 +6,7 @@ import NFTContractNavigation from "./collection/nftContracts/NFTContractNavigati
 import NFTNavigation from "./collection/nfts/NFTNavigation";
 import DesignNavigation from "./design/DesignNavigation";
 
-const AdminLayout = ({ children }: { children: React.ReactChild }) => {
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const authModal = useAuthModal();
 

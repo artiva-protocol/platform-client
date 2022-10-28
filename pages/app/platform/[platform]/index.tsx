@@ -73,7 +73,9 @@ const PlatformData = ({ platform }: { platform: Platform }) => {
           <div className="bg-white rounded-md mt-5 text-sm">
             <a
               href={`${
-                BLOCK_EXPLORER_BY_NETWORK[ArtivaNetworks.GOERLI]
+                BLOCK_EXPLORER_BY_NETWORK[
+                  process.env.NEXT_PUBLIC_PROTOCOL_NETWORK!
+                ]
               }/address/${platformContract}`}
               target="_blank"
               rel="noopener noreferrer"

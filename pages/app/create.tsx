@@ -6,7 +6,9 @@ import { Fragment, useMemo, useState } from "react";
 import styles from "@/styles/Upload.module.css";
 import Link from "next/link";
 import useIPFSUpload from "@/hooks/ipfs/useIPFSUpload";
-import useCreatePlatform from "@/hooks/platform/useCreatePlatform";
+import useCreatePlatform, {
+  RoleEnum,
+} from "@/hooks/platform/useCreatePlatform";
 import useSWR from "swr";
 import { useAccount } from "wagmi";
 import { getPlatformsByUserAfterTimeStamp } from "@/services/platform-graph";
@@ -43,8 +45,7 @@ const CreatePlatform = () => {
       description: data.description!,
       custom: {},
     },
-    publishers: address ? [address] : undefined,
-    managers: address ? [address] : undefined,
+    roles: address ? [{ account: address, role: RoleEnum.ADMIN }] : [],
     onSettled: () => {
       mutate();
     },

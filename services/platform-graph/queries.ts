@@ -106,7 +106,7 @@ export const POSTS_BY_PLATFORM = (
       `;
 };
 
-//ROLES
+//USERS
 
 export const USER_ROLES_BY_PLATFORM_AND_USER = (
   platformAddress: string,
@@ -115,12 +115,22 @@ export const USER_ROLES_BY_PLATFORM_AND_USER = (
   return gql`
     {
       platformUsers(where:{ platform: "${platformAddress}", user: "${userAddress}" }) {
-        admin,
-        contentPublisher,
-        metadataManager,
+        user
+        role
       }
     }
   `;
+};
+
+export const USERS_BY_PLATFORM_WITH_ROLE = (platformAddress: string) => {
+  return gql`
+  {
+    platformUsers(where:{ platform: "${platformAddress}", role_not: UNAUTHORIZED }) {
+      user
+      role
+    }
+  }
+`;
 };
 
 //METADATA

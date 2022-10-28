@@ -13,7 +13,10 @@ const useAuthModal = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setOpen((status !== "loading" && !address) || chain?.unsupported || false);
+    setOpen(
+      (status !== "loading" && !address) ||
+        chain?.id != process.env.NEXT_PUBLIC_PROTOCOL_NETWORK
+    );
   }, [status, address, chain]);
 
   return (

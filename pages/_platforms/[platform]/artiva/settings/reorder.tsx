@@ -130,7 +130,7 @@ const Reorder = () => {
 const ReorderPlacard = ({ post }: { post: Post }) => {
   const { nft, nftContract } = usePostContent(post.type, post.content);
   return (
-    <div className="flex bg-black rounded-md w-full">
+    <div className="flex rounded-md w-full border-b bg-white">
       <div className="h-20 w-20 p-2">
         <PostPreview
           post={post}
@@ -141,20 +141,20 @@ const ReorderPlacard = ({ post }: { post: Post }) => {
       </div>
       <div className="flex items-stretch justify-between w-full">
         <div className="ml-4 mt-2 text-sm">
-          <div className="text-white font-semibold">
+          <div className="font-semibold">
             {nft?.metadata?.name || nftContract?.collection.name}
           </div>
           <div className="flex items-center">
             {post.type === PostTypeEnum.NFT ? (
-              <DocumentIcon className="text-gray-300 h-4" />
+              <DocumentIcon className="text-gray-600 h-4" />
             ) : (
-              <Square2StackIcon className="text-gray-300 h-4" />
+              <Square2StackIcon className="text-gray-700 h-4" />
             )}
-            <div className=" text-gray-300 ml-1">{post.type}</div>
+            <div className=" text-gray-600 ml-1">{post.type}</div>
           </div>
         </div>
         <div>
-          <Bars3Icon className="text-gray-300 h-6 mr-4 mt-6 cursor-pointer" />
+          <Bars3Icon className="text-gray-600 h-6 mr-4 mt-6 cursor-pointer" />
         </div>
       </div>
     </div>

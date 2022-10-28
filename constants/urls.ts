@@ -26,4 +26,5 @@ export const ZORA_EDITIONS_BY_NETWORK = {
 
 export const BLOCK_EXPLORER_BY_NETWORK = {
   [ArtivaNetworks.GOERLI]: "https://goerli.etherscan.io",
+  [ArtivaNetworks.POLYGON]: "https://polygonscan.com/",
 };

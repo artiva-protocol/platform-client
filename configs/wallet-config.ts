@@ -14,7 +14,7 @@ const isAdmin = () => {
 export const getWalletClient = () => {
   const admin = isAdmin();
   const { chains, provider, webSocketProvider } = configureChains(
-    admin ? [chain.goerli] : [chain.mainnet],
+    admin ? [chain.polygon, chain.mainnet] : [chain.mainnet],
     [
       alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY }),
       publicProvider(),

@@ -9,10 +9,10 @@
   dependencies:
     ethereum-blockies-base64 "^1.0.2"
 
-"@artiva/v2@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@artiva/v2/-/v2-0.5.1.tgz#f520d18629c026810e13d3e0484cf5138cbd5641"
-  integrity sha512-N61sgC6wA+SXmMMNdJZ/WV4SDZOqByBJqy8o2Ck+7OGGTru0bZlwNdIOUZ4Gh/30BJEjzrh4wNohnCN4vJP+LQ==
+"@artiva/v2@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@artiva/v2/-/v2-0.6.0.tgz#64b730c027b5b6e775e9b640baf87771273811ac"
+  integrity sha512-QnHdYtWoVYHCdutLlysfd5Kfnsuk32CzSL0/hkyVKsOqFb/EIlCEg/uqUkFXrPsDWqA93Wjmi6ZxoD/SeBrMvA==
 
 "@babel/compat-data@^7.17.7", "@babel/compat-data@^7.19.0":
   version "7.19.0"

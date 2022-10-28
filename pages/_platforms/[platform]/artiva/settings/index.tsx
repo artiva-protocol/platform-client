@@ -4,6 +4,7 @@ import {
   CogIcon,
   SparklesIcon,
   ChevronDoubleUpIcon,
+  CheckBadgeIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 

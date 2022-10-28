@@ -12,7 +12,7 @@ const MetadataSaveButton = () => {
           <Fragment>
             <div className="p-3 mr-3 border-r text-md text-gray-400">{`${changeCount} unsaved changes`}</div>
             <button
-              className="text-md text-white rounded-md w-40 h-8 bg-black"
+              className="text-md text-white rounded-md w-32 h-8 bg-black"
               onClick={() => {
                 save.save();
               }}

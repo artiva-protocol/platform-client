@@ -2,6 +2,7 @@ import {
   CogIcon,
   RectangleStackIcon,
   HomeIcon,
+  CheckBadgeIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { CustomConnectButton } from "@artiva/shared";
@@ -54,6 +55,15 @@ const AdminNavigation = () => {
             <CogIcon className="mr-4 w-5 text-gray-400" />
             <div className={`text-sm text-gray-600 ${getStyle("settings")}`}>
               Settings
+            </div>
+          </a>
+        </Link>
+
+        <Link href={"/artiva/staff"}>
+          <a className="flex items-center mt-4">
+            <CheckBadgeIcon className="mr-4 w-5 text-gray-400" />
+            <div className={`text-sm text-gray-600 ${getStyle("staff")}`}>
+              Staff
             </div>
           </a>
         </Link>

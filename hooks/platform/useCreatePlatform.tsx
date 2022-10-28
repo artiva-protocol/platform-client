@@ -9,20 +9,30 @@ export type UseCreatePlatformType = {
   error: Error | undefined | null;
 };
 
+export enum RoleEnum {
+  UNAUTHORIZED = 0,
+  PUBLISHER = 1,
+  MANAGER = 2,
+  ADMIN = 3,
+}
+
+export type RoleRequest = {
+  account: string;
+  role: RoleEnum;
+};
+
 const useCreatePlatform = ({
   data,
-  publishers,
-  managers,
+  roles,
   onSettled,
 }: {
   data: Platform | undefined;
-  publishers?: string[];
-  managers?: string[];
+  roles: RoleRequest[];
   onSettled?: (data: TransactionReceipt | undefined) => void;
 }): UseCreatePlatformType => {
   const write = useFactoryWrite(
     "create",
-    [JSON.stringify(data), publishers, managers],
+    [JSON.stringify(data), roles],
     onSettled
   );
 

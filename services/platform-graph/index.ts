@@ -7,6 +7,7 @@ import {
   PLATFORMS_BY_USER,
   PLATFORMS_BY_USER_AFTER_TIMESTAMP,
   POSTS_BY_PLATFORM,
+  USERS_BY_PLATFORM_WITH_ROLE,
 } from "./queries";
 
 export type GetPostsResponse = {
@@ -20,10 +21,9 @@ export type GetPostsResponse = {
   setAtTimestamp: string;
 };
 
-export type GetRolesByPlatformAndOwnerResponse = {
-  admin: boolean;
-  metadataManager: boolean;
-  contentPublisher: boolean;
+export type GetPlatformUserResponse = {
+  user: string;
+  role: string;
 };
 
 export type GetPlatformsResponse = Platform & { contract: string };
@@ -97,15 +97,23 @@ export const getPostsByPlatform = async (
 export const getUserRolesByPlatformAndUser = async (
   platformAddress: string,
   userAddress: string
-): Promise<GetRolesByPlatformAndOwnerResponse> => {
-  const res = await client.request(
-    USER_ROLES_BY_PLATFORM_AND_USER(
-      platformAddress.toLowerCase(),
-      userAddress.toLowerCase()
+): Promise<GetPlatformUserResponse> => {
+  return client
+    .request(
+      USER_ROLES_BY_PLATFORM_AND_USER(
+        platformAddress.toLowerCase(),
+        userAddress.toLowerCase()
+      )
     )
-  );
-  return res.platformUsers[0];
+    .then((x) => x.platformUsers[0]);
 };
+
+export const getUsersByPlatformWithRole = async (
+  platformAddress: string
+): Promise<GetPlatformUserResponse[]> =>
+  client
+    .request(USERS_BY_PLATFORM_WITH_ROLE(platformAddress.toLowerCase()))
+    .then((x) => x.platformUsers);
 
 //METADATA
 

@@ -1,5 +1,7 @@
+import { RoleEnum } from "@/hooks/platform/useCreatePlatform";
+import { getUserRolesByUser } from "@/services/platform-graph";
 import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
@@ -10,12 +12,13 @@ declare module "next-auth" {
    */
   interface Session {
     address: string | undefined;
+    roles: {
+      [platform: string]: RoleEnum;
+    };
   }
 }
 
-// For more information on each option (and a full list of options) go to
-// https://next-auth.js.org/configuration/options
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+export const getAuthOptions = (req: NextApiRequest): NextAuthOptions => {
   const providers = [
     CredentialsProvider({
       name: "Ethereum",
@@ -37,15 +40,11 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             JSON.parse(credentials?.message || "{}")
           );
 
-          console.log("in auth");
-
           const nextAuthUrl = process.env.NEXT_PUBLIC_DEPLOYMENT_URL
             ? `https://${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}`
             : process.env.VERCEL_URL
             ? `https://${process.env.VERCEL_URL}`
             : null;
-
-          console.log("nextAuthUrl", { nextAuthUrl });
 
           if (!nextAuthUrl) {
             return null;
@@ -53,27 +52,16 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
           const nextAuthHost = new URL(nextAuthUrl).host;
 
-          console.log("auth", { domain: siwe.domain, nextAuthHost });
-
           if (siwe.domain !== nextAuthHost) {
             return null;
           }
-
-          console.log("auth", {
-            nonce1: siwe.nonce,
-            nonce2: await getCsrfToken({ req }),
-          });
 
           if (siwe.nonce !== (await getCsrfToken({ req }))) {
             return null;
           }
 
-          console.log(
-            "validate",
-            await siwe.validate(credentials?.signature || "")
-          );
-
           await siwe.validate(credentials?.signature || "");
+
           return {
             id: siwe.address,
           };
@@ -93,7 +81,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     providers.pop();
   }
 
-  return await NextAuth(req, res, {
+  return {
     // https://next-auth.js.org/configuration/providers/oauth
     providers,
     session: {
@@ -101,10 +89,21 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-      async session({ session, token }) {
+      async session({ session, token }: any) {
+        session.roles = token.sub
+          ? await getUserRolesByUser(token.sub).then((x) => x.roles)
+          : {};
         session.address = token.sub;
+
+        console.log("session", session);
         return session;
       },
     },
-  });
+  };
+};
+
+// For more information on each option (and a full list of options) go to
+// https://next-auth.js.org/configuration/options
+export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+  return await NextAuth(req, res, getAuthOptions(req));
 }

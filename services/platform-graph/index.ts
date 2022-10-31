@@ -1,7 +1,8 @@
+import { RoleEnum } from "@/hooks/platform/useCreatePlatform";
 import { Platform, Post } from "@artiva/shared";
 import client from "./client";
 import {
-  USER_ROLES_BY_PLATFORM_AND_USER,
+  USER_ROLES_BY_USER,
   PLATFORM_METADATA_BY_PLATFORM,
   POST_BY_PLATFORM_AND_ID,
   PLATFORMS_BY_USER,
@@ -27,6 +28,13 @@ export type GetPlatformUserResponse = {
 };
 
 export type GetPlatformsResponse = Platform & { contract: string };
+
+export type UserRolesResponse = {
+  user: string;
+  roles: {
+    [platform: string]: RoleEnum;
+  };
+};
 
 //PLATFORMS
 
@@ -94,19 +102,32 @@ export const getPostsByPlatform = async (
 
 //USERS
 
-export const getUserRolesByPlatformAndUser = async (
-  platformAddress: string,
-  userAddress: string
-): Promise<GetPlatformUserResponse> => {
-  return client
-    .request(
-      USER_ROLES_BY_PLATFORM_AND_USER(
-        platformAddress.toLowerCase(),
-        userAddress.toLowerCase()
-      )
-    )
-    .then((x) => x.platformUsers[0]);
+const formatRole = (role: string): RoleEnum => {
+  switch (role) {
+    case "PUBLISHER":
+      return RoleEnum.PUBLISHER;
+    case "MANAGER":
+      return RoleEnum.MANAGER;
+    case "ADMIN":
+      return RoleEnum.ADMIN;
+    default:
+      return RoleEnum.UNAUTHORIZED;
+  }
 };
+
+export const getUserRolesByUser = async (
+  userAddress: string
+): Promise<UserRolesResponse> =>
+  client
+    .request(USER_ROLES_BY_USER(userAddress.toLowerCase()))
+    .then((x: { platformUsers: any[] }) => {
+      let roleResponse: UserRolesResponse = { user: userAddress, roles: {} };
+      console.log("roleResponse", x.platformUsers);
+      x.platformUsers.map((y: any) => {
+        roleResponse.roles[y.platform.id as string] = formatRole(y.role);
+      });
+      return roleResponse;
+    });
 
 export const getUsersByPlatformWithRole = async (
   platformAddress: string

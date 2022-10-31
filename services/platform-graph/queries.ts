@@ -108,15 +108,15 @@ export const POSTS_BY_PLATFORM = (
 
 //USERS
 
-export const USER_ROLES_BY_PLATFORM_AND_USER = (
-  platformAddress: string,
-  userAddress: string
-) => {
+export const USER_ROLES_BY_USER = (userAddress: string) => {
   return gql`
     {
-      platformUsers(where:{ platform: "${platformAddress}", user: "${userAddress}" }) {
+      platformUsers(where:{ user: "${userAddress}" }) {
         user
         role
+        platform {
+          id
+        }
       }
     }
   `;

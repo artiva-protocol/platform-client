@@ -1,3 +1,4 @@
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
@@ -24,6 +25,13 @@ export default async function middleware(req: NextRequest) {
   if (hostname === "vercel.pub" || hostname === "platforms.vercel.app") {
     return NextResponse.redirect("https://demo.vercel.pub");
   }
+
+  const token = await getToken({
+    req: req,
+    secret: process.env.NEXTAUTH_SECRET!,
+  });
+
+  console.log("token", token);
 
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"

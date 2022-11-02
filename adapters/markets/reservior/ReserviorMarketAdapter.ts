@@ -51,7 +51,6 @@ export class ReserviorMarketAdapter implements IMarketAdapter {
   }
 
   enabled(nft: NFTObject): boolean {
-    console.log("nft", nft);
     return !!nft.markets?.find(
       (x) =>
         x.source === FIXED_PRICE_MARKET_SOURCES.OPENSEA_FIXED &&

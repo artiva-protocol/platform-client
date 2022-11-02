@@ -38,6 +38,7 @@ export const ImageRenderer = forwardRef<HTMLImageElement, RenderComponentType>(
       <MediaLoader loading={loading} error={error}>
         <Image
           alt="NFTImage"
+          priority={true}
           height={request.renderingContext === "PREVIEW" ? 250 : 1600}
           width={request.renderingContext === "PREVIEW" ? 500 : 1600}
           src={props.src}

@@ -11,7 +11,6 @@ import FeedSkeleton from "../FeedSkeleton";
 import PostPreview from "../PostPreview";
 
 const parseFilter = (filter: NFTFilterType) => {
-  console.log("filter", filter);
   return {
     ownerAddresses:
       filter.searchType === NFTFilterSearchType.OWNED
@@ -32,9 +31,6 @@ const TokensFeed = () => {
     ...parseFilter(filter),
     limit: 20,
   });
-
-  console.log("filter", filter);
-  console.log("data", data);
 
   const isSingle = filter.searchType === NFTFilterSearchType.SINGLE;
 

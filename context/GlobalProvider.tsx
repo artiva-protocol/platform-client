@@ -50,7 +50,7 @@ const GlobalProvider = ({
               getSiweMessageOptions={getSiweMessageOptions}
             >
               <SharedConfigContext.Provider value={{ ...ArtivaClientConfig }}>
-                <SWRConfig value={{ fetcher, refreshInterval: 30000 }}>
+                <SWRConfig value={{ fetcher, revalidateIfStale: false }}>
                   <RainbowKitProvider
                     chains={chains}
                     theme={lightTheme({

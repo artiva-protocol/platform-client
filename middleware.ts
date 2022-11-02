@@ -31,8 +31,6 @@ export default async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET!,
   });
 
-  console.log("token", token);
-
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
       ? hostname

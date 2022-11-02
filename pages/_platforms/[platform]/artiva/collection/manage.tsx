@@ -5,7 +5,6 @@ import PostPlacard from "@/admin/collection/manage/PostPlacard";
 import { Post } from "@artiva/shared";
 import ProtocolSaveToast from "@/components/ProtocolSaveToast";
 import ManageContext from "@/context/ManageContext";
-import { Fragment } from "react";
 
 const Manage = () => {
   return (
@@ -51,6 +50,7 @@ const Header = () => {
 
 const Feed = () => {
   const { collection, more, loading, loadMore } = ManageContext.useContainer();
+  console.log("collection", collection);
   return (
     <div className="h-[82vh] overflow-auto">
       <div className="grid grid-cols-2">

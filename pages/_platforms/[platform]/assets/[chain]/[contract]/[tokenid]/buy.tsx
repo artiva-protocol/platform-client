@@ -1,11 +1,10 @@
 import {
   Layout,
   NFTRenderer,
-  usePostContent,
   useMarket,
   IMarketAdapter,
-  PostTypeEnum,
   ChainIdentifier,
+  useNFT,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
 import { Fragment, useMemo } from "react";
@@ -31,11 +30,12 @@ const Buy = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const { nft } = usePostContent(PostTypeEnum.NFT, {
+  const { data: nft } = useNFT({
     chain: chain as ChainIdentifier,
     contractAddress: contract as string,
     tokenId: tokenid as string,
   });
+
   const market = useMarket(nft) as IMarketAdapter | undefined;
 
   const ask = useMemo(
@@ -133,11 +133,15 @@ const Buy = () => {
       <div className="flex relative">
         <div className="w-1/2 border-r flex items-center justify-around h-[100vh] px-6">
           <div>
-            <NFTRenderer
-              nft={nft}
-              renderingContext={"FULL"}
-              className="object-cover h-[70vh] shadow-2xl"
-            />
+            {nft ? (
+              <NFTRenderer
+                nft={nft}
+                renderingContext={"FULL"}
+                className="object-cover h-[70vh] shadow-2xl"
+              />
+            ) : (
+              <Fragment />
+            )}
           </div>
         </div>
         <div className="w-1/2 flex items-center justify-around h-[100vh]">

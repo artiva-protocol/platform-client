@@ -1,11 +1,9 @@
 import {
   Layout,
-  usePosts,
   NFTRenderer,
-  usePostContent,
   IMarketAdapter,
   useMarket,
-  PostTypeEnum,
+  useNFT,
   ChainIdentifier,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
@@ -33,7 +31,7 @@ const Bid = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const { nft } = usePostContent(PostTypeEnum.NFT, {
+  const { data: nft } = useNFT({
     chain: chain as ChainIdentifier,
     contractAddress: contract as string,
     tokenId: tokenid as string,

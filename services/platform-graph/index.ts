@@ -122,7 +122,6 @@ export const getUserRolesByUser = async (
     .request(USER_ROLES_BY_USER(userAddress.toLowerCase()))
     .then((x: { platformUsers: any[] }) => {
       let roleResponse: UserRolesResponse = { user: userAddress, roles: {} };
-      console.log("roleResponse", x.platformUsers);
       x.platformUsers.map((y: any) => {
         roleResponse.roles[y.platform.id as string] = formatRole(y.role);
       });

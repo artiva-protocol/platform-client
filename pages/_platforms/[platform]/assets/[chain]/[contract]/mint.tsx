@@ -1,12 +1,11 @@
 import {
   Layout,
   NFTRenderer,
-  usePostContent,
+  useNFTContractSecondary,
   usePrimarySale,
   EditionContractLike,
   PrimarySaleModule,
   IPrimarySaleAdapter,
-  PostTypeEnum,
   ChainIdentifier,
   PRIMARY_SALE_TYPES,
   useNFT,
@@ -28,13 +27,13 @@ const Mint = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const { nftContract } = usePostContent(PostTypeEnum.NFT_CONTRACT, {
+  const { data: nftContract } = useNFTContractSecondary({
     chain: chain as ChainIdentifier,
     contractAddress: contract as string,
   });
 
   const market = nftContract?.markets?.find(
-    (x) => x.type === PRIMARY_SALE_TYPES.PublicEdition
+    (x: any) => x.type === PRIMARY_SALE_TYPES.PublicEdition
   );
 
   const { data: nftPreview } = useNFT({

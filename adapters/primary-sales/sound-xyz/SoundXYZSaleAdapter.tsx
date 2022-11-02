@@ -17,14 +17,6 @@ export class SoundXYZSaleAdapter implements IPrimarySaleAdapter {
       apiKey: process.env.NEXT_PUBLIC_SOUND_XYZ_API_KEY,
     });
     this.client = SoundClient({ signer: signerOrProvider, soundAPI });
-    console.log(
-      "schedules",
-      await this.client
-        .activeMintSchedules({
-          editionAddress: address,
-        })
-        .then((x) => x.shift())
-    );
     this.schedule = await this.client
       .activeMintSchedules({
         editionAddress: address,
@@ -36,13 +28,11 @@ export class SoundXYZSaleAdapter implements IPrimarySaleAdapter {
     quantity: BigNumberish,
     _: BigNumberish
   ): Promise<ContractTransaction> => {
-    console.log("purchasing");
     if (!this.schedule) throw Error("No mint schedule found");
     const res = await this.client?.mint({
       mintSchedule: this.schedule,
       quantity: BigNumber.from(quantity).toNumber(),
     });
-    console.log("res", res);
     if (!res) throw new Error("Error clinet minting failed");
     return res;
   };

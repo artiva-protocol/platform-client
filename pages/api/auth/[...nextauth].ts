@@ -94,8 +94,6 @@ export const getAuthOptions = (req: NextApiRequest): NextAuthOptions => {
           ? await getUserRolesByUser(token.sub).then((x) => x.roles)
           : {};
         session.address = token.sub;
-
-        console.log("session", session);
         return session;
       },
     },

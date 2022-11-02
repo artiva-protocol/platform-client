@@ -38,10 +38,17 @@ export class MultiMarket extends NFTStrategy {
     id: string,
     current: NFTObject
   ) => {
-    const res: NFTObject = await this.reservoir.fetchNFT(contract, id);
+    const res = await Promise.allSettled([
+      this.zdk.fetchNFT(contract, id),
+      this.reservoir.fetchNFT(contract, id),
+    ]);
+
+    const markets = res
+      .filter((x) => x.status == "fulfilled" && x.value)
+      .map((x) => (x as any).value);
 
     const tmp = { ...current };
-    tmp.markets = res.markets;
+    tmp.markets = markets.map((x) => x.markets).flat();
     return tmp;
   };
 

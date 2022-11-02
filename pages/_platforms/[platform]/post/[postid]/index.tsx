@@ -7,6 +7,7 @@ import {
   PostTypeEnum,
   Platform,
   Post,
+  NFTContractObject,
 } from "@artiva/shared";
 import { Fragment } from "react";
 import { useContext } from "react";
@@ -22,6 +23,8 @@ import {
   getPostByPlatformAndId,
 } from "@/services/platform-graph";
 import { useRouter } from "next/router";
+import { getPostPrimaryData, PostData } from "@/services/post";
+import { NFTObject } from "@zoralabs/nft-hooks";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: "blocking" };
@@ -30,7 +33,7 @@ export async function getStaticPaths() {
 export const getStaticProps = async ({
   params,
 }: GetStaticPropsContext<{ postid: string; platform: string }>): Promise<
-  GetStaticPropsResult<{ platform: Platform; post: Post }>
+  GetStaticPropsResult<{ platform: Platform; post: Post; data: PostData }>
 > => {
   const [platformData, post] = await Promise.all([
     getPlatformMetadataByPlatform(params!.platform),
@@ -42,22 +45,29 @@ export const getStaticProps = async ({
       notFound: true,
     };
 
-  return {
-    props: {
-      platform: platformData,
-      post,
-    },
-    revalidate: 60,
-  };
+  try {
+    const data = await getPostPrimaryData(post);
+    const validData = JSON.parse(JSON.stringify(data));
+    return {
+      props: {
+        platform: platformData,
+        post,
+        data: validData,
+      },
+      revalidate: 60,
+    };
+  } catch (err) {
+    console.log("error", err);
+    throw err;
+  }
 };
 
 const PostComponent = ({
   platform,
   post,
+  data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const ctx = useContext(ArtivaContext);
-
-  const { nft, nftContract } = usePostContent(post.type, post.content);
   const { themeURL } = useInitTheme({ platform });
   const {
     query: { platform: platformId },
@@ -89,13 +99,13 @@ const PostComponent = ({
         <NFTDynamic
           platform={{ ...platform, id: platformId as string }}
           ctx={ctx}
-          nft={nft}
+          nft={data as NFTObject}
         />
       ) : NFTContractDynamic ? (
         <NFTContractDynamic
           platform={{ ...platform, id: platformId as string }}
           ctx={ctx}
-          nftContract={nftContract}
+          nftContract={data as NFTContractObject}
         />
       ) : (
         <Fragment />

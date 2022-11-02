@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export type UseAxiosType<T> = {
   loading: boolean;
@@ -29,7 +29,7 @@ const useAxios = <T,>({
   const [error, setError] = useState<Error | undefined>();
   const [result, setResult] = useState<T | undefined>();
 
-  const send = async () => {
+  const send = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -50,9 +50,7 @@ const useAxios = <T,>({
       setLoading(false);
       onSettled?.();
     }
-  };
-
-  const sendDynamic = async () => {};
+  }, [requestType, setResult, setLoading, setError, onSettled, data, url]);
 
   return { loading, error, result, success: !!result, send };
 };

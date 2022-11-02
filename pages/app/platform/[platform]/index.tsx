@@ -5,7 +5,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Site } from "@prisma/client";
 import PlatformHeader from "app/PlatformHeader";
 import PlatformPlacard from "app/PlatformPlacard";
-import { ArtivaNetworks, BLOCK_EXPLORER_BY_NETWORK } from "constants/urls";
+import { BLOCK_EXPLORER_BY_NETWORK } from "constants/urls";
 import {
   GetStaticPropsContext,
   GetStaticPropsResult,
@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
+import { compareAddress } from "utils/compareAddress";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: "blocking" };
@@ -148,20 +149,41 @@ const PlatformDomains = ({ platform }: { platform: Platform }) => {
     query: { platform: platformContract },
   } = useRouter();
   const [subdomain, setSubdomain] = useState<string | undefined>();
-  const { data } = useSWR<Site>(
+  const { data: site } = useSWR<Site>(
     `/api/platform/${platformContract}/deployments`
   );
 
-  useEffect(() => {
-    if (!subdomain && data?.subdomain) setSubdomain(data.subdomain!);
-  }, [subdomain, data]);
+  const {
+    send: checkSubdomain,
+    result: duplicateSite,
+    loading: loadingSubdomainCheck,
+  } = useAxios<Site>({
+    url: `/api/sites?subdomain=${subdomain}`,
+  });
 
-  const { send, loading } = useAxios({
+  const valid =
+    !duplicateSite ||
+    compareAddress(duplicateSite.contract, platformContract as string);
+
+  const { send: saveDeployments, loading } = useAxios({
     url: `/api/platform/${platformContract}/deployments`,
     data: {
       subdomain,
     },
   });
+
+  useEffect(() => {
+    if (!subdomain && site?.subdomain) setSubdomain(site.subdomain!);
+  }, [subdomain, site]);
+
+  useEffect(() => {
+    if (!subdomain) return;
+
+    const delayDebounceFn = setTimeout(() => {
+      checkSubdomain();
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [subdomain, checkSubdomain]);
 
   return (
     <div className="flex h-[83vh]">
@@ -185,10 +207,13 @@ const PlatformDomains = ({ platform }: { platform: Platform }) => {
             </div>
           </div>
           <button
-            onClick={send}
-            className="bg-black text-white w-full mt-6 h-8 rounded-md"
+            disabled={!subdomain || loadingSubdomainCheck || !valid}
+            onClick={saveDeployments}
+            className={`${
+              valid ? "bg-black" : "bg-gray-600"
+            } text-white w-full mt-6 h-8 rounded-md`}
           >
-            {loading ? "Saving..." : "Save"}
+            {!valid ? "Subdomain taken" : loading ? "Saving..." : "Save"}
           </button>
         </div>
       </div>

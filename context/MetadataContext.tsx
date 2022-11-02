@@ -7,6 +7,7 @@ import { useSWRConfig } from "swr";
 import { createContainer } from "unstated-next";
 import { isEqual } from "lodash";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 export type UseMetadataContextType = {
   merge: (platform: Partial<Platform>) => void;
@@ -26,12 +27,13 @@ const useMetadataContext = (): UseMetadataContextType => {
   const swr = useSWRConfig();
   const save = useSaveMetadata({
     data,
-    onSettled: () => {
+    onSettled: async () => {
       setChangeCount(0);
       swr.mutate(`/api/platform/${platform}/meta`, undefined, {
         optimisticData: data,
         revalidate: false,
       });
+      await axios.get(`/api/revalidate/home?platform=${platform}`);
     },
   });
 

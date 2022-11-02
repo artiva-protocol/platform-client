@@ -7,17 +7,16 @@ import { Fragment } from "react";
 const AppHeader = () => {
   return (
     <Fragment>
-      <div className="flex justify-between items-center p-6 px-10 bg-white">
+      <div className="flex justify-between items-center h-20 px-8 bg-white">
         <Link href="/">
           <a className="flex items-center">
             <Image
-              src={"/artiva-logo.svg"}
+              src={"/text-logo.svg"}
               className="h-full"
               alt="logo"
-              width="30"
-              height="30"
+              width="120"
+              height="50"
             />
-            <div className="ml-4 font-light text-gray-600">Artiva V2</div>
           </a>
         </Link>
         <div className="flex items-center">

@@ -42,10 +42,10 @@ const AppIndex = () => {
               </div>
             </div>
           )}
-          <div className="grid grid-cols-3 gap-6 px-20 pt-6">
+          <div className="grid grid-cols-3 gap-6 px-6 pt-6">
             {data?.map((x) => (
               <Link href={`platform/${x.contract}`} key={x.contract}>
-                <a className="h-[30vh]">
+                <a className="h-[35vh]">
                   <PlatformPlacard platform={x} />
                 </a>
               </Link>

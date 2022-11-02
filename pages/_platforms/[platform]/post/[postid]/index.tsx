@@ -45,21 +45,16 @@ export const getStaticProps = async ({
       notFound: true,
     };
 
-  try {
-    const data = await getPostPrimaryData(post);
-    const validData = JSON.parse(JSON.stringify(data));
-    return {
-      props: {
-        platform: platformData,
-        post,
-        data: validData,
-      },
-      revalidate: 60,
-    };
-  } catch (err) {
-    console.log("error", err);
-    throw err;
-  }
+  const data = await getPostPrimaryData(post);
+  const jsonData = JSON.parse(JSON.stringify(data));
+  return {
+    props: {
+      platform: platformData,
+      post,
+      data: jsonData,
+    },
+    revalidate: 60,
+  };
 };
 
 const PostComponent = ({

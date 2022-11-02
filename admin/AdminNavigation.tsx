@@ -5,13 +5,14 @@ import {
   CheckBadgeIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { CustomConnectButton } from "@artiva/shared";
+import { CustomConnectButton, useMetadata } from "@artiva/shared";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import Image from "next/future/image";
 
 const AdminNavigation = () => {
   const router = useRouter();
+  const { data } = useMetadata({ platform: router.query.platform as string });
 
   const getStyle = (key: string) => {
     return router.pathname.includes(key)
@@ -29,7 +30,7 @@ const AdminNavigation = () => {
           width={20}
           height={20}
         />
-        <div className="text-sm font-semibold text-gray-700">Neos Artworks</div>
+        <div className="text-sm font-semibold text-gray-700">{data?.title}</div>
       </div>
       <div className="mt-10">
         <Link href={"/artiva/site"}>

@@ -4,11 +4,13 @@ import {
   ZDKFetchStrategy,
 } from "@zoralabs/nft-hooks/dist/strategies";
 import { NFTQuery } from "@zoralabs/nft-hooks/dist/types/NFTQuery";
+import { RaribleStrategy } from "./RaribleStrategy";
 import { ReservoirStrategy } from "./ReservoirStrategy";
 
 export class MultiMarket extends NFTStrategy {
   zdk: ZDKFetchStrategy;
   reservoir: ReservoirStrategy;
+  rarible: RaribleStrategy;
 
   constructor(networkId: NetworkIDs) {
     super(networkId);
@@ -16,11 +18,12 @@ export class MultiMarket extends NFTStrategy {
       apiKey: process.env.NEXT_PUBLIC_ZORA_API_KEY,
     });
     this.reservoir = new ReservoirStrategy(networkId);
+    this.rarible = new RaribleStrategy(networkId);
   }
 
   fetchNFT = async (contract: string, id: string) => {
     try {
-      const nft = await this.zdk.fetchNFT(contract, id);
+      const nft = await this.rarible.fetchNFT(contract, id);
       if (nft instanceof Error) {
         throw nft;
       }

@@ -51,7 +51,7 @@ const Collection = () => {
               </div>
               <div className="ml-4 mt-1 text-left">
                 <h3 className="font-semibold text-gray-700">Add NFTs</h3>
-                <p className="text-sm text-gray-400">Curate Indiviudal NFTs</p>
+                <p className="text-sm text-gray-400">Curate Individual NFTs</p>
               </div>
             </button>
 

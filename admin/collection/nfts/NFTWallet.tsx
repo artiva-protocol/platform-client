@@ -7,7 +7,7 @@ import { useAccount, useEnsName } from "wagmi";
 const CurateWallet = () => {
   const { address: walletAddress } = useAccount();
   const [address, setAddress] = useState<string>("");
-  const [searchType, setSearchType] = useState(NFTFilterSearchType.MINTED);
+  const [searchType, setSearchType] = useState(NFTFilterSearchType.OWNED);
   const { data: ensName } = useEnsName({ address: address as any, chainId: 1 });
   const { modifyFilter } = NFTFeedContext.useContainer();
 
@@ -47,8 +47,8 @@ const CurateWallet = () => {
           setSearchType(e.target.value as NFTFilterSearchType);
         }}
       >
-        <option value={NFTFilterSearchType.MINTED}>Minted</option>
         <option value={NFTFilterSearchType.OWNED}>Owns</option>
+        <option value={NFTFilterSearchType.MINTED}>Minted</option>
       </select>
     </div>
   );

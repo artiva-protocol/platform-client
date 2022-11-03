@@ -29,7 +29,7 @@ const useNFTFilter = (): UseNFTFilterType => {
   const { address } = useAccount();
   const [filter, setFilter] = useState<NFTFilterType>({
     addresses: [address?.toLowerCase() || ""],
-    searchType: NFTFilterSearchType.MINTED,
+    searchType: NFTFilterSearchType.OWNED,
   });
 
   const modifyFilter = (partialFilter: Partial<NFTFilterType>) => {

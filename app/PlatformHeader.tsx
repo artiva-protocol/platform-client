@@ -53,7 +53,7 @@ const PlatformHeader = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="mr-1">Vist</div>
+            <div className="mr-1">Visit</div>
             <ArrowTopRightOnSquareIcon className="h-4" />
           </a>
         </div>

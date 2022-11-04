@@ -1,3 +1,4 @@
+import useRemoveContent from "@/hooks/post/useRemoveContent";
 import { Post } from "@artiva/shared";
 import { TagIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import TagModal from "./TagModal";
 
 const PostPlacard = ({ post }: { post: Post }) => {
   const [open, setOpen] = useState(false);
+  const save = useRemoveContent(post.id);
 
   return (
     <div className="flex flex-col m-4 relative">
@@ -14,7 +16,10 @@ const PostPlacard = ({ post }: { post: Post }) => {
         <PostComponent post={post} selected={false} />
       </div>
       <div className="-bottom-6 right-4 h-14 z-40 flex items-center absolute">
-        <button className="bg-red-500 mr-2 h-8 w-8 flex items-center justify-around rounded-md">
+        <button
+          onClick={save.save}
+          className="bg-red-500 mr-2 h-8 w-8 flex items-center justify-around rounded-md"
+        >
           <TrashIcon className="h-5 text-white" />
         </button>
         <button

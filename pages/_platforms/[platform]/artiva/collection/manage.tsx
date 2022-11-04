@@ -50,7 +50,6 @@ const Header = () => {
 
 const Feed = () => {
   const { collection, more, loading, loadMore } = ManageContext.useContainer();
-  console.log("collection", collection);
   return (
     <div className="h-[82vh] overflow-auto">
       <div className="grid grid-cols-2">

@@ -7,7 +7,6 @@ import { useSWRConfig } from "swr";
 import { createContainer } from "unstated-next";
 import { isEqual } from "lodash";
 import { useRouter } from "next/router";
-import axios from "axios";
 
 export type UseMetadataContextType = {
   merge: (platform: Partial<Platform>) => void;
@@ -33,9 +32,6 @@ const useMetadataContext = (): UseMetadataContextType => {
         optimisticData: data,
         revalidate: false,
       });
-      setTimeout(async () => {
-        await axios.post(`/api/revalidate/home?platform=${platform}`);
-      }, 1000);
     },
   });
 

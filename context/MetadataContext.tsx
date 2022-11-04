@@ -33,7 +33,9 @@ const useMetadataContext = (): UseMetadataContextType => {
         optimisticData: data,
         revalidate: false,
       });
-      await axios.get(`/api/revalidate/home?platform=${platform}`);
+      setTimeout(async () => {
+        await axios.post(`/api/revalidate/home?platform=${platform}`);
+      }, 1000);
     },
   });
 

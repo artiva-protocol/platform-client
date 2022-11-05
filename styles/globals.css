@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.ModelScene--viewer {
+  min-height: inherit;
+  width: 100%;
+  height: 100%;
+}
+
 .mediaObjectMessage {
   position: absolute;
   left: 50%;

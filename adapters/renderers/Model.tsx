@@ -49,10 +49,6 @@ export const Model: ModelRenderer = {
     const { preferredIPFSGateway } = ArtivaClientConfig;
     const mediaURI =
       props.request.media.content?.uri || props.request.media.animation?.uri;
-    if (!mediaURI && !mediaURI.includes("model-viewer")) {
-      // todo: better error
-      return <Fragment />;
-    }
 
     return (
       <Fragment>

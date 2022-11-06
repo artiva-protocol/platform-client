@@ -65,12 +65,14 @@ export const getPlatformsByUser = async (
 export const getPostByPlatformAndId = async (
   platformAddress: string,
   postId: string
-): Promise<Post> => {
+): Promise<Post | undefined> => {
   const res = await client.request(
     POST_BY_PLATFORM_AND_ID(platformAddress.toLowerCase(), postId)
   );
 
   const rawPost = res.post;
+
+  if (!rawPost) return;
   const formattedPost = {
     id: rawPost.id,
     content: JSON.parse(rawPost.contentJSON),

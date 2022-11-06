@@ -57,8 +57,11 @@ export default async function middleware(req: NextRequest) {
       : req.cookies.get(currentHost);
 
   if (!contract) {
+    const redirectTo = url.pathname;
     url.pathname = `/_platforms/${currentHost}/_generate`;
-    return NextResponse.rewrite(url);
+    const response = NextResponse.rewrite(url);
+    response.cookies.set(`${currentHost}:redirectTo`, redirectTo);
+    return response;
   }
 
   // rewrite everything else to `/_platforms/[platform] dynamic route

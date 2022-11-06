@@ -47,7 +47,8 @@ const Generate = ({
     Cookies.set(platform as string, contract, {
       expires: 1, //Keep cookie for 1 day
     });
-    router.push("/");
+    const redirectTo = Cookies.get(`${platform}:redirectTo`);
+    router.push(redirectTo || "/");
   }, [contract, platform, router]);
 
   return <Fragment />;

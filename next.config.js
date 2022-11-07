@@ -58,6 +58,12 @@ const nextConfig = {
           name: "host",
           filename: "static/chunks/remoteEntry.js",
           remotes: {},
+          shared: {
+            "@heroicons/react": {
+              singleton: true,
+              requiredVersion: false,
+            },
+          },
         })
       );
     }

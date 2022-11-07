@@ -32,18 +32,23 @@ export class ReserviorMarketAdapter implements IMarketAdapter {
 
     const client = getClient();
 
-    return await client?.actions.buyToken({
-      tokens: [
-        {
-          tokenId: nft.nft?.tokenId!,
-          contract: nft.nft?.contract.address!,
+    try {
+      return await client?.actions.buyToken({
+        tokens: [
+          {
+            tokenId: nft.nft?.tokenId!,
+            contract: nft.nft?.contract.address!,
+          },
+        ],
+        signer: this.signerOrProvider,
+        onProgress: () => {
+          //Do nothing
         },
-      ],
-      signer: this.signerOrProvider,
-      onProgress: () => {
-        //Do nothing
-      },
-    });
+      });
+    } catch (err: any) {
+      const message: string | undefined = err?.response?.data?.message;
+      throw message ? new Error(message) : err;
+    }
   }
 
   offer(nft: NFTObject): Promise<ContractTransaction> {

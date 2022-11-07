@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { ethers } from "ethers";
 import CustomConnectButton from "@/components/CustomConnectButton";
+import WalletWrapper from "@/components/WalletWrapper";
 
 const Buy = () => {
   const router = useRouter();
@@ -99,9 +100,9 @@ const Buy = () => {
 
   const buyControl = () => {
     return (
-      <div className="w-2/3">
-        <div className="text-4xl font-semibold">Buy Now</div>
-        <div className="text-lg mt-2 text-gray-500 font-light">
+      <div className="sm:w-2/3">
+        <div className="text-3xl sm:text-4xl font-semibold">Buy Now</div>
+        <div className="sm:text-lg mt-2 text-gray-500 font-light">
           Once the transaction is confirmed, the NFT will be sent to your wallet
           instantly.
         </div>
@@ -113,12 +114,14 @@ const Buy = () => {
             {ask.amount?.symbol}
           </div>
         </div>
-        <button
-          onClick={onBuyNow}
-          className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md"
-        >
-          {loading ? "Confirming..." : "Confirm"}
-        </button>
+        <WalletWrapper className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md">
+          <button
+            onClick={onBuyNow}
+            className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md"
+          >
+            {loading ? "Confirming..." : "Confirm"}
+          </button>
+        </WalletWrapper>
         {error && (
           <p className="text-red-500 text-center mt-4 break-all">
             {error.slice(0, 300)}
@@ -130,21 +133,25 @@ const Buy = () => {
 
   return (
     <Layout>
-      <div className="flex relative">
-        <div className="w-1/2 border-r flex items-center justify-around h-[100vh] px-6">
+      <div className="flex flex-col sm:flex-row relative">
+        <BackButton />
+        <div className="absolute top-5 right-5">
+          <CustomConnectButton className="w-36 h-8 rounded-md bg-black text-white" />
+        </div>
+        <div className="sm:w-1/2 border-r flex items-center justify-around sm:h-[100vh] px-6 mt-20 sm:mt-0">
           <div>
             {nft ? (
               <NFTRenderer
                 nft={nft}
                 renderingContext={"FULL"}
-                className="object-cover h-[70vh] shadow-2xl"
+                className="object-scale-down h-[50vh] sm:h-[70vh]"
               />
             ) : (
               <Fragment />
             )}
           </div>
         </div>
-        <div className="w-1/2 flex items-center justify-around h-[100vh]">
+        <div className="sm:w-1/2 flex items-center justify-around sm:h-[100vh] px-6 sm:px-0">
           {success ? (
             successControl()
           ) : address ? (
@@ -152,10 +159,6 @@ const Buy = () => {
           ) : (
             <ConnectWallet />
           )}
-        </div>
-        <BackButton />
-        <div className="absolute top-5 right-5">
-          <CustomConnectButton className="w-36 h-8 rounded-md bg-black text-white" />
         </div>
       </div>
     </Layout>

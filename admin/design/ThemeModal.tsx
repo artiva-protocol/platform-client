@@ -1,41 +1,73 @@
 import DesignerContext from "@/context/DesignerContext";
 import { useState } from "react";
+import Themes from "@/configs/themes-config";
+import Image from "next/future/image";
+import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   const { data, mutate } = DesignerContext.useContainer();
-  const [themeURL, setThemeURL] = useState<string | undefined>(data?.themeURL);
+  const [customTheme, setCustomTheme] = useState<string>("");
+
+  const updateTheme = (themeURL: string) => {
+    mutate({ ...data!, themeURL });
+  };
 
   const onAdd = () => {
-    mutate({ ...data!, themeURL: themeURL });
+    updateTheme(customTheme);
     setOpen(false);
   };
 
   return (
-    <div>
-      <div className="text-2xl font-semibold">Add a theme</div>
-
-      <input
-        type="text"
-        value={themeURL}
-        onChange={(e) => {
-          setThemeURL(e.target.value);
+    <div className="mb-5 flex items-center justify-around relative">
+      <button
+        onClick={() => {
+          setOpen(false);
         }}
-        placeholder="https://arweave/..."
-        className="bg-gray-100 w-full mt-2 p-1 px-4 rounded-md focus:outline-none text-gray-900 text-sm"
-      />
-      <div className="w-full flex items-center justify-end mt-6">
-        <button
-          onClick={() => setOpen(false)}
-          className="text-sm bg-gray-200 rounded-md h-8 w-20 mr-2"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={onAdd}
-          className="text-sm text-white bg-black rounded-md h-8 w-20"
-        >
-          Add
-        </button>
+        className="absolute top-0 right-0"
+      >
+        <XMarkIcon className="h-5" />
+      </button>
+      <div>
+        <div className="text-2xl font-semibold">Themes</div>
+        <div className="grid grid-cols-2 mt-6 gap-10">
+          {Array.from(Themes).map(([id, theme]) => (
+            <button
+              onClick={() => {
+                updateTheme(`/api/theme/${id}`);
+                setOpen(false);
+              }}
+              className="text-left"
+              key={id}
+            >
+              <Image
+                src={`/${theme.previewImage}`}
+                alt="preview"
+                className="shadow-lg border"
+                height={200}
+                width={200}
+              />
+              <div className="font-semibold mt-4">{theme.title}</div>
+              <div className="text-gray-500 text-sm font-light">
+                {theme.category}
+              </div>
+            </button>
+          ))}
+        </div>
+        <div className="mt-12 font-semibold">Custom Theme</div>
+        <div className="flex items-center mt-2">
+          <input
+            type="text"
+            value={customTheme}
+            onChange={(e) => {
+              setCustomTheme(e.target.value);
+            }}
+            placeholder="https://arweave/..."
+            className="bg-gray-100 w-full h-8 px-4 rounded-md focus:outline-none text-gray-900 text-sm"
+          />
+          <button onClick={onAdd} className="flex items-center h-full ml-2">
+            <PlusCircleIcon className="h-6" />
+          </button>
+        </div>
       </div>
     </div>
   );

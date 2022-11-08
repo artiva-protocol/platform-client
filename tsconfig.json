@@ -22,7 +22,8 @@
       "@/hooks/*": ["hooks/*"],
       "@/admin/*": ["admin/*"],
       "@/services/*": ["services/*"],
-      "@/shared/*": ["shared/*"]
+      "@/shared/*": ["shared/*"],
+      "@/configs/*": ["configs/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -18,7 +18,7 @@ const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   };
 
   return (
-    <div className="mb-5 flex items-center justify-around relative">
+    <div className="mb-5 w-full flex items-center justify-around relative">
       <button
         onClick={() => {
           setOpen(false);
@@ -27,8 +27,9 @@ const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
       >
         <XMarkIcon className="h-5" />
       </button>
-      <div>
-        <div className="text-2xl font-semibold">Themes</div>
+      <div className="w-full">
+        {/**
+         * <div className="text-2xl font-semibold">Themes</div>
         <div className="grid grid-cols-2 mt-6 gap-10">
           {Array.from(Themes).map(([id, theme]) => (
             <button
@@ -53,8 +54,10 @@ const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
             </button>
           ))}
         </div>
+         */}
+
         <div className="mt-12 font-semibold">Custom Theme</div>
-        <div className="flex items-center mt-2">
+        <div className="flex items-center mt-2 w-full">
           <input
             type="text"
             value={customTheme}

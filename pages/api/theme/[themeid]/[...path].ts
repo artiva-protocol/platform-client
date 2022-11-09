@@ -1,11 +1,16 @@
 import themes from "@/configs/themes-config";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  const { themeid, path } = req.query;
-  const { url } = themes.get(themeid as string) || {};
-  console.log("redirect", `${url}/${(path as string[]).join("/")}`);
-  return res.redirect(`${url}/${(path as string[]).join("/")}`);
+export const config = {
+  runtime: "experimental-edge",
+};
+
+const handler = (req: NextRequest) => {
+  const pathname = req.nextUrl.pathname;
+  const [theme, file] = pathname.replace("/api/theme/", "").split("/");
+  const { url } = themes.get(theme as string) || {};
+
+  return NextResponse.redirect(`${url}/${file}`);
 };
 
 export default handler;

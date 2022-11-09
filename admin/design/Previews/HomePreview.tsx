@@ -17,7 +17,7 @@ const HomePreview = () => {
 
   const HomeDynamic = useThemeComponent<HomeProps>({
     component: "./Home",
-    themeURL: themeURL + "/remoteEntry.js",
+    themeURL,
   });
 
   if (!HomeDynamic || !designerData) return <Fragment />;

@@ -29,7 +29,7 @@ const useDesigner = (): UseDesignerType => {
   const themeURL = useThemeURL({ theme: data?.themeURL });
 
   const config = useThemeConfig({
-    themeURL: themeURL ? `${themeURL}/remoteEntry.js` : undefined,
+    themeURL,
   });
 
   useEffect(() => {

@@ -17,7 +17,10 @@ export const DesignerPreviewWrapper = ({
   children: ReactNode;
 }) => {
   const { data: designerData } = DesignerContext.useContainer();
-  const themeURL = useThemeURL({ theme: designerData?.themeURL });
+  const themeURL = useThemeURL({
+    theme: designerData?.themeURL,
+    remoteEntry: false,
+  });
   const [mountNode, setMountNode] = useState<HTMLElement | undefined>();
   const iframeMutableRef = useRef<HTMLIFrameElement>();
 

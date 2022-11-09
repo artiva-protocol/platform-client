@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { injectScript } from "@module-federation/nextjs-mf/utils";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 
 export type ThemeComponentProps = {
   component: string;

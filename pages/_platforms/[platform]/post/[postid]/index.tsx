@@ -1,7 +1,6 @@
 import Layout from "@/components/Layout";
 import {
   ArtivaContext,
-  usePostContent,
   NFTProps,
   NFTContractProps,
   PostTypeEnum,
@@ -17,7 +16,6 @@ import {
   GetStaticPropsResult,
   InferGetStaticPropsType,
 } from "next";
-import useInitTheme from "@/hooks/theme/useInitTheme";
 import {
   getPlatformMetadataByPlatform,
   getPostByPlatformAndId,
@@ -25,6 +23,7 @@ import {
 import { useRouter } from "next/router";
 import { getPostPrimaryData, PostData } from "@/services/post";
 import { NFTObject } from "@zoralabs/nft-hooks";
+import useThemeURL from "@/hooks/theme/useThemeURL";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: "blocking" };
@@ -63,7 +62,7 @@ const PostComponent = ({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const ctx = useContext(ArtivaContext);
-  const { themeURL } = useInitTheme({ platform });
+  const themeURL = useThemeURL({ theme: platform.themeURL });
   const {
     query: { platform: platformId },
   } = useRouter();
@@ -89,7 +88,7 @@ const PostComponent = ({
   if (!NFTDynamic && !NFTContractDynamic) return <Fragment />;
 
   return (
-    <Layout>
+    <Layout platform={platform}>
       {NFTDynamic ? (
         <NFTDynamic
           platform={{ ...platform, id: platformId as string }}

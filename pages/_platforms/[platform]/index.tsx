@@ -8,9 +8,9 @@ import {
   GetStaticPropsResult,
   InferGetStaticPropsType,
 } from "next";
-import useInitTheme from "@/hooks/theme/useInitTheme";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 import { useRouter } from "next/router";
+import useThemeURL from "@/hooks/theme/useThemeURL";
 
 export async function getStaticPaths() {
   return { paths: [], fallback: "blocking" };
@@ -35,7 +35,7 @@ export const getStaticProps = async (
 const Home = ({ platform }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const ctx = useContext(ArtivaContext);
 
-  const { themeURL } = useInitTheme({ platform });
+  const themeURL = useThemeURL({ theme: platform.themeURL });
   const {
     query: { platform: platformId },
   } = useRouter();
@@ -46,7 +46,7 @@ const Home = ({ platform }: InferGetStaticPropsType<typeof getStaticProps>) => {
   });
 
   return (
-    <Layout>
+    <Layout platform={platform}>
       {HomeDynamic ? (
         <HomeDynamic
           ctx={ctx}

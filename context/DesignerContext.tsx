@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { createContainer } from "unstated-next";
 import useThemeConfig from "@/hooks/theme/useThemeConfig";
 import MetadataContext from "./MetadataContext";
+import useThemeURL from "@/hooks/theme/useThemeURL";
 
 export type CustomPropertyDesigner = {
   key: string;
@@ -25,10 +26,10 @@ const useDesigner = (): UseDesignerType => {
   const { data, save, mutate, merge } = MetadataContext.useContainer();
   const [customsInitilized, setCustomsInitilized] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const themeURL = useThemeURL({ theme: data?.themeURL });
+
   const config = useThemeConfig({
-    themeURL: `${
-      data?.themeURL || process.env.NEXT_PUBLIC_BASE_THEME_URL
-    }/remoteEntry.js`,
+    themeURL: themeURL ? `${themeURL}/remoteEntry.js` : undefined,
   });
 
   useEffect(() => {

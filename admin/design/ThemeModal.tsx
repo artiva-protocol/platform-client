@@ -28,13 +28,12 @@ const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
         <XMarkIcon className="h-5" />
       </button>
       <div className="w-full">
-        {/**
-         * <div className="text-2xl font-semibold">Themes</div>
+        <div className="text-2xl font-semibold">Themes</div>
         <div className="grid grid-cols-2 mt-6 gap-10">
           {Array.from(Themes).map(([id, theme]) => (
             <button
               onClick={() => {
-                updateTheme(`/api/theme/${id}`);
+                updateTheme(id);
                 setOpen(false);
               }}
               className="text-left"
@@ -54,7 +53,6 @@ const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
             </button>
           ))}
         </div>
-         */}
 
         <div className="mt-12 font-semibold">Custom Theme</div>
         <div className="flex items-center mt-2 w-full">

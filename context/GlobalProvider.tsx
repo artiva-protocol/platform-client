@@ -15,7 +15,6 @@ import { SWRConfig } from "swr";
 import axios from "axios";
 import Image from "next/future/image";
 import { ArtivaClientConfig } from "configs/artiva-client-config";
-import ThemeContext, { ThemeCSSWrapper } from "./ThemeContext";
 import MetadataContext from "./MetadataContext";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
@@ -41,47 +40,43 @@ const GlobalProvider = ({
   });
 
   return (
-    <ThemeContext.Provider>
-      <ThemeCSSWrapper>
-        <WagmiConfig client={wagmiClient}>
-          <SessionProvider session={pageProps.session} refetchInterval={0}>
-            <RainbowKitSiweNextAuthProvider
-              enabled={admin}
-              getSiweMessageOptions={getSiweMessageOptions}
-            >
-              <SharedConfigContext.Provider value={{ ...ArtivaClientConfig }}>
-                <SWRConfig value={{ fetcher, revalidateIfStale: false }}>
-                  <RainbowKitProvider
-                    chains={chains}
-                    theme={lightTheme({
-                      borderRadius: "medium",
-                      fontStack: "system",
-                      overlayBlur: "small",
-                    })}
-                  >
-                    <ArtivaContext.Provider
-                      value={{
-                        components: {
-                          ...DefaultComponents,
-                          ConnectButton: ConnectButton.Custom,
-                          Image: Image,
-                          Link: Link,
-                        },
-                        hooks: DefaultHooks,
-                      }}
-                    >
-                      <MetadataContext.Provider>
-                        {children}
-                      </MetadataContext.Provider>
-                    </ArtivaContext.Provider>
-                  </RainbowKitProvider>
-                </SWRConfig>
-              </SharedConfigContext.Provider>
-            </RainbowKitSiweNextAuthProvider>
-          </SessionProvider>
-        </WagmiConfig>
-      </ThemeCSSWrapper>
-    </ThemeContext.Provider>
+    <WagmiConfig client={wagmiClient}>
+      <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <RainbowKitSiweNextAuthProvider
+          enabled={admin}
+          getSiweMessageOptions={getSiweMessageOptions}
+        >
+          <SharedConfigContext.Provider value={{ ...ArtivaClientConfig }}>
+            <SWRConfig value={{ fetcher, revalidateIfStale: false }}>
+              <RainbowKitProvider
+                chains={chains}
+                theme={lightTheme({
+                  borderRadius: "medium",
+                  fontStack: "system",
+                  overlayBlur: "small",
+                })}
+              >
+                <ArtivaContext.Provider
+                  value={{
+                    components: {
+                      ...DefaultComponents,
+                      ConnectButton: ConnectButton.Custom,
+                      Image: Image,
+                      Link: Link,
+                    },
+                    hooks: DefaultHooks,
+                  }}
+                >
+                  <MetadataContext.Provider>
+                    {children}
+                  </MetadataContext.Provider>
+                </ArtivaContext.Provider>
+              </RainbowKitProvider>
+            </SWRConfig>
+          </SharedConfigContext.Provider>
+        </RainbowKitSiweNextAuthProvider>
+      </SessionProvider>
+    </WagmiConfig>
   );
 };
 

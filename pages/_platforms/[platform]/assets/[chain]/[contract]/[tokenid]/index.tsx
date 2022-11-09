@@ -5,10 +5,11 @@ import { NFTObject } from "@zoralabs/nft-hooks";
 import { Fragment } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
-import useInitTheme from "@/hooks/theme/useInitTheme";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 import { getNFTPrimaryData } from "@/services/nft";
+import Layout from "@/components/Layout";
+import useThemeURL from "@/hooks/theme/useThemeURL";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -43,8 +44,7 @@ const NFT = ({
     query: { platform: platformId },
   } = useRouter();
   const ctx = useContext(ArtivaContext);
-
-  const { themeURL } = useInitTheme({ platform });
+  const themeURL = useThemeURL({ theme: platform.themeURL });
 
   const NFTComponentDynamic = useThemeComponent<NFTProps>({
     component: "./NFT",
@@ -58,7 +58,11 @@ const NFT = ({
   };
 
   if (!NFTComponentDynamic) return <Fragment />;
-  return <NFTComponentDynamic {...props} />;
+  return (
+    <Layout platform={platform}>
+      <NFTComponentDynamic {...props} />
+    </Layout>
+  );
 };
 
 export default NFT;

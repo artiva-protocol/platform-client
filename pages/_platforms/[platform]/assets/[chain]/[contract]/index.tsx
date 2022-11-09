@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import { ChainIdentifier, NFTContractProps } from "@artiva/shared";
 import { Fragment } from "react";
-import { useNFTContract, ArtivaContext } from "@artiva/shared";
+import { ArtivaContext } from "@artiva/shared";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import useInitTheme from "@/hooks/theme/useInitTheme";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 import { getNFTContractPrimaryData } from "@/services/nft-contract";
+import Layout from "@/components/Layout";
+import useThemeURL from "@/hooks/theme/useThemeURL";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -43,7 +44,7 @@ const NFTContract = ({
 
   const ctx = useContext(ArtivaContext);
 
-  const { themeURL } = useInitTheme({ platform });
+  const themeURL = useThemeURL({ theme: platform.themeURL });
 
   const NFTComponentDynamic = useThemeComponent<NFTContractProps>({
     component: "./NFTContract",
@@ -57,7 +58,11 @@ const NFTContract = ({
   };
 
   if (!NFTComponentDynamic) return <Fragment />;
-  return <NFTComponentDynamic {...props} />;
+  return (
+    <Layout platform={platform}>
+      <NFTComponentDynamic {...props} />
+    </Layout>
+  );
 };
 
 export default NFTContract;

@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Layout, ArtivaContext, HomeProps } from "@artiva/shared";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 import { useRouter } from "next/router";
+import useThemeURL from "@/hooks/theme/useThemeURL";
 
 const HomePreview = () => {
   const ctx = useContext(ArtivaContext);
@@ -12,8 +13,7 @@ const HomePreview = () => {
     query: { platform },
   } = useRouter();
 
-  const themeURL =
-    designerData?.themeURL || process.env.NEXT_PUBLIC_BASE_THEME_URL;
+  const themeURL = useThemeURL({ theme: designerData?.themeURL });
 
   const HomeDynamic = useThemeComponent<HomeProps>({
     component: "./Home",

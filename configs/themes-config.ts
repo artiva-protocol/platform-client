@@ -8,14 +8,14 @@ export type ThemeType = {
 const themes = new Map<string, ThemeType>();
 
 themes.set("baseline", {
-  url: "https://arweave.net/yrs2tByD5BdTGveKlz2xeHy4y61Rya6ZMCwa85a6on4",
+  url: "https://arweave.net/LJA3okTOD-7_ECLdoePNU2nmZvVh-KFnKs-QbOMnfwU",
   previewImage: "baseline-preview.png",
   title: "Baseline (Default)",
   category: "Gallery",
 });
 
 themes.set("lens", {
-  url: "https://arweave.net/0KMpOz0psKD7w2TbgIxYUXccP4przehxL7hs2PkA0iQ",
+  url: "https://arweave.net/22pI30EInPZpx82PVEs47ADau61X2yJqSzWDzvfO2g4",
   previewImage: "lens-preview.png",
   title: "Lens",
   category: "Photography",

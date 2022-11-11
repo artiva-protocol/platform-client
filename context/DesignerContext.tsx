@@ -33,10 +33,14 @@ const useDesigner = (): UseDesignerType => {
   });
 
   useEffect(() => {
+    setCustomsInitilized(false);
+  }, [config]);
+
+  useEffect(() => {
     if (
       !config ||
       !data ||
-      Object.keys(data.custom).length > 0 ||
+      Object.keys(data.custom).length < 1 ||
       customsInitilized
     )
       return;

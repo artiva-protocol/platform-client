@@ -43,9 +43,11 @@ export const DesignerPreviewWrapper = ({
       //Inject built styles into the iframe
       const head = iframeRef.contentWindow?.document?.head!;
       const link = document.createElement("link");
+
       link.href = `${themeURL}/index.css`;
       link.rel = "stylesheet";
       link.type = "text/css";
+
       head.appendChild(link);
 
       //Set iframe node to be used with portal

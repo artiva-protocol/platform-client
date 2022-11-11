@@ -7,8 +7,11 @@ export type ThemeType = {
 
 const themes = new Map<string, ThemeType>();
 
+const defaultURL = "http://localhost:8080";
+//const defaultURL = "https://arweave.net/yrs2tByD5BdTGveKlz2xeHy4y61Rya6ZMCwa85a6on4"
+
 themes.set("baseline", {
-  url: "https://arweave.net/yrs2tByD5BdTGveKlz2xeHy4y61Rya6ZMCwa85a6on4",
+  url: defaultURL,
   previewImage: "baseline-preview.png",
   title: "Baseline (Default)",
   category: "Gallery",

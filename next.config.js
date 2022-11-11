@@ -63,6 +63,10 @@ const nextConfig = {
               singleton: true,
               requiredVersion: false,
             },
+            "unstated-next": {
+              singleton: true,
+              requiredVersion: false,
+            },
           },
         })
       );

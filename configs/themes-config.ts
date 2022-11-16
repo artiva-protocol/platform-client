@@ -8,7 +8,7 @@ export type ThemeType = {
 const themes = new Map<string, ThemeType>();
 
 themes.set("baseline", {
-  url: "https://arweave.net/k1MCnCgQFlhgOYEJVyrMk-5CnSkMo05-H6fqbe0MxEo",
+  url: "https://arweave.net/6PUFdIOghw9GI2GrizzdQhWEvlYM8lConRQyGcht4AU",
   previewImage: "baseline-preview.png",
   title: "Baseline (Default)",
   category: "Gallery",

@@ -9,6 +9,7 @@ import {
   PLATFORMS_BY_USER_AFTER_TIMESTAMP,
   POSTS_BY_PLATFORM,
   USERS_BY_PLATFORM_WITH_ROLE,
+  TAG_BY_PLATFORM_AND_NAME,
 } from "./queries";
 
 export type GetPostsResponse = {
@@ -149,4 +150,17 @@ export const getPlatformMetadataByPlatform = async (
   return res.platform?.metadataJSON
     ? JSON.parse(res.platform.metadataJSON)
     : undefined;
+};
+
+//Tag
+
+export const getTagByPlatformAndName = async (
+  platformAddress: string,
+  name: string
+) => {
+  const res = await client.request(
+    TAG_BY_PLATFORM_AND_NAME(platformAddress.toLowerCase(), name)
+  );
+
+  return res.tag;
 };

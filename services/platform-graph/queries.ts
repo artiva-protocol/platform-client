@@ -144,3 +144,19 @@ export const PLATFORM_METADATA_BY_PLATFORM = (platformAddress: string) => {
     }
   `;
 };
+
+//Tag
+
+export const TAG_BY_PLATFORM_AND_NAME = (
+  platformAddress: string,
+  name: string
+) => {
+  return gql`
+    {
+      tag(id: "${platformAddress}:${name}") {
+        name
+        count
+      }
+    }
+  `;
+};

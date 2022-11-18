@@ -155,9 +155,9 @@ export const getPlatformMetadataByPlatform = async (
   if (metadata) {
     metadata.cover_image = metadata.cover_image
       ? getNormalizedURI(metadata.cover_image)
-      : undefined;
+      : null;
 
-    metadata.logo = metadata.logo ? getNormalizedURI(metadata.logo) : undefined;
+    metadata.logo = metadata.logo ? getNormalizedURI(metadata.logo) : null;
   }
 
   return metadata;

@@ -19,7 +19,7 @@ themes.set("baseline", {
 });
 
 themes.set("lens", {
-  url: "https://arweave.net/DWOtdZzfz5KMsxXQRtb2VW2aq2PazGeQynY4fo8mp7I",
+  url: "https://arweave.net/tPszq9IIqim2-B6kFYu1fhx0j1POhppkGql0ANLj0Hs",
   hidden: false,
   previewImage: "lens-preview.png",
   title: "Lens",

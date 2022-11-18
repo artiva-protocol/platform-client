@@ -30,28 +30,30 @@ const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
       <div className="w-full">
         <div className="text-2xl font-semibold">Themes</div>
         <div className="grid grid-cols-2 mt-6 gap-10">
-          {Array.from(Themes).map(([id, theme]) => (
-            <button
-              onClick={() => {
-                updateTheme(id);
-                setOpen(false);
-              }}
-              className="text-left"
-              key={id}
-            >
-              <Image
-                src={`/${theme.previewImage}`}
-                alt="preview"
-                className="shadow-lg border"
-                height={200}
-                width={200}
-              />
-              <div className="font-semibold mt-4">{theme.title}</div>
-              <div className="text-gray-500 text-sm font-light">
-                {theme.category}
-              </div>
-            </button>
-          ))}
+          {Array.from(Themes)
+            .filter(([_, theme]) => !theme.hidden)
+            .map(([id, theme]) => (
+              <button
+                onClick={() => {
+                  updateTheme(id);
+                  setOpen(false);
+                }}
+                className="text-left"
+                key={id}
+              >
+                <Image
+                  src={`/${theme.previewImage}`}
+                  alt="preview"
+                  className="shadow-lg border"
+                  height={200}
+                  width={200}
+                />
+                <div className="font-semibold mt-4">{theme.title}</div>
+                <div className="text-gray-500 text-sm font-light">
+                  {theme.category}
+                </div>
+              </button>
+            ))}
         </div>
 
         <div className="mt-12 font-semibold">Custom Theme</div>

@@ -8,6 +8,8 @@ export type ThemeType = {
 
 const themes = new Map<string, ThemeType>();
 
+const localTheme = "http://localhost:8080";
+
 themes.set("baseline", {
   url: "https://arweave.net/eeoJpZylh6tLwX0p_5WWzcjvMGveGojRLTKFewW26_c",
   hidden: false,
@@ -17,7 +19,7 @@ themes.set("baseline", {
 });
 
 themes.set("lens", {
-  url: "https://arweave.net/QC77HYEmbE2eQLMTMitaGO0WXYRAKBKsc1N54QxkXhM",
+  url: "https://arweave.net/DWOtdZzfz5KMsxXQRtb2VW2aq2PazGeQynY4fo8mp7I",
   hidden: false,
   previewImage: "lens-preview.png",
   title: "Lens",

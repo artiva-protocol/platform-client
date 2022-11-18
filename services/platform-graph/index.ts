@@ -1,5 +1,6 @@
 import { RoleEnum } from "@/hooks/platform/useCreatePlatform";
 import { Platform, Post } from "@artiva/shared";
+import { getNormalizedURI } from "utils/getNormalizedURI";
 import client from "./client";
 import {
   USER_ROLES_BY_USER,
@@ -147,9 +148,19 @@ export const getPlatformMetadataByPlatform = async (
     PLATFORM_METADATA_BY_PLATFORM(platformAddress.toLowerCase())
   );
 
-  return res.platform?.metadataJSON
+  let metadata = res.platform?.metadataJSON
     ? JSON.parse(res.platform.metadataJSON)
     : undefined;
+
+  if (metadata) {
+    metadata.cover_image = metadata.cover_image
+      ? getNormalizedURI(metadata.cover_image)
+      : undefined;
+
+    metadata.logo = metadata.logo ? getNormalizedURI(metadata.logo) : undefined;
+  }
+
+  return metadata;
 };
 
 //Tag

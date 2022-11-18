@@ -153,14 +153,12 @@ const AddPlacard = ({
   onAdd: (url: string, label: string) => void;
 }) => {
   const [label, setLabel] = useState("");
-  const [url, setURL] = useState(
-    typeof window !== "undefined" ? window?.location?.origin : ""
-  );
+  const [url, setURL] = useState("");
 
   const onAdd = () => {
     onAddParent(label, url);
     setLabel("");
-    setURL(window?.location?.origin);
+    setURL("");
   };
 
   return (

@@ -58,6 +58,7 @@ const GlobalProvider = ({
               >
                 <ArtivaContext.Provider
                   value={{
+                    context: {},
                     components: {
                       ...DefaultComponents,
                       ConnectButton: ConnectButton.Custom,

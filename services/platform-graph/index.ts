@@ -152,6 +152,7 @@ export const getPlatformMetadataByPlatform = async (
     ? JSON.parse(res.platform.metadataJSON)
     : undefined;
 
+  /*
   if (metadata) {
     metadata.cover_image = metadata.cover_image
       ? getNormalizedURI(metadata.cover_image)
@@ -159,6 +160,7 @@ export const getPlatformMetadataByPlatform = async (
 
     metadata.logo = metadata.logo ? getNormalizedURI(metadata.logo) : null;
   }
+  */
 
   return metadata;
 };

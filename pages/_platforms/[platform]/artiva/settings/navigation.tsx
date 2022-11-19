@@ -174,8 +174,9 @@ const AddPlacard = ({
       <input
         className={urlStyle}
         value={url}
+        placeholder={"http://mywebsite.xyz"}
         onChange={(e) => {
-          if (!e.target.value) setURL(window.location.host);
+          if (!e.target.value) setURL("");
           else setURL(e.target.value);
         }}
       />

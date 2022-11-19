@@ -8,16 +8,18 @@ import DesignerPreviewComponent, {
 
 const Design = () => {
   return (
-    <DesignerContext.Provider>
-      <AdminLayout>
-        <div className="p-6 px-10 h-full">
-          <DesignHeader />
-          <DesignerPreviewWrapper>
-            <DesignerPreviewComponent type={DesignerSitePreviewType.HOME} />
-          </DesignerPreviewWrapper>
-        </div>
-      </AdminLayout>
-    </DesignerContext.Provider>
+    <div className="bg-white">
+      <DesignerContext.Provider>
+        <AdminLayout>
+          <div className="p-6 px-10 h-full">
+            <DesignHeader />
+            <DesignerPreviewWrapper>
+              <DesignerPreviewComponent type={DesignerSitePreviewType.HOME} />
+            </DesignerPreviewWrapper>
+          </div>
+        </AdminLayout>
+      </DesignerContext.Provider>
+    </div>
   );
 };
 

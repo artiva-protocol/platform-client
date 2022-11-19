@@ -11,7 +11,7 @@ const themes = new Map<string, ThemeType>();
 const localTheme = "http://localhost:8080";
 
 themes.set("baseline", {
-  url: "https://arweave.net/eeoJpZylh6tLwX0p_5WWzcjvMGveGojRLTKFewW26_c",
+  url: "https://arweave.net/A3iFjyFEeq0SZflrtmaCB0zc5ZQCxUlR1eWIv-N23Fs",
   hidden: false,
   previewImage: "baseline-preview.png",
   title: "Baseline (Default)",
@@ -19,7 +19,7 @@ themes.set("baseline", {
 });
 
 themes.set("lens", {
-  url: "https://arweave.net/tPszq9IIqim2-B6kFYu1fhx0j1POhppkGql0ANLj0Hs",
+  url: "https://arweave.net/5IP5brZZCzpU0imH41JKawoTzDsq7Ti9s1TbsYH0oas",
   hidden: false,
   previewImage: "lens-preview.png",
   title: "Lens",

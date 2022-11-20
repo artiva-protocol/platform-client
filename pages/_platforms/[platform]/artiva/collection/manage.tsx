@@ -27,8 +27,8 @@ const Header = () => {
   return (
     <div className="pb-4 flex justify-between items-baseline relative w-full">
       <div className="flex items-baseline px-10">
-        <Link href={"/artiva/collection"}>
-          <a className="text-3xl font-bold">Collection</a>
+        <Link href={"/artiva/collection"} className="text-3xl font-bold">
+          Collection
         </Link>
         <ChevronRightIcon className="mx-2 text-gray-400 rounded-md w-6 h-6" />
         <h1 className="text-3xl font-bold">Manage</h1>

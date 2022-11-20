@@ -54,10 +54,8 @@ const CreatePlatform = () => {
   return (
     <div className="h-[100vh] w-full flex relative">
       {platformAddress && <SuccessModal platformAddress={platformAddress} />}
-      <Link href={"/"}>
-        <a className="absolute top-2 left-2">
-          <ArrowLeftCircleIcon className="h-8" />
-        </a>
+      <Link href={"/"} className="absolute top-2 left-2">
+        <ArrowLeftCircleIcon className="h-8" />
       </Link>
       <div className="w-1/2 h-full flex items-center justify-around bg-gray-100">
         <div className="text-left w-[35vw]">
@@ -146,15 +144,17 @@ const SuccessModal = ({ platformAddress }: { platformAddress: string }) => {
         <div className="text-gray-500 mt-2">
           Your platform has successfully been created onchain.
         </div>
-        <Link href={`/platform/${platformAddress}`}>
-          <a className="bg-black h-8 w-full rounded-md text-white mt-8 flex items-center justify-around">
-            View Platform Page
-          </a>
+        <Link
+          href={`/platform/${platformAddress}`}
+          className="bg-black h-8 w-full rounded-md text-white mt-8 flex items-center justify-around"
+        >
+          View Platform Page
         </Link>
-        <Link href="/">
-          <a className="border border-gray-500 h-8 w-full rounded-md mt-2 flex items-center justify-around">
-            Return Home
-          </a>
+        <Link
+          href="/"
+          className="border border-gray-500 h-8 w-full rounded-md mt-2 flex items-center justify-around"
+        >
+          Return Home
         </Link>
       </div>
     </ModalWrapper>

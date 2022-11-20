@@ -51,8 +51,8 @@ const Navigation = () => {
       <div className="w-full p-6 px-10 relative">
         <div className="flex justify-between items-baseline">
           <div className="flex items-baseline">
-            <Link href={"/artiva/settings"}>
-              <a className="text-3xl font-bold">Settings</a>
+            <Link href={"/artiva/settings"} className="text-3xl font-bold">
+              Settings
             </Link>
             <ChevronRightIcon className="mx-2 text-gray-400 w-6 h-6" />
             <h1 className="text-3xl font-bold">Navigation</h1>

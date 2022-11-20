@@ -55,6 +55,8 @@ export default async function middleware(req: NextRequest) {
   }
 
   // rewrite everything else to `/_platforms/[platform] dynamic route
-  url.pathname = `/_platforms/${contract.toLowerCase()}${url.pathname}`;
+  url.pathname = `/_platforms/${(contract as string).toLowerCase()}${
+    url.pathname
+  }`;
   return NextResponse.rewrite(url);
 }

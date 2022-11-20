@@ -36,10 +36,12 @@ const AppIndex = () => {
                   <div className="text-2xl font-semibold">
                     No platforms found
                   </div>
-                  <Link href="/create">
-                    <a className="bg-black flex items-center justify-around text-white h-8 w-[20vw] rounded-md mt-4">
+                  <Link
+                    href="/create"
+                    className="bg-black flex items-center justify-around text-white h-8 w-[20vw] rounded-md mt-4">
+                    
                       Create my Platform
-                    </a>
+                    
                   </Link>
                   <ArtivaConnectButton className="border border-gray-500 flex items-center justify-around h-8 w-[20vw] rounded-md mt-2" />
                 </div>
@@ -47,11 +49,11 @@ const AppIndex = () => {
             )}
             <div className="grid grid-cols-3 gap-6 px-6 pt-6">
               {data?.map((x) => (
-                <Link href={`platform/${x.contract}`} key={x.contract}>
-                  <a className="h-[35vh]">
-                    <PlatformPlacard platform={x} />
-                  </a>
-                </Link>
+                (<Link href={`platform/${x.contract}`} key={x.contract} className="h-[35vh]">
+
+                  <PlatformPlacard platform={x} />
+
+                </Link>)
               ))}
             </div>
           </Fragment>

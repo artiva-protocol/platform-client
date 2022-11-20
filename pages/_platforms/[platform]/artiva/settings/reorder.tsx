@@ -75,8 +75,8 @@ const Reorder = () => {
       <div className="w-full">
         <div className="flex justify-between items-baseline relative p-6 px-10">
           <div className="flex items-baseline">
-            <Link href={"/artiva/settings"}>
-              <a className="text-3xl font-bold">Settings</a>
+            <Link href={"/artiva/settings"} className="text-3xl font-bold">
+              Settings
             </Link>
             <ChevronRightIcon className="mx-2 text-gray-400 rounded-md w-6 h-6" />
             <h1 className="text-3xl font-bold">Reorder</h1>

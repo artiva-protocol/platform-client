@@ -3,7 +3,7 @@ import {
   CheckCircleIcon,
   ExclamationCircleIcon,
 } from "@heroicons/react/24/solid";
-import Image from "next/future/image";
+import Image from "next/image";
 import { Fragment } from "react";
 
 export type ProtocolSaveToastProps = {

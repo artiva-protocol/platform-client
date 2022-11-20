@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import styles from "@/styles/Upload.module.css";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import useIPFSUpload from "@/hooks/ipfs/useIPFSUpload";
-import Image from "next/future/image";
+import Image from "next/image";
 
 export type ImageElementProps = {
   title: string;

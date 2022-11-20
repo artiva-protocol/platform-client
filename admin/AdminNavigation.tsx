@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { CustomConnectButton, useMetadata } from "@artiva/shared";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
-import Image from "next/future/image";
+import Image from "next/image";
 
 const AdminNavigation = () => {
   const router = useRouter();

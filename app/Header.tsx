@@ -1,6 +1,6 @@
 import ArtivaConnectButton from "@/components/ArtivaConnectButton";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 

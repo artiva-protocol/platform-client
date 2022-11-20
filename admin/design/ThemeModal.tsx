@@ -1,7 +1,7 @@
 import DesignerContext from "@/context/DesignerContext";
 import { useState } from "react";
 import Themes from "@/configs/themes-config";
-import Image from "next/future/image";
+import Image from "next/image";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 const ThemeModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {

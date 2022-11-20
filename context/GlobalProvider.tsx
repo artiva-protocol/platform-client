@@ -1,34 +1,17 @@
 import { getWalletClient } from "../configs/wallet-config";
 import { WagmiConfig } from "wagmi";
-import {
-  ConnectButton,
-  lightTheme,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
-import {
-  SharedConfigContext,
-  ArtivaContext,
-  DefaultComponents,
-  DefaultHooks,
-  Platform,
-  ArtivaContextType,
-} from "@artiva/shared";
-import useSWR, { SWRConfig } from "swr";
+import { lightTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { SharedConfigContext } from "@artiva/shared";
+import { SWRConfig } from "swr";
 import axios from "axios";
-import Image from "next/future/image";
 import { ArtivaClientConfig } from "configs/artiva-client-config";
 import MetadataContext from "./MetadataContext";
-import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
 import {
   GetSiweMessageOptions,
   RainbowKitSiweNextAuthProvider,
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
-import React, { Context } from "react";
-import { useRouter } from "next/router";
-import useThemeModule from "@/hooks/theme/useThemeModule";
-import { useContext } from "react";
-import { Container } from "unstated-next";
+import React from "react";
 import ThemeContext from "./ThemeContext";
 
 const { wagmiClient, chains, admin } = getWalletClient();

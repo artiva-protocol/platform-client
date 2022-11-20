@@ -6,7 +6,7 @@ import {
   RenderingPreference,
   RenderRequest,
 } from "@artiva/shared";
-import Image from "next/future/image";
+import Image from "next/image";
 import { ArtivaClientConfig } from "configs/artiva-client-config";
 
 const sources = ["arweave.net", process.env.NEXT_PUBLIC_IPFS_GATEWAY];

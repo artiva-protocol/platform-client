@@ -1,5 +1,5 @@
 import ArtivaConnectButton from "@/components/ArtivaConnectButton";
-import Image from "next/future/image";
+import Image from "next/image";
 import React from "react";
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 

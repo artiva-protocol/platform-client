@@ -1,7 +1,7 @@
 import { Platform } from "@artiva/shared";
 import { ArrowLeftCircleIcon, TrashIcon } from "@heroicons/react/24/solid";
 import PlatformPlacard from "app/PlatformPlacard";
-import Image from "next/future/image";
+import Image from "next/image";
 import { Fragment, useMemo, useState } from "react";
 import styles from "@/styles/Upload.module.css";
 import Link from "next/link";

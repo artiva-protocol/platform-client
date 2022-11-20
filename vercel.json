@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "pages/api/**/*": {
+      "excludeFiles": "public/**/*"
+    },
+    "pages/_platforms/[platform]/_generate.tsx": {
+      "excludeFiles": "public/**/*"
+    }
+  }
+}

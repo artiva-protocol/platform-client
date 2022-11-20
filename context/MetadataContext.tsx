@@ -5,7 +5,7 @@ import { Platform, useMetadata } from "@artiva/shared";
 import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 import { createContainer } from "unstated-next";
-import { isEqual } from "lodash";
+import isEqual from "lodash.isequal";
 import { useRouter } from "next/router";
 
 export type UseMetadataContextType = {

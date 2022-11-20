@@ -9,7 +9,7 @@ import { Navigation } from "@artiva/shared";
 import Link from "next/link";
 import MetadataContext from "@/context/MetadataContext";
 import MetadataSaveButton from "@/admin/MetadataSaveButton";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash.clonedeep";
 
 const placardOuterStyle = "flex mt-4";
 const labelStyle =

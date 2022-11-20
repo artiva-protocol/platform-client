@@ -1,5 +1,4 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import * as _ from "lodash";
 
 export type CustomConnectButtonProps = {
   className: string;

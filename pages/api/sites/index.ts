@@ -1,10 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-const primsa = new PrismaClient();
+import prisma from "utils/primsa";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { subdomain } = req.query;
-  const site = await primsa.site.findFirst({
+  const site = await prisma.site.findFirst({
     where: {
       subdomain: subdomain as string,
     },

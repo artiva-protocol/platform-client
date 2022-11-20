@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import {
   GetStaticPathsResult,
   GetStaticPropsContext,
@@ -8,6 +7,7 @@ import {
 import { Fragment, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import prisma from "utils/primsa";
 
 export function getStaticPaths(): GetStaticPathsResult {
   return {
@@ -21,8 +21,7 @@ export async function getStaticProps(
   context: GetStaticPropsContext<{ platform: string }>
 ): Promise<GetStaticPropsResult<{ contract: string }>> {
   const { platform } = context.params!;
-  const primsa = new PrismaClient();
-  const contract = await primsa.site
+  const contract = await prisma.site
     .findFirst({ where: { subdomain: platform as string } })
     .then((x) => x?.contract);
 

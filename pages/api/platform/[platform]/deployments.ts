@@ -1,15 +1,13 @@
 import { RoleEnum } from "@/hooks/platform/useCreatePlatform";
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { unstable_getServerSession } from "next-auth/next";
 import { getAuthOptions } from "../../auth/[...nextauth]";
-
-const primsa = new PrismaClient();
+import prisma from "utils/primsa";
 
 const getDeployment = async (req: NextApiRequest, res: NextApiResponse) => {
   const { platform } = req.query;
 
-  const result = await primsa.site.findFirst({
+  const result = await prisma.site.findFirst({
     where: { contract: platform as string },
   });
 
@@ -28,7 +26,7 @@ const upsertDeployment = async (req: NextApiRequest, res: NextApiResponse) => {
   if (session?.roles[platform as string] !== RoleEnum.ADMIN)
     return res.status(401).end();
 
-  const result = await primsa.site.upsert({
+  const result = await prisma.site.upsert({
     where: { contract: platform as string },
     update: { subdomain },
     create: { subdomain, contract: platform as string },

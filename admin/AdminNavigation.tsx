@@ -33,40 +33,40 @@ const AdminNavigation = () => {
         <div className="text-sm font-semibold text-gray-700">{data?.title}</div>
       </div>
       <div className="mt-10">
-        <Link href={"/artiva/site"}>
-          <a className="flex items-center mt-4">
-            <HomeIcon className="mr-4 w-5 text-gray-400" />
-            <div className={`text-sm text-gray-600 ${getStyle("site")}`}>
-              View Site
-            </div>
-          </a>
+        <Link href={"/artiva/site"} className="flex items-center mt-4">
+
+          <HomeIcon className="mr-4 w-5 text-gray-400" />
+          <div className={`text-sm text-gray-600 ${getStyle("site")}`}>
+            View Site
+          </div>
+
         </Link>
 
-        <Link href={"/artiva/collection"}>
-          <a className="flex items-center mt-4">
-            <RectangleStackIcon className="mr-4 w-5 text-gray-400" />
-            <div className={`text-sm text-gray-600 ${getStyle("collection")}`}>
-              Collection
-            </div>
-          </a>
+        <Link href={"/artiva/collection"} className="flex items-center mt-4">
+
+          <RectangleStackIcon className="mr-4 w-5 text-gray-400" />
+          <div className={`text-sm text-gray-600 ${getStyle("collection")}`}>
+            Collection
+          </div>
+
         </Link>
 
-        <Link href={"/artiva/settings"}>
-          <a className="flex items-center mt-4">
-            <CogIcon className="mr-4 w-5 text-gray-400" />
-            <div className={`text-sm text-gray-600 ${getStyle("settings")}`}>
-              Settings
-            </div>
-          </a>
+        <Link href={"/artiva/settings"} className="flex items-center mt-4">
+
+          <CogIcon className="mr-4 w-5 text-gray-400" />
+          <div className={`text-sm text-gray-600 ${getStyle("settings")}`}>
+            Settings
+          </div>
+
         </Link>
 
-        <Link href={"/artiva/staff"}>
-          <a className="flex items-center mt-4">
-            <CheckBadgeIcon className="mr-4 w-5 text-gray-400" />
-            <div className={`text-sm text-gray-600 ${getStyle("staff")}`}>
-              Staff
-            </div>
-          </a>
+        <Link href={"/artiva/staff"} className="flex items-center mt-4">
+
+          <CheckBadgeIcon className="mr-4 w-5 text-gray-400" />
+          <div className={`text-sm text-gray-600 ${getStyle("staff")}`}>
+            Staff
+          </div>
+
         </Link>
       </div>
       <div className="absolute bottom-4 left-6">

@@ -11,9 +11,7 @@ const themes = new Map<string, ThemeType>();
 const localTheme = "http://localhost:8080";
 
 themes.set("baseline", {
-  url:
-    localTheme ||
-    "https://arweave.net/VscA7AvwMlnNBx0lf2fr15HHyj1CV5PHKwvA5bsC_nc",
+  url: "https://arweave.net/O0ccAAzXMqlkhIuHw9I4MP0kVXMySafTAXDyDLEdH-8",
   hidden: false,
   previewImage: "baseline-preview.png",
   title: "Baseline (Default)",
@@ -21,7 +19,7 @@ themes.set("baseline", {
 });
 
 themes.set("lens", {
-  url: "https://arweave.net/sIlWjwd3YCmfU9OjH_nALXYGwFNi_mpapuEMcWl7jNc",
+  url: "https://arweave.net/kOLRNAnee-IiF2UVWJcjI1F56wpe-CHZ_oXkGk-7pgE",
   hidden: false,
   previewImage: "lens-preview.png",
   title: "Lens",
@@ -29,7 +27,7 @@ themes.set("lens", {
 });
 
 themes.set("glass", {
-  url: "https://arweave.net/xBQ2ddp7PlC1cmoa1D4ueJCdGJSWEQlDR20kf-5zB1o",
+  url: "https://arweave.net/qXZdK50wSEcipyeq4ERzSjR-tWmOw0J3om4mL0SRMx0",
   hidden: true,
 });
 

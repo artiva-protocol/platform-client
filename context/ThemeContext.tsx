@@ -49,8 +49,6 @@ const ThemeContext = ({ children }: { children: React.ReactElement }) => {
   const { default: GlobalContext } = globalContextModule;
   ctxValues.context.GlobalContext = GlobalContext;
 
-  console.log("GlobalContext ref", GlobalContext);
-
   return (
     <GlobalContext.Provider>
       <ArtivaContext.Provider value={ctxValues}>

@@ -10,12 +10,6 @@ const path = require("path");
  * @type {import('next').NextConfig}
  **/
 const nextConfig = {
-  experimental: {
-    externalDir: true,
-    images: {
-      allowFutureImage: true,
-    },
-  },
   output: "standalone",
   images: {
     domains: [

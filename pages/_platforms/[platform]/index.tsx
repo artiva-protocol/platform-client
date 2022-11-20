@@ -36,6 +36,7 @@ const Home = ({ platform }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const ctx = useContext(ArtivaContext);
 
   const themeURL = useThemeURL({ theme: platform.themeURL });
+
   const {
     query: { platform: platformId },
   } = useRouter();

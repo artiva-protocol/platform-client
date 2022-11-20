@@ -189,22 +189,21 @@ export class RaribleDataSource implements RaribleDataInterface {
         }:${address}:${tokenId}`
       );
     });
-    const promiseGroup = [];
 
-    promiseGroup.push(this.fetchMetadataRarible(ids));
-    promiseGroup.push(this.fetchOwnersRarible(ids));
-    promiseGroup.push(this.fetchCollectionRarible(Array.from(collectionIds)));
+    const [metadataRes, ownersRes, collectionRes] = await Promise.all([
+      this.fetchMetadataRarible(ids),
+      this.fetchOwnersRarible(ids),
+      this.fetchCollectionRarible(Array.from(collectionIds)),
+    ]);
 
-    const res = (await Promise.all(promiseGroup)) as any;
-
-    const responseJson = (await res[0].json()) as RaribleDataResponse;
+    const responseJson = (await metadataRes.json()) as RaribleDataResponse;
 
     const ownerships = (await Promise.all(
-      res[1].map((x: any) => x.json())
+      ownersRes.map((x: any) => x.json())
     )) as RaribleOwnerResponse[];
 
     const collections = (await Promise.all(
-      res[2].map((x: any) => x.json())
+      collectionRes.map((x: any) => x.json())
     )) as RaribleCollection[];
 
     return nftTuples.map(([address, tokenId]: any) => {

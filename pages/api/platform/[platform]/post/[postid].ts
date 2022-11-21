@@ -9,6 +9,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   if (!post) return res.status(404);
+
+  res.setHeader("Cache-Control", "public, s-maxage=31536000, immutable");
   return res.send(post);
 };
 

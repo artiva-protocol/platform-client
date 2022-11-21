@@ -5,70 +5,67 @@ import {
   NFTContractProps,
   PostTypeEnum,
   Platform,
-  Post,
   NFTContractObject,
+  usePostContent,
+  Post,
 } from "@artiva/shared";
 import { Fragment } from "react";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 import {
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  InferGetStaticPropsType,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  InferGetServerSidePropsType,
 } from "next";
-import {
-  getPlatformMetadataByPlatform,
-  getPostByPlatformAndId,
-} from "@/services/platform-graph";
+import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
 import { useRouter } from "next/router";
-import { getPostPrimaryData, PostData } from "@/services/post";
 import { NFTObject } from "@zoralabs/nft-hooks";
 import useThemeURL from "@/hooks/theme/useThemeURL";
+import useSWR from "swr";
 
-export async function getStaticPaths() {
-  return { paths: [], fallback: "blocking" };
-}
-
-export const getStaticProps = async ({
-  params,
-}: GetStaticPropsContext<{ postid: string; platform: string }>): Promise<
-  GetStaticPropsResult<{ platform: Platform; post: Post; data: PostData }>
+export const getServerSideProps = async ({
+  res,
+  query,
+}: GetServerSidePropsContext): Promise<
+  GetServerSidePropsResult<{ platform: Platform }>
 > => {
-  const [platformData, post] = await Promise.all([
-    getPlatformMetadataByPlatform(params!.platform),
-    getPostByPlatformAndId(params!.platform, params!.postid),
-  ]);
+  const { platform } = query;
 
-  if (!platformData || !post)
+  const platformData = await getPlatformMetadataByPlatform(platform as string);
+
+  if (!platformData)
     return {
       notFound: true,
     };
 
-  const data = await getPostPrimaryData(post);
-  const jsonData = JSON.parse(JSON.stringify(data));
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
+
   return {
     props: {
       platform: platformData,
-      post,
-      data: jsonData,
     },
-    revalidate: 60,
   };
 };
 
 const PostComponent = ({
   platform,
-  post,
-  data,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const ctx = useContext(ArtivaContext);
   const themeURL = useThemeURL({ theme: platform.themeURL });
   const {
-    query: { platform: platformId },
+    query: { platform: platformId, postid },
   } = useRouter();
 
+  const { data: post } = useSWR<Post>(
+    `/api/platform/${platformId}/post/${postid}`
+  );
+  const { data } = usePostContent(post);
+
   const NFTDynamic = useThemeComponent<NFTProps>(
-    post.type == PostTypeEnum.NFT
+    post?.type == PostTypeEnum.NFT
       ? {
           component: "./NFT",
           themeURL,
@@ -77,7 +74,7 @@ const PostComponent = ({
   );
 
   const NFTContractDynamic = useThemeComponent<NFTContractProps>(
-    post.type == PostTypeEnum.NFT_CONTRACT
+    post?.type == PostTypeEnum.NFT_CONTRACT
       ? {
           component: "./NFTContract",
           themeURL,

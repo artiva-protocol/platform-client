@@ -44,7 +44,7 @@ export default async function middleware(req: NextRequest) {
   let contract =
     currentHost.startsWith("0x") && currentHost.length == 42
       ? currentHost
-      : req.cookies.get(currentHost);
+      : req.cookies.get(currentHost)?.value;
 
   if (!contract) {
     const redirectTo = url.pathname;
@@ -55,8 +55,6 @@ export default async function middleware(req: NextRequest) {
   }
 
   // rewrite everything else to `/_platforms/[platform] dynamic route
-  url.pathname = `/_platforms/${(contract as string).toLowerCase()}${
-    url.pathname
-  }`;
+  url.pathname = `/_platforms/${contract.toLowerCase()}${url.pathname}`;
   return NextResponse.rewrite(url);
 }

@@ -3,7 +3,6 @@ import {
   GetPlatformsResponse,
 } from "@/services/platform-graph";
 import useSWR from "swr";
-import { useAccount } from "wagmi";
 import AppHeader from "app/Header";
 import Link from "next/link";
 import PlatformPlacard from "app/PlatformPlacard";
@@ -38,10 +37,9 @@ const AppIndex = () => {
                   </div>
                   <Link
                     href="/create"
-                    className="bg-black flex items-center justify-around text-white h-8 w-[20vw] rounded-md mt-4">
-                    
-                      Create my Platform
-                    
+                    className="bg-black flex items-center justify-around text-white h-8 w-[20vw] rounded-md mt-4"
+                  >
+                    Create my Platform
                   </Link>
                   <ArtivaConnectButton className="border border-gray-500 flex items-center justify-around h-8 w-[20vw] rounded-md mt-2" />
                 </div>
@@ -49,11 +47,13 @@ const AppIndex = () => {
             )}
             <div className="grid grid-cols-3 gap-6 px-6 pt-6">
               {data?.map((x) => (
-                (<Link href={`platform/${x.contract}`} key={x.contract} className="h-[35vh]">
-
+                <Link
+                  href={`platform/${x.contract}`}
+                  key={x.contract}
+                  className="h-[35vh]"
+                >
                   <PlatformPlacard platform={x} />
-
-                </Link>)
+                </Link>
               ))}
             </div>
           </Fragment>

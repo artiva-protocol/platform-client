@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import AppHeader from "./Header";
-import Link from "next/link";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { PlatformSelectionType } from "pages/app/platform/[platform]";
 

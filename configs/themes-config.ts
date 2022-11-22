@@ -27,7 +27,7 @@ themes.set("lens", {
 });
 
 themes.set("glass", {
-  url: "https://arweave.net/RUqCcaDXMtyXmayUfQaLJm-vk4v1C8jT2oinFjU_5AY",
+  url: "https://arweave.net/WBK-HGtsz5tobndPtiUYDjf75RjyJXpLfYRoKsjiQhs",
   hidden: true,
 });
 

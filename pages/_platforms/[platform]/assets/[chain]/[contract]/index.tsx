@@ -1,48 +1,56 @@
 import { useRouter } from "next/router";
-import { ChainIdentifier, NFTContractProps } from "@artiva/shared";
+import {
+  ChainIdentifier,
+  NFTContractProps,
+  useNFTContract,
+} from "@artiva/shared";
 import { Fragment } from "react";
 import { ArtivaContext } from "@artiva/shared";
 import { useContext } from "react";
 import useThemeComponent from "@/hooks/theme/useThemeComponent";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getPlatformMetadataByPlatform } from "@/services/platform-graph";
-import { getNFTContractPrimaryData } from "@/services/nft-contract";
 import Layout from "@/components/Layout";
 import useThemeURL from "@/hooks/theme/useThemeURL";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const { platform: platformContract } = context.query;
-  const platform = (await getPlatformMetadataByPlatform(
+export const getServerSideProps = async ({
+  res,
+  query,
+}: GetServerSidePropsContext) => {
+  const { platform: platformContract } = query;
+  const platform = await getPlatformMetadataByPlatform(
     platformContract as string
-  ))!;
+  );
 
-  const { chain, contract } = context.query;
+  if (!platform)
+    return {
+      notFound: true,
+    };
 
-  const data = await getNFTContractPrimaryData({
-    chain: chain as ChainIdentifier,
-    contractAddress: contract as string,
-  });
-  const jsonData = JSON.parse(JSON.stringify(data));
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
 
   return {
     props: {
       platform,
-      data: jsonData,
     },
   };
 };
 
 const NFTContract = ({
   platform,
-  data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const {
-    query: { platform: platformId },
+    query: { platform: platformId, chain, contract },
   } = useRouter();
 
   const ctx = useContext(ArtivaContext);
+  const { data } = useNFTContract({
+    chain: chain as ChainIdentifier,
+    contractAddress: contract as string,
+  });
 
   const themeURL = useThemeURL({ theme: platform.themeURL });
 

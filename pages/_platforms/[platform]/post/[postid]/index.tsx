@@ -1,13 +1,10 @@
 import Layout from "@/components/Layout";
 import {
   ArtivaContext,
-  NFTProps,
-  NFTContractProps,
-  PostTypeEnum,
   Platform,
-  NFTContractObject,
   usePostContent,
   Post,
+  PostProps,
 } from "@artiva/shared";
 import { Fragment } from "react";
 import { useContext } from "react";
@@ -64,43 +61,21 @@ const PostComponent = ({
   );
   const { data } = usePostContent(post);
 
-  const NFTDynamic = useThemeComponent<NFTProps>(
-    post?.type == PostTypeEnum.NFT
-      ? {
-          component: "./NFT",
-          themeURL,
-        }
-      : undefined
-  );
+  const PostDynamic = useThemeComponent<PostProps>({
+    component: "./Post",
+    themeURL,
+  });
 
-  const NFTContractDynamic = useThemeComponent<NFTContractProps>(
-    post?.type == PostTypeEnum.NFT_CONTRACT
-      ? {
-          component: "./NFTContract",
-          themeURL,
-        }
-      : undefined
-  );
-
-  if (!NFTDynamic && !NFTContractDynamic) return <Fragment />;
+  if (!PostDynamic) return <Fragment />;
 
   return (
     <Layout platform={platform}>
-      {NFTDynamic ? (
-        <NFTDynamic
-          platform={{ ...platform, id: platformId as string }}
-          ctx={ctx}
-          nft={data as NFTObject}
-        />
-      ) : NFTContractDynamic ? (
-        <NFTContractDynamic
-          platform={{ ...platform, id: platformId as string }}
-          ctx={ctx}
-          nftContract={data as NFTContractObject}
-        />
-      ) : (
-        <Fragment />
-      )}
+      <PostDynamic
+        platform={{ ...platform, id: platformId as string }}
+        ctx={ctx}
+        post={post}
+        postData={data}
+      />
     </Layout>
   );
 };

@@ -2,7 +2,7 @@ import { Provider } from "@ethersproject/abstract-provider";
 import { NFTObject } from "@zoralabs/nft-hooks";
 import { Signer, ContractTransaction, BigNumberish } from "ethers";
 import { ChainIdentifier } from "@artiva/shared";
-import IMarketAdapter from "../IMarketAdapter";
+import { IMarketAdapter } from "@artiva/shared";
 import AsksABI from "@zoralabs/v3/dist/artifacts/AsksOmnibus.sol/AsksOmnibus.json";
 import { ethers } from "ethers";
 import {
@@ -21,13 +21,17 @@ export class ZoraV3MarketAdapter implements IMarketAdapter {
     throw new Error("Method not implemented.");
   }
 
-  fillAsk(nft: NFTObject, finder: BigNumberish): Promise<ContractTransaction> {
+  fillAsk(
+    nft: NFTObject,
+    _: BigNumberish,
+    finder: BigNumberish
+  ): Promise<ContractTransaction> {
     if (!this.signerOrProvider) throw new Error("Not intilized");
     const ask = this.findAsk(nft);
     if (!ask || !ask?.raw.marketAddress || !ask.amount)
       throw new Error("Ask not found");
 
-    const module = new ethers.Contract(
+    const nftModule = new ethers.Contract(
       ask?.raw.marketAddress,
       AsksABI.abi,
       this.signerOrProvider
@@ -36,7 +40,7 @@ export class ZoraV3MarketAdapter implements IMarketAdapter {
     const { nft: nftData } = nft;
     if (!nftData) throw new Error("NFT data not found");
 
-    return module.fillAsk(
+    return nftModule.fillAsk(
       nftData.contract.address,
       nftData?.tokenId,
       ask.amount?.amount.raw,

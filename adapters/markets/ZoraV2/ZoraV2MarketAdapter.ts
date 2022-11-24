@@ -3,7 +3,7 @@ import {
   AUCTION_SOURCE_TYPES,
   MARKET_INFO_STATUSES,
 } from "@zoralabs/nft-hooks/dist/types";
-import IMarketAdapter from "../IMarketAdapter";
+import { IMarketAdapter } from "@artiva/shared";
 import { Signer, BigNumberish, ContractTransaction } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import { ChainIdentifier } from "@artiva/shared";

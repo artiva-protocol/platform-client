@@ -5,6 +5,7 @@ import {
   IMarketAdapter,
   ChainIdentifier,
   useNFT,
+  useMetadata,
 } from "@artiva/shared";
 import { useRouter } from "next/router";
 import { Fragment, useMemo } from "react";
@@ -23,9 +24,10 @@ import WalletWrapper from "@/components/WalletWrapper";
 
 const Buy = () => {
   const router = useRouter();
-  const { chain, contract, tokenid } = router.query;
+  const { chain, contract, tokenid, platform } = router.query;
   const { address } = useAccount();
   const { data: signer } = useSigner();
+  const { data: platformData } = useMetadata({ platform: platform as string });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,10 +58,14 @@ const Buy = () => {
     setError("");
     if (!signer || !market || !nft) return;
 
-    market.connect(signer, chain as ChainIdentifier);
+    market.connect(signer, chain as ChainIdentifier, platformData?.referralFee);
 
     try {
-      const res = await market.fillAsk(nft, ethers.constants.AddressZero);
+      const res = await market.fillAsk(
+        nft,
+        ask.amount?.amount.raw || 0,
+        ethers.constants.AddressZero
+      );
       if (typeof res === "object" && "wait" in res) {
         await res.wait();
       }
@@ -98,6 +104,10 @@ const Buy = () => {
     );
   };
 
+  const amount = ask.amount?.amount.value || 0;
+  const feePercent = (platformData?.referralFee.feeBPS || 0) / 100;
+  const feeAmount = (amount * (platformData?.referralFee.feeBPS || 0)) / 10000;
+
   const buyControl = () => {
     return (
       <div className="sm:w-2/3">
@@ -106,15 +116,37 @@ const Buy = () => {
           Once the transaction is confirmed, the NFT will be sent to your wallet
           instantly.
         </div>
-        <div className="flex items-center mt-4 ">
-          <div className="bg-gray-100 w-full rounded-l-md h-12 px-4 text-xl font-light focus:outline-none flex items-center">
-            {ask.amount?.amount.value}
+
+        <div>
+          <div className="mt-8 text-xs border-b pb-2 w-full flex items-center justify-between">
+            <div>
+              <span className="">{amount}</span>
+              <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
+            </div>
+
+            <div className="text-gray-500 ml-2">Price</div>
           </div>
-          <div className="px-5 font-semibold bg-gray-200 h-12 flex items-center rounded-r-md">
-            {ask.amount?.symbol}
+
+          {platformData?.referralFee && (
+            <div className="mt-2 text-xs border-b pb-2 w-full flex items-center justify-between">
+              <div>
+                <span className="">{feeAmount}</span>
+                <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
+              </div>
+
+              <div className="text-gray-500 ml-2">
+                {feePercent}% Platform Fee
+              </div>
+            </div>
+          )}
+
+          <div className="mt-2 text-2xl font-light">
+            <span className="font-normal">{amount + feeAmount}</span>
+            <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
           </div>
         </div>
-        <WalletWrapper className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md">
+
+        <WalletWrapper className="h-12 w-full bg-black text-white text-lg mt-8 rounded-md">
           <button
             onClick={onBuyNow}
             className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md"

@@ -69,6 +69,49 @@ const General = () => {
           </div>
 
           <div className="px-16 mt-12">
+            <div className="text-sm">Platform Fees</div>
+            <div className="bg-gray-100 rounded-md p-6 mt-3">
+              <div className={titleStyle}>Referral Fees</div>
+              <div className={captionStyle}>
+                A fee that gets applied on top of NFT prices for secondary
+                markets
+              </div>
+
+              <div className="mt-6">
+                <input
+                  className={inputStyle}
+                  placeholder="0x0123FA5..."
+                  onChange={(e) =>
+                    onChange("referralFee", {
+                      feeRecipient: e.target.value,
+                    })
+                  }
+                  value={platform?.referralFee?.feeRecipient}
+                />
+                <div className={lowerCaptionStyle}>
+                  The recipent of all referral fees
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <input
+                  className={inputStyle}
+                  placeholder="500"
+                  onChange={(e) =>
+                    onChange("referralFee", {
+                      feeBPS: e.target.value,
+                    })
+                  }
+                  value={platform?.referralFee?.feeBPS}
+                />
+                <div className={lowerCaptionStyle}>
+                  Fee amount in BPS (1 BPS is 0.1%)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="px-16 mt-12">
             <div className="text-sm">Meta Settings</div>
             <div className="bg-gray-100 p-6 mt-3">
               <div className={titleStyle}>Meta data</div>

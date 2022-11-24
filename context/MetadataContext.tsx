@@ -7,6 +7,7 @@ import { useSWRConfig } from "swr";
 import { createContainer } from "unstated-next";
 import isEqual from "lodash.isequal";
 import { useRouter } from "next/router";
+import deepmerge from "deepmerge";
 
 export type UseMetadataContextType = {
   merge: (platform: Partial<Platform>) => void;
@@ -37,10 +38,7 @@ const useMetadataContext = (): UseMetadataContextType => {
 
   const merge = (platform: Partial<Platform>) => {
     if (!data) return;
-    mutate({
-      ...data,
-      ...platform,
-    });
+    mutate(deepmerge(data, platform));
   };
 
   const mutate = (platform: Platform) => {

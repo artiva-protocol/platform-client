@@ -6,19 +6,22 @@ import {
   MARKET_INFO_STATUSES,
 } from "@zoralabs/nft-hooks/dist/types";
 import { RESERVOIR_API_BY_NETWORK } from "constants/urls";
-import { Signer, BigNumberish, ContractTransaction } from "ethers";
-import IMarketAdapter from "../IMarketAdapter";
+import { Signer, BigNumberish, ContractTransaction, BigNumber } from "ethers";
+import { IMarketAdapter } from "@artiva/shared";
 import { createClient, getClient } from "@reservoir0x/reservoir-kit-client";
+import { ReferralFee } from "@artiva/shared/dist/types/metadata/ReferralFee";
 
 export class ReserviorMarketAdapter implements IMarketAdapter {
   signerOrProvider?: Signer | Provider;
+  referralFee?: ReferralFee;
 
-  connect(signerOrProvider: Signer | Provider, chain: ChainIdentifier): void {
-    createClient({
-      apiBase: RESERVOIR_API_BY_NETWORK[1],
-      apiKey: process.env.NEXT_PUBLIC_RESERVOIR_API_KEY,
-      source: "artiva.us",
-    });
+  connect(
+    signerOrProvider: Signer | Provider,
+    _: ChainIdentifier,
+    referralFee?: ReferralFee
+  ): void {
+    console.log("referralFee", referralFee);
+    this.referralFee = referralFee;
     this.signerOrProvider = signerOrProvider;
   }
 
@@ -26,9 +29,29 @@ export class ReserviorMarketAdapter implements IMarketAdapter {
     throw new Error("Method not implemented.");
   }
 
-  async fillAsk(nft: NFTObject, _: BigNumberish): Promise<boolean> {
+  async fillAsk(
+    nft: NFTObject,
+    amount: BigNumberish,
+    _: BigNumberish
+  ): Promise<boolean> {
     if (!this.signerOrProvider || !("getAddress" in this.signerOrProvider))
       throw new Error("Not connected");
+
+    let referralFeeAmount;
+
+    if (this.referralFee) {
+      const feePercentage = (this.referralFee?.feeBPS || 0) / 10000;
+      const amountParsed = amount as number;
+      referralFeeAmount = feePercentage * amountParsed;
+    }
+
+    createClient({
+      apiBase: RESERVOIR_API_BY_NETWORK[1],
+      apiKey: process.env.NEXT_PUBLIC_RESERVOIR_API_KEY,
+      source: "artiva.us",
+      referralFee: referralFeeAmount,
+      referralFeeRecipient: this.referralFee?.feeRecipient,
+    });
 
     const client = getClient();
 

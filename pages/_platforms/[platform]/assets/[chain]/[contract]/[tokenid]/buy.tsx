@@ -108,7 +108,7 @@ const Buy = () => {
   const feePercent = (platformData?.referralFee.feeBPS || 0) / 100;
   const feeAmount = (amount * (platformData?.referralFee.feeBPS || 0)) / 10000;
 
-  const buyControl = () => {
+  const buyControlWithFee = () => {
     return (
       <div className="sm:w-2/3">
         <div className="text-3xl sm:text-4xl font-semibold">Buy Now</div>
@@ -120,7 +120,7 @@ const Buy = () => {
         <div>
           <div className="mt-8 text-xs border-b pb-2 w-full flex items-center justify-between">
             <div>
-              <span className="">{amount}</span>
+              <span className="text-gray-500 ">{amount}</span>
               <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
             </div>
 
@@ -130,7 +130,7 @@ const Buy = () => {
           {platformData?.referralFee && (
             <div className="mt-2 text-xs border-b pb-2 w-full flex items-center justify-between">
               <div>
-                <span className="">{feeAmount}</span>
+                <span className="text-gray-500 ">{feeAmount}</span>
                 <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
               </div>
 
@@ -142,11 +142,44 @@ const Buy = () => {
 
           <div className="mt-2 text-2xl font-light">
             <span className="font-normal">{amount + feeAmount}</span>
-            <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
+            <span className="font-normal ml-2">{ask.amount?.symbol}</span>
           </div>
         </div>
 
         <WalletWrapper className="h-12 w-full bg-black text-white text-lg mt-8 rounded-md">
+          <button
+            onClick={onBuyNow}
+            className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md"
+          >
+            {loading ? "Confirming..." : "Confirm"}
+          </button>
+        </WalletWrapper>
+        {error && (
+          <p className="text-red-500 text-center mt-4 break-all">
+            {error.slice(0, 300)}
+          </p>
+        )}
+      </div>
+    );
+  };
+
+  const buyControl = () => {
+    return (
+      <div className="sm:w-2/3">
+        <div className="text-3xl sm:text-4xl font-semibold">Buy Now</div>
+        <div className="sm:text-lg mt-2 text-gray-500 font-light">
+          Once the transaction is confirmed, the NFT will be sent to your wallet
+          instantly.
+        </div>
+        <div className="flex items-center mt-4 ">
+          <div className="bg-gray-100 w-full rounded-l-md h-12 px-4 text-xl font-light focus:outline-none flex items-center">
+            {ask.amount?.amount.value}
+          </div>
+          <div className="px-5 font-semibold bg-gray-200 h-12 flex items-center rounded-r-md">
+            {ask.amount?.symbol}
+          </div>
+        </div>
+        <WalletWrapper className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md">
           <button
             onClick={onBuyNow}
             className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md"

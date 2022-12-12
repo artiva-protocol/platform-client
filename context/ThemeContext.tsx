@@ -1,3 +1,4 @@
+import ListingModal from "@/components/ListingModal";
 import useThemeModule from "@/hooks/theme/useThemeModule";
 import {
   ArtivaContext,
@@ -31,6 +32,7 @@ const ThemeContext = ({ children }: { children: React.ReactElement }) => {
     components: {
       ...DefaultComponents,
       ConnectButton: ConnectButton.Custom,
+      ListingModal: ListingModal,
       Image: Image,
       Link: Link,
     },

@@ -71,9 +71,9 @@ const General = () => {
           <div className="px-16 mt-12">
             <div className="text-sm">Platform Fees</div>
             <div className="bg-gray-100 rounded-md p-6 mt-3">
-              <div className={titleStyle}>Referral Fees</div>
+              <div className={titleStyle}>Market Fees</div>
               <div className={captionStyle}>
-                A fee that gets applied on top of NFT prices for secondary
+                A fee that gets applied to any listings created on your platform
                 markets
               </div>
 
@@ -82,11 +82,11 @@ const General = () => {
                   className={inputStyle}
                   placeholder="0x0123FA5..."
                   onChange={(e) =>
-                    onChange("referralFee", {
+                    onChange("marketFee", {
                       feeRecipient: e.target.value,
                     })
                   }
-                  value={platform?.referralFee?.feeRecipient}
+                  value={platform?.marketFee?.feeRecipient}
                 />
                 <div className={lowerCaptionStyle}>
                   The recipent of all referral fees
@@ -98,11 +98,11 @@ const General = () => {
                   className={inputStyle}
                   placeholder="500"
                   onChange={(e) =>
-                    onChange("referralFee", {
+                    onChange("marketFee", {
                       feeBPS: e.target.value,
                     })
                   }
-                  value={platform?.referralFee?.feeBPS}
+                  value={platform?.marketFee?.feeBPS}
                 />
                 <div className={lowerCaptionStyle}>
                   Fee amount in BPS (1 BPS is 0.1%)

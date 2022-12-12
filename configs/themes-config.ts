@@ -11,7 +11,7 @@ const themes = new Map<string, ThemeType>();
 const localTheme = "http://localhost:8080";
 
 themes.set("baseline", {
-  url: "https://arweave.net/7cBcCdMZjOZzOIdcJXlLSdKvR61rnEHdYaYsXp13Jss",
+  url: "https://arweave.net/z30L3cGf5xUxYYw0X5dzFdz6hA0x_rVFV8vMhWiPT-I",
   hidden: false,
   previewImage: "baseline-preview.png",
   title: "Baseline (Default)",

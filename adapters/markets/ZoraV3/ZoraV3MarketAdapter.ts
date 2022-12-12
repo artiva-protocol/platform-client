@@ -1,7 +1,7 @@
 import { Provider } from "@ethersproject/abstract-provider";
 import { NFTObject } from "@zoralabs/nft-hooks";
 import { Signer, ContractTransaction, BigNumberish } from "ethers";
-import { ChainIdentifier } from "@artiva/shared";
+import { ChainIdentifier, FeeType } from "@artiva/shared";
 import { IMarketAdapter } from "@artiva/shared";
 import AsksABI from "@zoralabs/v3/dist/artifacts/AsksOmnibus.sol/AsksOmnibus.json";
 import { ethers } from "ethers";
@@ -11,6 +11,13 @@ import {
 } from "@zoralabs/nft-hooks/dist/types";
 
 export class ZoraV3MarketAdapter implements IMarketAdapter {
+  createAsk(
+    nft: NFTObject,
+    amount: BigNumberish,
+    marketFee?: FeeType | undefined
+  ): Promise<boolean | ContractTransaction> {
+    throw new Error("Method not implemented.");
+  }
   signerOrProvider?: Signer | Provider;
 
   connect(signerOrProvider: Signer | Provider, _: ChainIdentifier): void {

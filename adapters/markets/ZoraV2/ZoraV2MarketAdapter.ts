@@ -3,7 +3,7 @@ import {
   AUCTION_SOURCE_TYPES,
   MARKET_INFO_STATUSES,
 } from "@zoralabs/nft-hooks/dist/types";
-import { IMarketAdapter } from "@artiva/shared";
+import { FeeType, IMarketAdapter } from "@artiva/shared";
 import { Signer, BigNumberish, ContractTransaction } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import { ChainIdentifier } from "@artiva/shared";
@@ -11,6 +11,13 @@ import { AuctionHouse } from "./AuctionHouse";
 import { EVM_CHAIN_IDENTIFIER_TO_CHAINID } from "../../../constants/EVMChainIDLookup";
 
 export class ZoraV2MarketAdapter implements IMarketAdapter {
+  createAsk(
+    nft: NFTObject,
+    amount: BigNumberish,
+    marketFee?: FeeType | undefined
+  ): Promise<boolean | ContractTransaction> {
+    throw new Error("Method not implemented.");
+  }
   auctionHouse?: AuctionHouse;
 
   connect(signerOrProvider: Signer | Provider, chain: ChainIdentifier) {

@@ -58,7 +58,7 @@ const Buy = () => {
     setError("");
     if (!signer || !market || !nft) return;
 
-    market.connect(signer, chain as ChainIdentifier, platformData?.referralFee);
+    market.connect(signer, chain as ChainIdentifier, platformData?.marketFee);
 
     try {
       const res = await market.fillAsk(
@@ -100,65 +100,6 @@ const Buy = () => {
         >
           Return to NFT
         </button>
-      </div>
-    );
-  };
-
-  const amount = ask.amount?.amount.value || 0;
-  const feePercent = (platformData?.referralFee.feeBPS || 0) / 100;
-  const feeAmount = (amount * (platformData?.referralFee.feeBPS || 0)) / 10000;
-
-  const buyControlWithFee = () => {
-    return (
-      <div className="sm:w-2/3">
-        <div className="text-3xl sm:text-4xl font-semibold">Buy Now</div>
-        <div className="sm:text-lg mt-2 text-gray-500 font-light">
-          Once the transaction is confirmed, the NFT will be sent to your wallet
-          instantly.
-        </div>
-
-        <div>
-          <div className="mt-8 text-xs border-b pb-2 w-full flex items-center justify-between">
-            <div>
-              <span className="text-gray-500 ">{amount}</span>
-              <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
-            </div>
-
-            <div className="text-gray-500 ml-2">Price</div>
-          </div>
-
-          {platformData?.referralFee && (
-            <div className="mt-2 text-xs border-b pb-2 w-full flex items-center justify-between">
-              <div>
-                <span className="text-gray-500 ">{feeAmount}</span>
-                <span className="text-gray-500 ml-2">{ask.amount?.symbol}</span>
-              </div>
-
-              <div className="text-gray-500 ml-2">
-                {feePercent}% Platform Fee
-              </div>
-            </div>
-          )}
-
-          <div className="mt-2 text-2xl font-light">
-            <span className="font-normal">{amount + feeAmount}</span>
-            <span className="font-normal ml-2">{ask.amount?.symbol}</span>
-          </div>
-        </div>
-
-        <WalletWrapper className="h-12 w-full bg-black text-white text-lg mt-8 rounded-md">
-          <button
-            onClick={onBuyNow}
-            className="h-12 w-full bg-black text-white text-lg mt-6 rounded-md"
-          >
-            {loading ? "Confirming..." : "Confirm"}
-          </button>
-        </WalletWrapper>
-        {error && (
-          <p className="text-red-500 text-center mt-4 break-all">
-            {error.slice(0, 300)}
-          </p>
-        )}
       </div>
     );
   };
